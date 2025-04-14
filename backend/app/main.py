@@ -5,7 +5,15 @@ from .database import engine
 
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+app = FastAPI(
+    title="Evsy API",
+    description="Evsy is a service for managing and tracking product events.",
+    version="1.0.0",
+    contact={
+        "name": "Ivan Skvortsov",
+        "email": "ivanskv2000@gmail.com",
+    },
+)
 
 # Подключаем эндпоинты
 app.include_router(events.router, prefix="/api/v1", tags=["events"])

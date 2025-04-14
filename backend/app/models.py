@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 from .database import Base
+from .schemas import FieldType
 
 # Модель для события
 class Event(Base):
@@ -47,7 +48,7 @@ class Field(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True)
     description = Column(String, nullable=True)
-    field_type = Column(String, nullable=False)  # Например, String, Integer, Boolean и т.д.
+    field_type = Column(Enum(FieldType), nullable=False)
 
     events = relationship("EventField", back_populates="field")
 

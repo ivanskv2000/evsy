@@ -81,3 +81,6 @@ def create_field(db: Session, field: schemas.FieldCreate):
 # Получение всех полей
 def get_fields(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Field).offset(skip).limit(limit).all()
+
+def get_field(db: Session, field_id: int):
+    return db.query(models.Field).filter(models.Field.id == field_id).first()
