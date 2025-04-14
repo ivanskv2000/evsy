@@ -22,4 +22,12 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.group.dev.dependencies]
 alembic = "^1.15.2"
+pytest = "^8.3.5"
+pytest-cov = "^6.1.1"
+httpx = "^0.28.1"
+
+
+[tool.pytest.ini_options]
+addopts = "--cov=app --cov-report=term-missing"
+testpaths = ["app/tests"]
 
