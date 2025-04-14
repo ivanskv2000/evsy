@@ -7,8 +7,8 @@ def sample_event():
     """Тестовое событие"""
     return EventCreate(
         name="Test Event",
-        description="Test Description",
-        tags=["feature"]
+        description="Some event description.",
+        tags=["feature", "experiment"]
     )
 
 def test_create_event(client, sample_event):

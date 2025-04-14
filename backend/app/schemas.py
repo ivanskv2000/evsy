@@ -1,5 +1,15 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Optional
+from enum import Enum
+
+class FieldType(str, Enum):
+    string = "string"
+    number = "number"
+    integer = "integer"
+    boolean = "boolean"
+    array = "array"
+    object = "object"
+
 
 
 # Базовая схема для тега
@@ -29,7 +39,8 @@ class FieldBase(BaseModel):
     field_type: str
 
 class FieldCreate(FieldBase):
-    pass
+    name: str
+    field_type: FieldType
 
 class Field(FieldBase):
     id: int
