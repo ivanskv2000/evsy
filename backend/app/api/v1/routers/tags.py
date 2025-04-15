@@ -3,10 +3,7 @@ from sqlalchemy.orm import Session
 from app import crud, schemas
 from app.database import get_db
 
-router = APIRouter(
-    prefix="/tags",
-    tags=["tags"]
-)
+router = APIRouter(prefix="/tags", tags=["tags"])
 
 
 @router.post("/", response_model=schemas.TagOut, status_code=status.HTTP_201_CREATED)

@@ -4,10 +4,7 @@ from . import models, schemas
 
 # Создание нового события
 def create_event(db: Session, event: schemas.EventCreate):
-    db_event = models.Event(
-        name=event.name,
-        description=event.description
-    )
+    db_event = models.Event(name=event.name, description=event.description)
     db.add(db_event)
     db.commit()
     db.refresh(db_event)
@@ -40,7 +37,9 @@ def update_event(db: Session, event_id: int, event: schemas.EventCreate):
 
     # Обновляем связи: поля
     if event.fields:
-        db_fields = db.query(models.Field).filter(models.Field.id.in_(event.fields)).all()
+        db_fields = (
+            db.query(models.Field).filter(models.Field.id.in_(event.fields)).all()
+        )
         db_event.fields = db_fields
 
     db.commit()
@@ -56,7 +55,6 @@ def delete_event(db: Session, event_id: int):
         db.commit()
         return db_event
     return None
-
 
 
 # Создание нового тега
@@ -76,6 +74,7 @@ def get_tags(db: Session, skip: int = 0, limit: int = 100):
 def get_tag(db: Session, tag_id: str):
     return db.query(models.Tag).filter(models.Tag.id == tag_id).first()
 
+
 # Обновление тега
 def update_tag(db: Session, tag_id: str, tag: schemas.TagCreate):
     db_tag = db.query(models.Tag).filter(models.Tag.id == tag_id).first()
@@ -86,6 +85,7 @@ def update_tag(db: Session, tag_id: str, tag: schemas.TagCreate):
         return db_tag
     return None
 
+
 # Удаление тега
 def delete_tag(db: Session, tag_id: str):
     db_tag = db.query(models.Tag).filter(models.Tag.id == tag_id).first()
@@ -94,6 +94,7 @@ def delete_tag(db: Session, tag_id: str):
         db.commit()
         return db_tag
     return None
+
 
 def get_tags_by_ids(db: Session, tag_ids: list[str]):
     return db.query(models.Tag).filter(models.Tag.id.in_(tag_ids)).all()
@@ -115,13 +116,10 @@ def get_or_create_tags(db: Session, tag_ids: list[str]) -> list[models.Tag]:
     return existing_tags + new_tags
 
 
-
 # Создание нового поля
 def create_field(db: Session, field: schemas.FieldCreate):
     db_field = models.Field(
-        name=field.name,
-        description=field.description,
-        field_type=field.field_type
+        name=field.name, description=field.description, field_type=field.field_type
     )
     db.add(db_field)
     db.commit()
@@ -133,8 +131,10 @@ def create_field(db: Session, field: schemas.FieldCreate):
 def get_fields(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Field).offset(skip).limit(limit).all()
 
+
 def get_field(db: Session, field_id: int):
     return db.query(models.Field).filter(models.Field.id == field_id).first()
+
 
 # Обновление поля
 def update_field(db: Session, field_id: int, field: schemas.FieldCreate):
@@ -148,6 +148,7 @@ def update_field(db: Session, field_id: int, field: schemas.FieldCreate):
         return db_field
     return None
 
+
 # Удаление поля
 def delete_field(db: Session, field_id: int):
     db_field = db.query(models.Field).filter(models.Field.id == field_id).first()
@@ -156,6 +157,7 @@ def delete_field(db: Session, field_id: int):
         db.commit()
         return db_field
     return None
+
 
 def get_fields_by_ids(db: Session, field_ids: list[int]):
     return db.query(models.Field).filter(models.Field.id.in_(field_ids)).all()

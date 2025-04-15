@@ -3,10 +3,7 @@ from sqlalchemy.orm import Session
 from app import crud, schemas
 from app.database import get_db
 
-router = APIRouter(
-    prefix="/fields",
-    tags=["fields"]
-)
+router = APIRouter(prefix="/fields", tags=["fields"])
 
 
 @router.post("/", response_model=schemas.FieldOut, status_code=status.HTTP_201_CREATED)
@@ -30,7 +27,9 @@ def get_event(field_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/{field_id}", response_model=schemas.FieldOut)
-def update_field(field_id: int, field: schemas.FieldCreate, db: Session = Depends(get_db)):
+def update_field(
+    field_id: int, field: schemas.FieldCreate, db: Session = Depends(get_db)
+):
     db_field = crud.update_field(db=db, field_id=field_id, field=field)
     if db_field is None:
         raise HTTPException(status_code=404, detail="Field not found")
