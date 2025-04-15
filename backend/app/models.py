@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship, Mapped, mapped_column
 from .database import Base
 from .schemas import FieldType
 from datetime import datetime
+from sqlalchemy.ext.associationproxy import association_proxy
 
 class TimestampMixin:
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
@@ -17,10 +18,12 @@ class Event(Base, TimestampMixin):
     description = Column(String, nullable=True)
 
     # Связь с тегами
-    tags = relationship("EventTag", back_populates="event")
+    tags = relationship("EventTag", back_populates="event", cascade="all, delete-orphan")
+    tag_objects = association_proxy("tags", "tag")
 
     # Связь с полями
     fields = relationship("EventField", back_populates="event")
+    field_objects = association_proxy("fields", "field")
 
 
 # Модель для тега

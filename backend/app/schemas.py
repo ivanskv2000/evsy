@@ -63,8 +63,8 @@ class EventOut(BaseModel):
     id: int
     name: str
     description: Optional[str] = None
-    tags: List[TagOut] = []
-    fields: List[FieldOut] = []
+    tags: list[TagOut] = Field(alias="tag_objects")
+    fields: list[FieldOut] = Field(alias="field_objects")
     created_at: datetime
     updated_at: datetime
 
