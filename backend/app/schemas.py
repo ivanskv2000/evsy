@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 from enum import Enum
+from datetime import datetime
 
 class FieldType(str, Enum):
     string = "string"
@@ -10,61 +11,61 @@ class FieldType(str, Enum):
     array = "array"
     object = "object"
 
-
-
 # Базовая схема для тега
 class TagBase(BaseModel):
     id: str
     description: str | None = None
 
-    model_config = {
-        "from_attributes": True
-    }
-
+# Для создания
 class TagCreate(TagBase):
     pass
 
-class Tag(TagBase):
-    id: str
+# Для чтения из БД (в API)
+class TagOut(TagBase):
+    created_at: datetime
+    updated_at: datetime
 
-    model_config = {
-        "from_attributes": True
-    }
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Базовая схема для поля
 class FieldBase(BaseModel):
     name: str
     description: Optional[str] = None
-    field_type: str
-
-class FieldCreate(FieldBase):
-    name: str
     field_type: FieldType
 
-class Field(FieldBase):
-    id: int
+# Для создания
+class FieldCreate(FieldBase):
+    pass
 
-    model_config = {
-        "from_attributes": True
-    }
+# Для отдачи в API
+class FieldOut(FieldBase):
+    id: int
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Базовая схема для события
 class EventBase(BaseModel):
     name: str
     description: Optional[str] = None
-    tags: List[str] = []  # Строки, соответствующие именам тегов
-    fields: List[int] = []  # Строки, соответствующие именам полей
+    tags: List[str] = []     # Список slug'ов тегов
+    fields: List[int] = []   # Список ID полей
 
+# Для создания события
 class EventCreate(EventBase):
     pass
 
-class Event(EventBase):
+# Для ответа из API
+class EventOut(BaseModel):
     id: int
-    tags: List[Tag] = []  # Список объектов Tag
-    fields: List[Field] = []  # Список объектов Field
+    name: str
+    description: Optional[str] = None
+    tags: List[TagOut] = []
+    fields: List[FieldOut] = []
+    created_at: datetime
+    updated_at: datetime
 
-    model_config = {
-        "from_attributes": True
-    }
+    model_config = ConfigDict(from_attributes=True)

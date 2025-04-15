@@ -1,10 +1,15 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Enum
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, ForeignKey, Enum, DateTime, func
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 from .database import Base
 from .schemas import FieldType
+from datetime import datetime
+
+class TimestampMixin:
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
 # Модель для события
-class Event(Base):
+class Event(Base, TimestampMixin):
     __tablename__ = "events"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -19,7 +24,7 @@ class Event(Base):
 
 
 # Модель для тега
-class Tag(Base):
+class Tag(Base, TimestampMixin):
     __tablename__ = "tags"
 
     id = Column(String, primary_key=True, index=True)
@@ -30,7 +35,7 @@ class Tag(Base):
 
 
 # Модель для связи многие ко многим между событиями и тегами
-class EventTag(Base):
+class EventTag(Base, TimestampMixin):
     __tablename__ = "event_tags"
 
     event_id = Column(Integer, ForeignKey("events.id"), primary_key=True)
@@ -42,7 +47,7 @@ class EventTag(Base):
 
 
 # Модель для поля
-class Field(Base):
+class Field(Base, TimestampMixin):
     __tablename__ = "fields"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -54,7 +59,7 @@ class Field(Base):
 
 
 # Модель для связи многие ко многим между событиями и полями
-class EventField(Base):
+class EventField(Base, TimestampMixin):
     __tablename__ = "event_fields"
 
     event_id = Column(Integer, ForeignKey("events.id", ondelete="CASCADE"), primary_key=True)
