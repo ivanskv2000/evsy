@@ -37,5 +37,5 @@ frontend/.env.*.local
 .idea/
 *.iml*
 
-test.db
-.coverage
+backend/test.db
+backend/.coverage
