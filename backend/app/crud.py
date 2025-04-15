@@ -36,7 +36,7 @@ def update_event(db: Session, event_id: int, event: schemas.EventCreate):
     # Обновляем связи: теги
     if event.tags:
         db_tags = get_or_create_tags(db, event.tags)
-        db_event.tags = db_tags  # заменяем связи
+        db_event.tags = [models.EventTag(tag=tag) for tag in db_tags]  # заменяем связи
 
     # Обновляем связи: поля
     if event.fields:
