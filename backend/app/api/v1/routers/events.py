@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from app import crud, schemas, models
+
+from app import crud, schemas
 from app.database import get_db
 
 router = APIRouter(prefix="/events", tags=["events"])
@@ -23,7 +24,7 @@ router = APIRouter(prefix="/events", tags=["events"])
 )
 def create_event(event: schemas.EventCreate, db: Session = Depends(get_db)):
     db_fields = crud.get_fields_by_ids(db, event.fields)
-    db_tags = crud.get_or_create_tags(db, event.tags)
+    _ = crud.get_or_create_tags(db, event.tags)
 
     if len(db_fields) != len(event.fields):
         raise HTTPException(status_code=400, detail="One or more fields do not exist.")

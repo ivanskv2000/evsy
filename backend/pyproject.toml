@@ -27,9 +27,15 @@ pytest-cov = "^6.1.1"
 httpx = "^0.28.1"
 black = "^25.1.0"
 pre-commit = "^4.2.0"
+isort = "^6.0.1"
+flake8 = "^7.2.0"
+flake8-bugbear = "^24.12.12"
 
 
 [tool.pytest.ini_options]
 addopts = "--cov=app --cov-report=term-missing"
 testpaths = ["app/tests"]
+
+[tool.isort]
+profile = "black"
 
