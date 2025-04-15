@@ -1,6 +1,16 @@
+.PHONY: format lint test test-cov test-html
+
 format:
 	poetry run isort .
 	poetry run black .
 
 lint:
 	poetry run flake8 .
+
+# Тесты с покрытием
+test:
+	poetry run pytest --cov=app --cov-report=term --cov-report=html app/tests
+
+# Тесты без покрытия (быстро)
+test-fast:
+	poetry run pytest app/tests
