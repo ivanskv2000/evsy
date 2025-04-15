@@ -1,9 +1,11 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Enum, DateTime, func
-from sqlalchemy.orm import relationship, Mapped, mapped_column
+from datetime import datetime
+
+from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String, func
+from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from .database import Base
 from .schemas import FieldType
-from datetime import datetime
-from sqlalchemy.ext.associationproxy import association_proxy
 
 
 class TimestampMixin:

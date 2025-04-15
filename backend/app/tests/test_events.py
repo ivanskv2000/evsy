@@ -1,6 +1,6 @@
 import pytest
+
 from app.schemas import EventCreate
-from fastapi.testclient import TestClient
 
 
 @pytest.fixture

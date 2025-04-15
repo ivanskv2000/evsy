@@ -1,5 +1,7 @@
 from fastapi import FastAPI
-from app.api.v1.routers import events, tags, fields
+
+from app.api.v1.routers import events, fields, tags
+
 from . import models
 from .database import engine
 

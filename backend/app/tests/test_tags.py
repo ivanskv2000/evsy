@@ -1,6 +1,6 @@
 import pytest
+
 from app.schemas import TagCreate
-from fastapi.testclient import TestClient
 
 
 @pytest.fixture
