@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1.routers import events, fields, tags
 
@@ -31,7 +32,14 @@ app = FastAPI(
     ],
 )
 
-# Подключаем эндпоинты
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3012"],  # 👈 тут укажи адрес фронта
+    allow_credentials=True,
+    allow_methods=["*"],  # Разрешить все методы (GET, POST, PUT, DELETE)
+    allow_headers=["*"],  # Разрешить все заголовки
+)
+
 app.include_router(events.router, prefix="/api/v1", tags=["events"])
 app.include_router(tags.router, prefix="/api/v1", tags=["tags"])
 app.include_router(fields.router, prefix="/api/v1", tags=["fields"])
