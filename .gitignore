@@ -5,6 +5,7 @@ __pycache__/
 # Virtual environments (если вдруг внутри)
 .venv/
 env/
+.env
 venv/
 
 # Poetry
