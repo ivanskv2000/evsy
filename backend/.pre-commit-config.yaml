@@ -21,3 +21,11 @@ repos:
         name: flake8 (with bugbear)
         language_version: python3.12
         args: ["--config=backend/.flake8"]
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: bash -c "cd backend && poetry run pytest"
+        language: system
+        pass_filenames: false

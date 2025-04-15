@@ -36,3 +36,6 @@ frontend/.env.*.local
 # IDE
 .idea/
 *.iml*
+
+test.db
+.coverage
