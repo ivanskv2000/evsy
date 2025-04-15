@@ -13,6 +13,20 @@ app = FastAPI(
         "name": "Ivan Skvortsov",
         "email": "ivanskv2000@gmail.com",
     },
+    openapi_tags=[
+        {
+            "name": "events",
+            "description": "Manage analytics events. Includes tags and fields associations.",
+        },
+        {
+            "name": "tags",
+            "description": "Manage tags. Tags can be used to classify events by product domain or feature.",
+        },
+        {
+            "name": "fields",
+            "description": "Define reusable attributes for describing events.",
+        },
+    ],
 )
 
 # Подключаем эндпоинты
