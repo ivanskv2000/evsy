@@ -5,9 +5,18 @@ from .schemas import FieldType
 from datetime import datetime
 from sqlalchemy.ext.associationproxy import association_proxy
 
+
 class TimestampMixin:
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
-    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False,
+    )
+
 
 # Модель для события
 class Event(Base, TimestampMixin):
@@ -18,7 +27,9 @@ class Event(Base, TimestampMixin):
     description = Column(String, nullable=True)
 
     # Связь с тегами
-    tags = relationship("EventTag", back_populates="event", cascade="all, delete-orphan")
+    tags = relationship(
+        "EventTag", back_populates="event", cascade="all, delete-orphan"
+    )
     tag_objects = association_proxy("tags", "tag")
 
     # Связь с полями
@@ -65,8 +76,12 @@ class Field(Base, TimestampMixin):
 class EventField(Base, TimestampMixin):
     __tablename__ = "event_fields"
 
-    event_id = Column(Integer, ForeignKey("events.id", ondelete="CASCADE"), primary_key=True)
-    field_id = Column(Integer, ForeignKey("fields.id", ondelete="CASCADE"), primary_key=True)
+    event_id = Column(
+        Integer, ForeignKey("events.id", ondelete="CASCADE"), primary_key=True
+    )
+    field_id = Column(
+        Integer, ForeignKey("fields.id", ondelete="CASCADE"), primary_key=True
+    )
 
     # Связи с Event и Field
     event = relationship("Event", back_populates="fields")

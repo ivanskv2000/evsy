@@ -3,6 +3,7 @@ from fastapi.testclient import TestClient
 from app.main import app
 from app.database import Base, engine
 
+
 @pytest.fixture(scope="session", autouse=True)
 def create_test_database():
     """Создаем таблицы перед запуском тестов"""
@@ -10,6 +11,7 @@ def create_test_database():
     yield
     # Если нужно очистить БД после тестов — можно добавить drop
     Base.metadata.drop_all(bind=engine)
+
 
 @pytest.fixture(scope="module")
 def client():

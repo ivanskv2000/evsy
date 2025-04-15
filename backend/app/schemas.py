@@ -3,6 +3,7 @@ from typing import List, Optional
 from enum import Enum
 from datetime import datetime
 
+
 class FieldType(str, Enum):
     string = "string"
     number = "number"
@@ -11,14 +12,17 @@ class FieldType(str, Enum):
     array = "array"
     object = "object"
 
+
 # Базовая схема для тега
 class TagBase(BaseModel):
     id: str
     description: str | None = None
 
+
 # Для создания
 class TagCreate(TagBase):
     pass
+
 
 # Для чтения из БД (в API)
 class TagOut(TagBase):
@@ -34,9 +38,11 @@ class FieldBase(BaseModel):
     description: Optional[str] = None
     field_type: FieldType
 
+
 # Для создания
 class FieldCreate(FieldBase):
     pass
+
 
 # Для отдачи в API
 class FieldOut(FieldBase):
@@ -51,12 +57,14 @@ class FieldOut(FieldBase):
 class EventBase(BaseModel):
     name: str
     description: Optional[str] = None
-    tags: List[str] = []     # Список slug'ов тегов
-    fields: List[int] = []   # Список ID полей
+    tags: List[str] = []  # Список slug'ов тегов
+    fields: List[int] = []  # Список ID полей
+
 
 # Для создания события
 class EventCreate(EventBase):
     pass
+
 
 # Для ответа из API
 class EventOut(BaseModel):
