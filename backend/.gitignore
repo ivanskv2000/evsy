@@ -1,0 +1,35 @@
+# Bytecode / cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments (если вдруг внутри)
+.venv/
+env/
+venv/
+
+# Poetry
+poetry.lock
+
+# Coverage & pytest
+.coverage
+htmlcov/
+.pytest_cache/
+.cache/
+
+# SQLite test DB
+test.db
+
+# Mypy / typing
+.mypy_cache/
+.dmypy.json
+
+# Logs
+*.log
+
+# Pre-commit leftovers
+.pre-commit-config.yaml~
+.pre-commit/
+
+# VSCode / IDE
+.vscode/
+.idea/
