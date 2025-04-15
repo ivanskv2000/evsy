@@ -42,3 +42,5 @@ profile = "black"
 [tool.coverage.run]
 data_file = ".coverage"
 
+[tool.poetry]
+package-mode = false
