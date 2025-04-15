@@ -39,3 +39,6 @@ testpaths = ["app/tests"]
 [tool.isort]
 profile = "black"
 
+[tool.coverage.run]
+data_file = ".coverage"
+
