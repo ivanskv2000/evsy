@@ -1,41 +1,35 @@
-# Python
+# Bytecode / cache
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
-.Python
-.env
-.venv
+
+# Virtual environments (если вдруг внутри)
+.venv/
 env/
 venv/
-ENV/
-pip-wheel-metadata/
-*.egg-info/
-dist/
-build/
 
 # Poetry
 poetry.lock
 
-# VSCode
-.vscode/
+# Coverage & pytest
+.coverage
+htmlcov/
+.pytest_cache/
+.cache/
 
-# macOS
-.DS_Store
+# SQLite test DB
+test.db
+
+# Mypy / typing
+.mypy_cache/
+.dmypy.json
 
 # Logs
 *.log
 
-# Frontend (Vue)
-frontend/node_modules/
-frontend/dist/
-frontend/.env
-frontend/.env.local
-frontend/.env.*.local
+# Pre-commit leftovers
+.pre-commit-config.yaml~
+.pre-commit/
 
-# IDE
+# VSCode / IDE
+.vscode/
 .idea/
-*.iml*
-
-backend/test.db
-backend/.coverage
