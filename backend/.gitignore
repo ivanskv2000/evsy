@@ -33,3 +33,5 @@ test.db
 # VSCode / IDE
 .vscode/
 .idea/
+
+.python-version
