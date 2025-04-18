@@ -91,6 +91,7 @@ def update_tag(db: Session, tag_id: str, tag: schemas.TagCreate):
 def delete_tag(db: Session, tag_id: str):
     db_tag = db.query(models.Tag).filter(models.Tag.id == tag_id).first()
     if db_tag:
+        db.query(models.EventTag).filter(models.EventTag.tag_id == tag_id).delete()
         db.delete(db_tag)
         db.commit()
         return db_tag
@@ -154,6 +155,7 @@ def update_field(db: Session, field_id: int, field: schemas.FieldCreate):
 def delete_field(db: Session, field_id: int):
     db_field = db.query(models.Field).filter(models.Field.id == field_id).first()
     if db_field:
+        db.query(models.EventField).filter(models.EventField.field_id == field_id).delete()
         db.delete(db_field)
         db.commit()
         return db_field
