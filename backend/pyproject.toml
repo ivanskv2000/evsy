@@ -30,6 +30,7 @@ pre-commit = "^4.2.0"
 isort = "^6.0.1"
 flake8 = "^7.2.0"
 flake8-bugbear = "^24.12.12"
+faker = "^37.1.0"
 
 
 [tool.pytest.ini_options]
@@ -44,3 +45,4 @@ data_file = ".coverage"
 
 [tool.poetry]
 package-mode = false
+

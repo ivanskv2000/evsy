@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref, provide } from 'vue'
+import { useColorMode } from '@vueuse/core'
 
-const theme = ref<'light' | 'dark'>('light')
+const theme = useColorMode()
 
 const toggleTheme = () => {
   theme.value = theme.value === 'light' ? 'dark' : 'light'
-  document.documentElement.classList.toggle('dark')
+  // document.documentElement.classList.toggle('dark')
 }
 
 provide('theme', theme)

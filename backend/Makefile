@@ -1,4 +1,4 @@
-.PHONY: format lint test test-cov test-html
+.PHONY: format lint test test-cov test-html dev
 
 format:
 	poetry run isort .
@@ -14,3 +14,9 @@ test:
 # Тесты без покрытия (быстро)
 test-fast:
 	poetry run pytest app/tests
+
+dev:
+	poetry run uvicorn app.main:app --reload
+
+seed:
+	poetry run python -m app.seeds
