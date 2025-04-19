@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TData, TValue">
-import type { ColumnDef, SortingState } from '@tanstack/vue-table'
+import type { ColumnDef, ColumnFiltersState, SortingState } from '@tanstack/vue-table'
 import {
   Table,
   TableBody,
@@ -14,6 +14,7 @@ import {
   getCoreRowModel,
   getSortedRowModel,
   useVueTable,
+  getFilteredRowModel
 } from '@tanstack/vue-table'
 
 import { ArrowUpDown, ChevronDown } from 'lucide-vue-next'
@@ -22,28 +23,39 @@ import { Icon } from '@iconify/vue'
 import { h, ref } from 'vue'
 import { valueUpdater } from '@/shared/utils/general'
 
+import { Input } from '@/shared/components/ui/input'
+
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }>()
 
 const sorting = ref<SortingState>([])
+const columnFilters = ref<ColumnFiltersState>([])
 
 const table = useVueTable({
   get data() { return props.data },
   get columns() { return props.columns },
   getCoreRowModel: getCoreRowModel(),
-
   getSortedRowModel: getSortedRowModel(),
   onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
+  onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
+  getFilteredRowModel: getFilteredRowModel(),
   state: {
     get sorting() { return sorting.value },
+    get columnFilters() { return columnFilters.value },
   },
 })
 
 </script>
 
 <template>
+<div>
+  <div class="flex items-center py-4">
+      <Input class="max-w-3xs" placeholder="Filter by name..."
+          :model-value="table.getColumn('name')?.getFilterValue() as string"
+          @update:model-value=" table.getColumn('name')?.setFilterValue($event)" />
+  </div>
   <div class="border rounded-md">
     <Table>
       <TableHeader>
@@ -77,4 +89,5 @@ const table = useVueTable({
       </TableBody>
     </Table>
   </div>
+</div>
 </template>
