@@ -1,7 +1,28 @@
 <script setup lang="ts">
-import { FieldForm } from '@/modules/fields/components/FieldForm.vue'
+import FieldForm from '@/modules/fields/components/FieldForm.vue'
 import { Button } from '@/shared/components/ui/button'
 import { Icon } from '@iconify/vue'
+import { useRouter } from 'vue-router'
+import { useApiErrorToast, useSuccessToast } from '@/shared/utils/toast'
+import { ref } from 'vue'
+import { fieldApi } from '@/modules/fields/api'
+const { showApiErrorToast } = useApiErrorToast()
+const { showSuccessToast } = useSuccessToast()
+const router = useRouter()
+const isLoading = ref(false)
+
+const onSubmit = async (values) => {
+    isLoading.value = true
+  try {
+    const created = await fieldApi.create(values)
+    router.push(`/fields/${created.id}`)
+    showSuccessToast('Field created successfully!')
+  } catch (err) {
+    showApiErrorToast(err)
+  } finally {
+    isLoading.value = false
+  }
+}
 </script>
 
 <template>
@@ -21,7 +42,7 @@ import { Icon } from '@iconify/vue'
       </div>
   
   
-      <FieldForm />
+      <FieldForm :onSubmit="onSubmit" />
 
       </div>
   </template>
