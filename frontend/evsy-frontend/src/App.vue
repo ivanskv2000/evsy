@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import MainLayout from '@/components/layout/MainLayout.vue'
-import { Toaster } from '@/components/ui/sonner'
+import MainLayout from '@/shared/components/layout/MainLayout.vue'
+import { Toaster } from '@/shared/components/ui/sonner'
 </script>
 
 <template>
