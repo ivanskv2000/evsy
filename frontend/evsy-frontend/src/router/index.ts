@@ -1,26 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
-import FieldsPage from "@/pages/FieldsPage.vue";
-import EventsPage from "@/pages/EventsPage.vue";
-import TagsPage from "@/pages/TagsPage.vue";
-import FieldDetailsPage from "@/pages/FieldDetailsPage.vue";
+import { fieldsRoutes } from "@/modules/fields/router";
+import { eventsRoutes } from "@/modules/events/router";
+import { tagsRoutes } from "@/modules/tags/router";
 
 export const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: "/", redirect: "/events" },
-
-    { path: "/events", name: "Events", component: EventsPage },
-    { path: "/events/new", name: "NewEvent", component: EventsPage },
-
-    { path: "/fields", name: "Fields", component: FieldsPage },
-    { path: "/fields/new", name: "NewField", component: FieldsPage },
-    {
-      path: "/fields/:id",
-      name: "FieldDetails",
-      component: FieldDetailsPage,
-    },
-
-    { path: "/tags", name: "Tags", component: TagsPage },
-    { path: "/tags/new", name: "NewTag", component: TagsPage },
+    ...eventsRoutes,
+    ...fieldsRoutes,
+    ...tagsRoutes,
   ],
 });
