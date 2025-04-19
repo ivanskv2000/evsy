@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { z } from 'zod'
+import * as z from 'zod'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import { useRouter } from 'vue-router'
-
 import { Input } from '@/shared/components/ui/input'
 import { Button } from '@/shared/components/ui/button'
 import {
@@ -15,34 +13,41 @@ import {
   FormMessage,
 } from '@/shared/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
-import { fieldApi } from '@/lib/api/fields'
-import { toast } from '@/shared/components/ui/toast'
+import type { Field } from '@/modules/fields/types'
+import { watchEffect } from 'vue'
 
-const router = useRouter()
+const props = defineProps<{
+  field?: Field
+  onSubmit: (data) => void
+}>()
 
-const formSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
+const formSchema = toTypedSchema(z.object({
+  name: z.string().min(1, 'Name is required'),
   description: z.string().optional(),
-  field_type: z.enum(['string', 'integer', 'float', 'boolean', 'array']),
+  field_type: z.enum(['string', 'integer', 'number', 'boolean', 'array', 'object']),
+}))
+
+const { handleSubmit, values, setValues, errors } = useForm({
+  validationSchema: formSchema,
 })
 
-const form = useForm({
-  validationSchema: toTypedSchema(formSchema),
-})
-
-const onSubmit = form.handleSubmit(async (values) => {
-  try {
-    await fieldApi.create(values)
-    toast.success('Field created successfully!')
-    router.push('/fields')
-  } catch (error) {
-    toast.error('Something went wrong')
+watchEffect(() => {
+  if (props.field) {
+    setValues({
+      name: props.field.name,
+      description: props.field.description ?? '',
+      field_type: props.field.field_type,
+    })
   }
+})
+
+const onSubmit = handleSubmit((values) => {
+  props.onSubmit(values)
 })
 </script>
 
 <template>
-  <Form :form="form" @submit="onSubmit" class="space-y-6">
+  <form @submit="onSubmit" class="space-y-6">
     <!-- Name -->
     <FormField name="name" v-slot="{ componentField }">
       <FormItem>
@@ -77,9 +82,10 @@ const onSubmit = form.handleSubmit(async (values) => {
             <SelectContent>
               <SelectItem value="string">String</SelectItem>
               <SelectItem value="integer">Integer</SelectItem>
-              <SelectItem value="float">Float</SelectItem>
+              <SelectItem value="number">Number</SelectItem>
               <SelectItem value="boolean">Boolean</SelectItem>
               <SelectItem value="array">Array</SelectItem>
+              <SelectItem value="object">Object</SelectItem>
             </SelectContent>
           </Select>
         </FormControl>
@@ -88,5 +94,5 @@ const onSubmit = form.handleSubmit(async (values) => {
     </FormField>
 
     <Button type="submit">Create Field</Button>
-  </Form>
+  </form>
 </template>
