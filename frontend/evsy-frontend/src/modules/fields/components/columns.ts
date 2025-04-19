@@ -22,7 +22,16 @@ export const columns: ColumnDef<Field>[] = [
         Button,
         {
           variant: "ghost",
-          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+          onClick: () => {
+            const currentSort = column.getIsSorted();
+            if (currentSort === "asc") {
+              column.toggleSorting(true);
+            } else if (currentSort === "desc") {
+              column.clearSorting();
+            } else {
+              column.toggleSorting(false);
+            }
+          },
         },
         () => [
           "Name",

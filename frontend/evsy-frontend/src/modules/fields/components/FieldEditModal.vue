@@ -6,6 +6,7 @@ import { Input } from '@/shared/components/ui/input'
 import { Button } from '@/shared/components/ui/button'
 import { fieldApi } from '@/modules/fields/api'
 import { useApiErrorToast, useSuccessToast } from '@/shared/utils/toast'
+import FieldForm from '@/modules/fields/components/FieldForm.vue'
 
 const props = defineProps<{ field: Field }>()
 const emit = defineEmits<{
@@ -13,23 +14,15 @@ const emit = defineEmits<{
     (e: "updated", field: Field): void
 }>()
 
-const name = ref(props.field.name)
-const description = ref(props.field.description ?? '')
-const fieldType = ref(props.field.field_type)
-
 const isLoading = ref(false)
 
 const { showApiErrorToast } = useApiErrorToast()
 const { showSuccessToast } = useSuccessToast()
 
-const handleSubmit = async () => {
+const onSubmit = async (values) => {
     isLoading.value = true
     try {
-        const updated = await fieldApi.update(props.field.id, {
-            name: name.value,
-            description: description.value,
-            field_type: fieldType.value,
-        })
+        const updated = await fieldApi.update(props.field.id, values)
         showSuccessToast("Field updated successfully!")
         emit("updated", updated)
         emit("close")
@@ -45,17 +38,7 @@ const handleSubmit = async () => {
     <Dialog :open="true" @update:open="(val) => !val && emit('close')">
       <DialogContent>
         <DialogTitle>Edit Field</DialogTitle>
-  
-        <div class="grid gap-4 py-4">
-          <Input v-model="name" placeholder="Name" />
-          <Input v-model="description" placeholder="Description" />
-          <Input v-model="fieldType" placeholder="Type (e.g. string, number)" />
-        </div>
-  
-        <DialogFooter>
-          <Button variant="secondary" @click="emit('close')">Cancel</Button>
-          <Button @click="handleSubmit">Save</Button>
-        </DialogFooter>
+          <FieldForm :field="field" :onSubmit="onSubmit" />
       </DialogContent>
     </Dialog>
   </template>
