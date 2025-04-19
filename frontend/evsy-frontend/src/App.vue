@@ -8,7 +8,6 @@ import { Transition } from 'vue'
 <template>
   <Toaster richColors />
   <MainLayout>
-    <!-- <RouterView /> -->
       <Transition
         name="page"
         mode="out-in"
@@ -16,6 +15,12 @@ import { Transition } from 'vue'
       >
         <RouterView />
       </Transition>
+<!-- 
+      <RouterView v-slot="{ Component }">
+        <Transition name="page">
+          <Component :is="Component" />
+        </Transition>
+    </RouterView> -->
   </MainLayout>
 </template>
 
