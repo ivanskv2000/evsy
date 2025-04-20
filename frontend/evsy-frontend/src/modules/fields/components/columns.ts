@@ -57,6 +57,7 @@ export const columns: ColumnDef<Field>[] = [
       const field_type = String(row.getValue("field_type"));
       return h("div", { class: "text-left font-medium" }, field_type);
     },
+    filterFn: 'equals'
   },
   {
     id: "actions",

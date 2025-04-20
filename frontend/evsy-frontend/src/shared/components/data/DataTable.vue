@@ -12,6 +12,7 @@ import {
 import {
   FlexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   useVueTable,
   getFilteredRowModel
@@ -20,10 +21,20 @@ import {
 import { ArrowUpDown, ChevronDown } from 'lucide-vue-next'
 import { Icon } from '@iconify/vue'
 
-import { h, ref } from 'vue'
+import { h, ref, computed } from 'vue'
 import { valueUpdater } from '@/shared/utils/general'
 
 import { Input } from '@/shared/components/ui/input'
+import { Button } from '@/shared/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/shared/components/ui/select'
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
@@ -38,6 +49,7 @@ const table = useVueTable({
   get columns() { return props.columns },
   getCoreRowModel: getCoreRowModel(),
   getSortedRowModel: getSortedRowModel(),
+  getPaginationRowModel: getPaginationRowModel(),
   onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
   onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
   getFilteredRowModel: getFilteredRowModel(),
@@ -47,15 +59,44 @@ const table = useVueTable({
   },
 })
 
+const fieldTypes = ['string', 'integer', 'number', 'boolean', 'array', 'object']
+const isTypeFilterSet = computed(() =>
+  columnFilters.value.some(f => f.id === 'field_type' && !!f.value)
+)
+
 </script>
 
 <template>
 <div>
-  <div class="flex items-center py-4">
+  <!-- Filters -->
+  <div class="flex flex-wrap items-center gap-4 py-4">
+      <!-- Name Filter -->
       <Input class="max-w-3xs" placeholder="Filter by name..."
           :model-value="table.getColumn('name')?.getFilterValue() as string"
-          @update:model-value=" table.getColumn('name')?.setFilterValue($event)" />
+          @update:model-value="table.getColumn('name')?.setFilterValue($event)" />
+      
+      <!-- Type Filter -->
+      <div class="flex items-center gap-1">
+        <Select
+          :model-value="table.getColumn('field_type')?.getFilterValue() as string"
+          @update:model-value="table.getColumn('field_type')?.setFilterValue($event)"
+        >
+          <SelectTrigger>
+            <SelectValue class="min-w-[12ch]" placeholder="Select a type..." />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem v-for="type in fieldTypes" :key="type" :value="type">{{ type }}</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Button :disabled="!isTypeFilterSet" variant="ghost" size="sm" @click="table.getColumn('field_type')?.setFilterValue('')">
+          <Icon class="w-4 h-4" icon="radix-icons:cross-2" />
+          <span class="sr-only">Clear type filter</span>
+        </Button>
+      </div>
   </div>
+
+  <!-- Table -->
   <div class="border rounded-md">
     <Table>
       <TableHeader>
@@ -89,5 +130,26 @@ const table = useVueTable({
       </TableBody>
     </Table>
   </div>
+
+  <!-- Pagination -->
+  <div class="flex items-center justify-end py-4 space-x-2">
+    <Button
+      variant="outline"
+      size="sm"
+      :disabled="!table.getCanPreviousPage()"
+      @click="table.previousPage()"
+    >
+      Previous
+    </Button>
+    <Button
+      variant="outline"
+      size="sm"
+      :disabled="!table.getCanNextPage()"
+      @click="table.nextPage()"
+    >
+      Next
+    </Button>
+  </div>
+
 </div>
 </template>

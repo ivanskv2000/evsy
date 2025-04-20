@@ -1,0 +1,35 @@
+# .prettierignore
+
+# Node modules
+node_modules
+
+# Build output
+dist
+build
+
+# Lockfiles
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Coverage reports
+coverage
+
+# Local environment settings
+.env
+.env.* 
+
+# Vite cache
+.vite
+
+# IDE settings
+.vscode
+.idea
+
+# Log files
+*.log
+
+# Optional:
+# Ignore compiled TypeScript if you check them in (usually you don’t)
+*.js
+*.d.ts
