@@ -21,97 +21,32 @@ import ThemeProvider from '@/shared/components/providers/theme-provider.vue'
     >
       <div class="container flex h-14 items-center">
         <div class="mr-4 flex">
-          <RouterLink to="/" class="mr-6 flex items-center space-x-2">
-            <span class="font-handwritten text-xl">Evsy</span>
-          </RouterLink>
-          <nav class="flex items-center space-x-6 text-sm font-medium">
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Events</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul class="grid gap-3 p-4 md:w-[400px] lg:w-[500px]">
-                      <li>
-                        <NavigationMenuLink as-child>
-                          <RouterLink to="/events">
-                            <div class="text-sm leading-none font-medium">All Events</div>
-                            <p class="text-muted-foreground line-clamp-2 text-sm leading-snug">
-                              View and manage all analytics events
-                            </p>
-                          </RouterLink>
-                        </NavigationMenuLink>
-                      </li>
-                      <li>
-                        <NavigationMenuLink as-child>
-                          <RouterLink to="/events/new">
-                            <div class="text-sm leading-none font-medium">New Event</div>
-                            <p class="text-muted-foreground line-clamp-2 text-sm leading-snug">
-                              Create a new analytics event
-                            </p>
-                          </RouterLink>
-                        </NavigationMenuLink>
-                      </li>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Fields</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul class="grid gap-3 p-4 md:w-[400px] lg:w-[500px]">
-                      <li>
-                        <NavigationMenuLink as-child>
-                          <RouterLink to="/fields">
-                            <div class="text-sm leading-none font-medium">All Fields</div>
-                            <p class="text-muted-foreground line-clamp-2 text-sm leading-snug">
-                              View and manage event properties
-                            </p>
-                          </RouterLink>
-                        </NavigationMenuLink>
-                      </li>
-                      <li>
-                        <NavigationMenuLink as-child>
-                          <RouterLink to="/fields/new">
-                            <div class="text-sm leading-none font-medium">New Field</div>
-                            <p class="text-muted-foreground line-clamp-2 text-sm leading-snug">
-                              Create a new event property
-                            </p>
-                          </RouterLink>
-                        </NavigationMenuLink>
-                      </li>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Tags</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul class="grid gap-3 p-4 md:w-[400px] lg:w-[500px]">
-                      <li>
-                        <NavigationMenuLink as-child>
-                          <RouterLink to="/tags">
-                            <div class="text-sm leading-none font-medium">All Tags</div>
-                            <p class="text-muted-foreground line-clamp-2 text-sm leading-snug">
-                              View and manage event tags
-                            </p>
-                          </RouterLink>
-                        </NavigationMenuLink>
-                      </li>
-                      <li>
-                        <NavigationMenuLink as-child>
-                          <RouterLink to="/tags/new">
-                            <div class="text-sm leading-none font-medium">New Tag</div>
-                            <p class="text-muted-foreground line-clamp-2 text-sm leading-snug">
-                              Create a new event tag
-                            </p>
-                          </RouterLink>
-                        </NavigationMenuLink>
-                      </li>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-          </nav>
-        </div>
+    <RouterLink to="/" class="mr-6 flex items-center space-x-2">
+      <span class="font-handwritten text-xl">Evsy</span>
+    </RouterLink>
+
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuLink as-child>
+            <RouterLink to="/events">Events</RouterLink>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <NavigationMenuLink as-child>
+            <RouterLink to="/fields">Fields</RouterLink>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <NavigationMenuLink as-child>
+            <RouterLink to="/tags">Tags</RouterLink>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  </div>
         <div class="flex flex-1 items-center justify-end space-x-2">
           <ThemeProvider v-slot="{ toggleTheme }">
             <Button variant="ghost" size="icon" @click="toggleTheme">
