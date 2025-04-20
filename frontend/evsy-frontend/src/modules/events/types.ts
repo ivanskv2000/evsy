@@ -9,4 +9,4 @@ export type Event = {
   fields: Field[]
   created_at: string
   updated_at: string
-} 
+}

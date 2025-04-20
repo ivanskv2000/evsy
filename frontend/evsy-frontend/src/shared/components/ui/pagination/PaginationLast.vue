@@ -7,12 +7,17 @@ import { reactiveOmit } from '@vueuse/core'
 import { ChevronRightIcon } from 'lucide-vue-next'
 import { PaginationLast, useForwardProps } from 'reka-ui'
 
-const props = withDefaults(defineProps<PaginationLastProps & {
-  size?: ButtonVariants['size']
-  class?: HTMLAttributes['class']
-}>(), {
-  size: 'default',
-})
+const props = withDefaults(
+  defineProps<
+    PaginationLastProps & {
+      size?: ButtonVariants['size']
+      class?: HTMLAttributes['class']
+    }
+  >(),
+  {
+    size: 'default',
+  }
+)
 
 const delegatedProps = reactiveOmit(props, 'class', 'size')
 const forwarded = useForwardProps(delegatedProps)

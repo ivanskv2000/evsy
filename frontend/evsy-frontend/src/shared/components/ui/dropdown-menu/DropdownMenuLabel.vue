@@ -4,7 +4,9 @@ import { cn } from '@/shared/utils/general'
 import { reactiveOmit } from '@vueuse/core'
 import { DropdownMenuLabel, type DropdownMenuLabelProps, useForwardProps } from 'reka-ui'
 
-const props = defineProps<DropdownMenuLabelProps & { class?: HTMLAttributes['class'], inset?: boolean }>()
+const props = defineProps<
+  DropdownMenuLabelProps & { class?: HTMLAttributes['class']; inset?: boolean }
+>()
 
 const delegatedProps = reactiveOmit(props, 'class', 'inset')
 const forwardedProps = useForwardProps(delegatedProps)

@@ -5,11 +5,11 @@ export const fieldApi = {
   getAll(): Promise<Field[]> {
     return api.get<Field[]>('/fields').then(response => response.data)
   },
-  
+
   getById(id: number): Promise<Field> {
     return api.get<Field>(`/fields/${id}`).then(response => response.data)
   },
-  
+
   create(data: Omit<Field, 'id'>): Promise<Field> {
     return api.post<Field>('/fields', data).then(response => response.data)
   },
@@ -21,4 +21,4 @@ export const fieldApi = {
   delete(id: number): Promise<Field> {
     return api.delete<Field>(`/fields/${id}`).then(response => response.data)
   },
-} 
+}

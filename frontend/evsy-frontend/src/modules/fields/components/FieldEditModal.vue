@@ -10,8 +10,8 @@ import FieldForm from '@/modules/fields/components/FieldForm.vue'
 
 const props = defineProps<{ field: Field }>()
 const emit = defineEmits<{
-    (e: "close"): void
-    (e: "updated", field: Field): void
+  (e: 'close'): void
+  (e: 'updated', field: Field): void
 }>()
 
 const isLoading = ref(false)
@@ -19,27 +19,26 @@ const isLoading = ref(false)
 const { showApiErrorToast } = useApiErrorToast()
 const { showSuccessToast } = useSuccessToast()
 
-const onSubmit = async (values) => {
-    isLoading.value = true
-    try {
-        const updated = await fieldApi.update(props.field.id, values)
-        showSuccessToast("Field updated successfully!")
-        emit("updated", updated)
-        emit("close")
-    } catch (err) {
-        showApiErrorToast(err)
-    } finally {
-        isLoading.value = false
-    }
+const onSubmit = async values => {
+  isLoading.value = true
+  try {
+    const updated = await fieldApi.update(props.field.id, values)
+    showSuccessToast('Field updated successfully!')
+    emit('updated', updated)
+    emit('close')
+  } catch (err) {
+    showApiErrorToast(err)
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>
 
 <template>
-    <Dialog :open="true" @update:open="(val) => !val && emit('close')">
-      <DialogContent>
-        <DialogTitle>Edit Field</DialogTitle>
-          <FieldForm button-text="Save" :field="field" :onSubmit="onSubmit" />
-      </DialogContent>
-    </Dialog>
-  </template>
-  
+  <Dialog :open="true" @update:open="val => !val && emit('close')">
+    <DialogContent>
+      <DialogTitle>Edit Field</DialogTitle>
+      <FieldForm button-text="Save" :field="field" :onSubmit="onSubmit" />
+    </DialogContent>
+  </Dialog>
+</template>

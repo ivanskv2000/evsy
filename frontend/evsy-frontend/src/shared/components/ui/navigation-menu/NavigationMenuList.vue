@@ -18,12 +18,7 @@ const forwardedProps = useForwardProps(delegatedProps)
   <NavigationMenuList
     data-slot="navigation-menu-list"
     v-bind="forwardedProps"
-    :class="
-      cn(
-        'group flex flex-1 list-none items-center justify-center gap-1',
-        props.class,
-      )
-    "
+    :class="cn('group flex flex-1 list-none items-center justify-center gap-1', props.class)"
   >
     <slot />
   </NavigationMenuList>

@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { cn } from '@/shared/utils/general'
 import { ChevronDown } from 'lucide-vue-next'
-import {
-  NavigationMenuTrigger,
-  type NavigationMenuTriggerProps,
-  useForwardProps,
-} from 'reka-ui'
+import { NavigationMenuTrigger, type NavigationMenuTriggerProps, useForwardProps } from 'reka-ui'
 import { computed, type HTMLAttributes } from 'vue'
 import { navigationMenuTriggerStyle } from '.'
 

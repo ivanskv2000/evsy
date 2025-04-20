@@ -14,7 +14,9 @@ const isDeleting = ref(false)
 </script>
 
 <template>
-  <div class="flex items-start justify-between gap-4 border rounded-lg p-4 hover:shadow-sm transition">
+  <div
+    class="flex items-start justify-between gap-4 rounded-lg border p-4 transition hover:shadow-sm"
+  >
     <div>
       <Badge variant="secondary" class="cursor-pointer" @click="">
         <span class="font-mono">#{{ tag.id }}</span>
@@ -25,12 +27,12 @@ const isDeleting = ref(false)
     </div>
 
     <div class="flex gap-2">
-        <Button size="icon" variant="ghost" @click="">
-        <Icon icon="radix-icons:pencil-2" class="w-4 h-4" />
-        </Button>
-        <Button size="icon" variant="ghost" @click="">
-        <Icon icon="radix-icons:trash" class="w-4 h-4 text-destructive" />
-        </Button>
+      <Button size="icon" variant="ghost" @click="">
+        <Icon icon="radix-icons:pencil-2" class="h-4 w-4" />
+      </Button>
+      <Button size="icon" variant="ghost" @click="">
+        <Icon icon="radix-icons:trash" class="text-destructive h-4 w-4" />
+      </Button>
     </div>
   </div>
 </template>
