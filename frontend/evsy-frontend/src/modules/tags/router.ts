@@ -12,4 +12,9 @@ export const tagsRoutes: RouteRecordRaw[] = [
     name: 'NewTag',
     component: TagsPage,
   },
+  {
+    path: '/tags/:name',
+    name: 'TagDetails',
+    component: TagsPage,
+  },
 ]

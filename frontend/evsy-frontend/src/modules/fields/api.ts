@@ -1,24 +1,79 @@
 import { api } from '@/shared/utils/api'
-import type { Field } from './types'
+import type { Field, FieldFormData, ApiResponse, FieldValidationErrors } from './types'
+
+class FieldApiError extends Error {
+  constructor(
+    message: string,
+    public status: number,
+    public errors?: FieldValidationErrors
+  ) {
+    super(message)
+    this.name = 'FieldApiError'
+  }
+}
 
 export const fieldApi = {
-  getAll(): Promise<Field[]> {
-    return api.get<Field[]>('/fields').then(response => response.data)
+  async getAll(): Promise<Field[]> {
+    try {
+      const response = await api.get<ApiResponse<Field[]>>('/fields')
+      return response.data.data
+    } catch (error: any) {
+      throw new FieldApiError(
+        error.response?.data?.message || 'Failed to fetch fields',
+        error.response?.status || 500,
+        error.response?.data?.errors
+      )
+    }
   },
 
-  getById(id: number): Promise<Field> {
-    return api.get<Field>(`/fields/${id}`).then(response => response.data)
+  async getById(id: number): Promise<Field> {
+    try {
+      const response = await api.get<ApiResponse<Field>>(`/fields/${id}`)
+      return response.data.data
+    } catch (error: any) {
+      throw new FieldApiError(
+        error.response?.data?.message || 'Failed to fetch field',
+        error.response?.status || 500,
+        error.response?.data?.errors
+      )
+    }
   },
 
-  create(data: Omit<Field, 'id'>): Promise<Field> {
-    return api.post<Field>('/fields', data).then(response => response.data)
+  async create(data: FieldFormData): Promise<Field> {
+    try {
+      const response = await api.post<ApiResponse<Field>>('/fields', data)
+      return response.data.data
+    } catch (error: any) {
+      throw new FieldApiError(
+        error.response?.data?.message || 'Failed to create field',
+        error.response?.status || 500,
+        error.response?.data?.errors
+      )
+    }
   },
 
-  update(id: number, data: Partial<Omit<Field, 'id'>>): Promise<Field> {
-    return api.put<Field>(`/fields/${id}`, data).then(response => response.data)
+  async update(id: number, data: Partial<FieldFormData>): Promise<Field> {
+    try {
+      const response = await api.put<ApiResponse<Field>>(`/fields/${id}`, data)
+      return response.data.data
+    } catch (error: any) {
+      throw new FieldApiError(
+        error.response?.data?.message || 'Failed to update field',
+        error.response?.status || 500,
+        error.response?.data?.errors
+      )
+    }
   },
 
-  delete(id: number): Promise<Field> {
-    return api.delete<Field>(`/fields/${id}`).then(response => response.data)
+  async delete(id: number): Promise<void> {
+    try {
+      await api.delete<ApiResponse<void>>(`/fields/${id}`)
+    } catch (error: any) {
+      throw new FieldApiError(
+        error.response?.data?.message || 'Failed to delete field',
+        error.response?.status || 500,
+        error.response?.data?.errors
+      )
+    }
   },
 }
