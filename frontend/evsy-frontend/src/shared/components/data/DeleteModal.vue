@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { Dialog, DialogContent, DialogTitle, DialogFooter, DialogHeader, DialogDescription } from '@/shared/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogFooter,
+  DialogHeader,
+  DialogDescription,
+} from '@/shared/components/ui/dialog'
 import { Button } from '@/shared/components/ui/button'
 
 defineProps<{
-  description: string,
+  description: string
   open: boolean
   onClose: () => void
   onConfirm: () => void
@@ -29,4 +36,3 @@ const isLoading = ref(false)
     </DialogContent>
   </Dialog>
 </template>
-  

@@ -3,4 +3,4 @@ export type Tag = {
   description?: string | null
   created_at: string
   updated_at: string
-} 
+}

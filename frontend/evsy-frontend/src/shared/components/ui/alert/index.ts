@@ -17,7 +17,7 @@ export const alertVariants = cva(
     defaultVariants: {
       variant: 'default',
     },
-  },
+  }
 )
 
 export type AlertVariants = VariantProps<typeof alertVariants>

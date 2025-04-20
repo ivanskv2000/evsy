@@ -5,11 +5,11 @@ export const eventApi = {
   getAll(): Promise<Event[]> {
     return api.get<Event[]>('/events').then(response => response.data)
   },
-  
+
   getById(id: number): Promise<Event> {
     return api.get<Event>(`/events/${id}`).then(response => response.data)
   },
-  
+
   create(data: Omit<Event, 'id'>): Promise<Event> {
     return api.post<Event>('/events', data).then(response => response.data)
   },
@@ -21,4 +21,4 @@ export const eventApi = {
   delete(id: number): Promise<Event> {
     return api.delete<Event>(`/events/${id}`).then(response => response.data)
   },
-} 
+}

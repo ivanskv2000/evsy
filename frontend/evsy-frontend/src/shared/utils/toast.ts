@@ -1,24 +1,21 @@
-import type { AxiosError } from "axios"
-import { toast } from "vue-sonner"
+import type { AxiosError } from 'axios'
+import { toast } from 'vue-sonner'
 
 export function useApiErrorToast() {
-  function showApiErrorToast(
-    error: unknown,
-    fallbackMessage = "Something went wrong."
-  ) {
+  function showApiErrorToast(error: unknown, fallbackMessage = 'Something went wrong.') {
     let message = fallbackMessage
 
     if (
-      typeof error === "object" &&
+      typeof error === 'object' &&
       error !== null &&
-      "response" in error &&
-      typeof (error as AxiosError).response?.data === "object"
+      'response' in error &&
+      typeof (error as AxiosError).response?.data === 'object'
     ) {
       const data = (error as AxiosError).response?.data as any
       message = data?.detail || fallbackMessage
     }
 
-    toast.error("API Error", {
+    toast.error('API Error', {
       description: message,
       duration: 3000,
     })
@@ -27,8 +24,10 @@ export function useApiErrorToast() {
   return { showApiErrorToast }
 }
 
-
-export function useSuccessToast(defaultTitle = "Success", defaultDescription = "Saved successfully") {
+export function useSuccessToast(
+  defaultTitle = 'Success',
+  defaultDescription = 'Saved successfully'
+) {
   function showSuccessToast(title?: string, description?: string) {
     toast.success(title || defaultTitle, {
       description: description || defaultDescription,
@@ -37,8 +36,7 @@ export function useSuccessToast(defaultTitle = "Success", defaultDescription = "
   }
 
   return { showSuccessToast }
-} 
-
+}
 
 export function useInfoToast() {
   function showInfoToast(title: string, description?: string) {
@@ -49,4 +47,4 @@ export function useInfoToast() {
   }
 
   return { showInfoToast }
-} 
+}

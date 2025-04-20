@@ -12,7 +12,13 @@ import {
   FormControl,
   FormMessage,
 } from '@/shared/components/ui/form'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/shared/components/ui/select'
 import type { Field } from '@/modules/fields/types'
 import { ref, watchEffect } from 'vue'
 import { fieldSchema, type FieldFormValues } from '@/modules/fields/validation/fieldSchema'
@@ -24,7 +30,6 @@ const props = defineProps<{
   onSubmit: (data) => void
   buttonText?: string
 }>()
-
 
 const { handleSubmit, values, setValues, errors } = useForm<FieldFormValues>({
   validationSchema: toTypedSchema(fieldSchema),
@@ -40,7 +45,7 @@ watchEffect(() => {
   }
 })
 
-const onSubmit = handleSubmit((values) => {
+const onSubmit = handleSubmit(values => {
   loading.value = true
   props.onSubmit(values)
   loading.value = false

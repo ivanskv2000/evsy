@@ -15,4 +15,4 @@ provide('toggleTheme', toggleTheme)
 
 <template>
   <slot :theme="theme" :toggleTheme="toggleTheme" />
-</template> 
+</template>
