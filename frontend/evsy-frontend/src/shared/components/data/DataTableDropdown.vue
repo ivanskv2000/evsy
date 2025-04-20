@@ -16,13 +16,15 @@ import DeleteModal from '@/shared/components/data/DeleteModal.vue'
 import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import { useAsyncTask } from '@/shared/composables/useAsyncTask'
+
+const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
 
 const props = defineProps<{
   field: Field
 }>()
 
 const router = useRouter()
-const isLoading = ref(false)
 
 const emit = defineEmits<{
   (e: 'updated', field: Field): void
@@ -34,20 +36,14 @@ const handleUpdate = (updatedField: Field) => {
   router.go('/fields')
 }
 
-const handleDelete = async () => {
-  isLoading.value = true
-  try {
+const handleDelete = () => {
+  runDeleteTask(async () => {
     await fieldApi.delete(props.field.id)
     showSuccessToast('Field deleted successfully!')
-    // showDeleteModal.value = false
-    emit('deleted')
+    showDeleteModal.value = false
     router.go('/fields')
-  } catch (err) {
-    console.log(err)
-    showApiErrorToast(err)
-  } finally {
-    isLoading.value = false
-  }
+    emit('deleted')
+  })
 }
 
 const showEditModal = ref(false)

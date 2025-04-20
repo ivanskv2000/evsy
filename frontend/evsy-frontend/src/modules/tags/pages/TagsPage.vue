@@ -1,30 +1,17 @@
 <script setup lang="ts">
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from '@/components/ui/card'
 import TagItem from '../components/TagItem.vue'
 import { tagApi } from '@/modules/tags/api'
 import type { Tag } from '@/modules/tags/types'
-import { useApiErrorToast } from '@/shared/utils/toast'
 import { ref, onMounted } from 'vue'
+import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 
-const tags = ref<Field[]>([])
-const isLoading = ref(true)
-const { showApiErrorToast } = useApiErrorToast()
+const tags = ref<Tag[]>([])
+const { run, isLoading } = useAsyncTask()
 
-onMounted(async () => {
-  try {
-    tags.value = await tagApi.getAll()
-  } catch (err) {
-    showApiErrorToast(err)
-  } finally {
-    isLoading.value = false
-  }
+onMounted(() => {
+  run(() => tagApi.getAll(), (data) => {
+    tags.value = data
+  })
 })
 </script>
 

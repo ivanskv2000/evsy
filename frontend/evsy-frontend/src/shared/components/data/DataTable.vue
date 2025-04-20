@@ -75,8 +75,9 @@ const isTypeFilterSet = computed(() =>
 
 <template>
   <div>
+  <div class="flex flex-wrap items-center justify-between gap-4 py-4">
     <!-- Filters -->
-    <div class="flex flex-wrap items-center gap-4 py-4">
+    <div class="flex items-center gap-4 flex-nowrap">
       <!-- Name Filter -->
       <Input
         class="max-w-3xs"
@@ -110,6 +111,15 @@ const isTypeFilterSet = computed(() =>
         </Button>
       </div>
     </div>
+
+    <Button as-child size="sm">
+      <RouterLink to="/fields/new">
+        <Icon icon="radix-icons:plus" class="h-4 w-4 mr-2" />
+        Add Field
+      </RouterLink>
+    </Button>
+
+  </div>
 
     <!-- Table -->
     <div class="rounded-md border">

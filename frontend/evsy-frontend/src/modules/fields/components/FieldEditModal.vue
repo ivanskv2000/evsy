@@ -2,35 +2,27 @@
 import { ref, watch } from 'vue'
 import type { Field } from '@/modules/fields/types'
 import { Dialog, DialogContent, DialogTitle, DialogFooter } from '@/shared/components/ui/dialog'
-import { Input } from '@/shared/components/ui/input'
-import { Button } from '@/shared/components/ui/button'
 import { fieldApi } from '@/modules/fields/api'
 import { useApiErrorToast, useSuccessToast } from '@/shared/utils/toast'
 import FieldForm from '@/modules/fields/components/FieldForm.vue'
+import { useAsyncTask } from '@/shared/composables/useAsyncTask'
+import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 
+const { isLoading, run } = useAsyncTask()
 const props = defineProps<{ field: Field }>()
 const emit = defineEmits<{
   (e: 'close'): void
   (e: 'updated', field: Field): void
 }>()
 
-const isLoading = ref(false)
-
-const { showApiErrorToast } = useApiErrorToast()
 const { showSuccessToast } = useSuccessToast()
 
-const onSubmit = async values => {
-  isLoading.value = true
-  try {
-    const updated = await fieldApi.update(props.field.id, values)
+const onSubmit = (values: FieldFormValues) => {
+  run(() => fieldApi.update(props.field.id, values), (updated) => {
     showSuccessToast('Field updated successfully!')
     emit('updated', updated)
     emit('close')
-  } catch (err) {
-    showApiErrorToast(err)
-  } finally {
-    isLoading.value = false
-  }
+  })
 }
 </script>
 
