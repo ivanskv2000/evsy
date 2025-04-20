@@ -38,7 +38,7 @@ const onSubmit = async (values) => {
     <Dialog :open="true" @update:open="(val) => !val && emit('close')">
       <DialogContent>
         <DialogTitle>Edit Field</DialogTitle>
-          <FieldForm :field="field" :onSubmit="onSubmit" />
+          <FieldForm button-text="Save" :field="field" :onSubmit="onSubmit" />
       </DialogContent>
     </Dialog>
   </template>

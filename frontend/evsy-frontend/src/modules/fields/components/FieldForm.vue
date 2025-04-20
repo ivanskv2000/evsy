@@ -14,21 +14,20 @@ import {
 } from '@/shared/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
 import type { Field } from '@/modules/fields/types'
-import { watchEffect } from 'vue'
+import { ref, watchEffect } from 'vue'
+import { fieldSchema, type FieldFormValues } from '@/modules/fields/validation/fieldSchema'
+
+const loading = ref(false)
 
 const props = defineProps<{
   field?: Field
   onSubmit: (data) => void
+  buttonText?: string
 }>()
 
-const formSchema = toTypedSchema(z.object({
-  name: z.string().min(1, 'Name is required'),
-  description: z.string().optional(),
-  field_type: z.enum(['string', 'integer', 'number', 'boolean', 'array', 'object']),
-}))
 
-const { handleSubmit, values, setValues, errors } = useForm({
-  validationSchema: formSchema,
+const { handleSubmit, values, setValues, errors } = useForm<FieldFormValues>({
+  validationSchema: toTypedSchema(fieldSchema),
 })
 
 watchEffect(() => {
@@ -42,7 +41,9 @@ watchEffect(() => {
 })
 
 const onSubmit = handleSubmit((values) => {
+  loading.value = true
   props.onSubmit(values)
+  loading.value = false
 })
 </script>
 
@@ -93,6 +94,6 @@ const onSubmit = handleSubmit((values) => {
       </FormItem>
     </FormField>
 
-    <Button type="submit">Create Field</Button>
+    <Button type="submit" :disabled="loading">{{ buttonText || 'Create Field' }}</Button>
   </form>
 </template>
