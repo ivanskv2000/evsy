@@ -25,9 +25,10 @@ import { useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
 import { Badge } from '@/shared/components/ui/badge'
 import { Icon } from '@iconify/vue'
+import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 
 const router = useRouter()
-const isLoading = ref(false)
+const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
 
 const props = defineProps<{
   field: Field
@@ -44,19 +45,13 @@ const handleUpdate = (updatedField: Field) => {
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
 
-const handleDelete = async () => {
-  isLoading.value = true
-  try {
+const handleDelete = () => {
+  runDeleteTask(async () => {
     await fieldApi.delete(props.field.id)
     showSuccessToast('Field deleted successfully!')
     showDeleteModal.value = false
     router.push('/fields')
-  } catch (err) {
-    console.log(err)
-    showApiErrorToast(err)
-  } finally {
-    isLoading.value = false
-  }
+  })
 }
 
 const { showApiErrorToast } = useApiErrorToast()
@@ -155,6 +150,7 @@ const handleCopyName = async () => {
       :open="showDeleteModal"
       :onClose="() => (showDeleteModal = false)"
       :onConfirm="handleDelete"
+      :isDeleting="isDeleting"
       description="Once deleted, this field will be unlinked from any events it's part of."
     />
   </Card>

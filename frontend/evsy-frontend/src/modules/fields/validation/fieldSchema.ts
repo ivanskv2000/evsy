@@ -1,9 +1,17 @@
 import { z } from 'zod'
+import { FieldType } from '../types'
 
 export const fieldSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  description: z.string().optional(),
-  field_type: z.enum(['string', 'integer', 'number', 'boolean', 'array', 'object']),
+  name: z.string()
+    .min(1, 'Name is required')
+    .max(32, 'Name must be less than 32 characters'),
+  
+  description: z.string()
+    .max(500, 'Description must be less than 500 characters')
+    .optional()
+    .nullable(),
+  
+  field_type: z.nativeEnum(FieldType),
 })
 
 // Inferred TypeScript type from schema

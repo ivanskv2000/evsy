@@ -3,25 +3,21 @@ import FieldForm from '@/modules/fields/components/FieldForm.vue'
 import { Button } from '@/shared/components/ui/button'
 import { Icon } from '@iconify/vue'
 import { useRouter } from 'vue-router'
-import { useApiErrorToast, useSuccessToast } from '@/shared/utils/toast'
+import { useSuccessToast } from '@/shared/utils/toast'
 import { ref } from 'vue'
 import { fieldApi } from '@/modules/fields/api'
-const { showApiErrorToast } = useApiErrorToast()
+import { useAsyncTask } from '@/shared/composables/useAsyncTask'
+import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
+
+const { isLoading, run } = useAsyncTask()
 const { showSuccessToast } = useSuccessToast()
 const router = useRouter()
-const isLoading = ref(false)
 
-const onSubmit = async values => {
-  isLoading.value = true
-  try {
-    const created = await fieldApi.create(values)
+const onSubmit = (values: FieldFormValues) => {
+  run(() => fieldApi.create(values), (created) => {
     router.push(`/fields/${created.id}`)
     showSuccessToast('Field created successfully!')
-  } catch (err) {
-    showApiErrorToast(err)
-  } finally {
-    isLoading.value = false
-  }
+  })
 }
 </script>
 

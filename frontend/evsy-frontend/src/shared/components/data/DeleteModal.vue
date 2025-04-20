@@ -15,9 +15,8 @@ defineProps<{
   open: boolean
   onClose: () => void
   onConfirm: () => void
+  isDeleting?: boolean
 }>()
-
-const isLoading = ref(false)
 </script>
 
 <template>
@@ -31,7 +30,7 @@ const isLoading = ref(false)
       </DialogHeader>
       <DialogFooter class="flex justify-end gap-2">
         <Button variant="secondary" @click="onClose">Cancel</Button>
-        <Button variant="destructive" @click="onConfirm">Delete</Button>
+        <Button variant="destructive" :disabled="isDeleting" @click="onConfirm">Delete</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>
