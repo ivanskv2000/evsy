@@ -75,7 +75,7 @@ export const columns: ColumnDef<Field>[] = [
         'div',
         { class: 'relative' },
         h(DropdownAction, {
-          field, // props go here
+          field,
         })
       )
     },
