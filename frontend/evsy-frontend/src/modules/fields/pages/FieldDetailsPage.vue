@@ -18,9 +18,12 @@ const handleUpdate = (updatedField: Field) => {
 
 onMounted(() => {
   const id = Number(route.params.id)
-  run(() => fieldApi.getById(id), (result) => {
-    if (result) field.value = result
-  })
+  run(
+    () => fieldApi.getById(id),
+    result => {
+      if (result) field.value = result
+    }
+  )
 })
 </script>
 

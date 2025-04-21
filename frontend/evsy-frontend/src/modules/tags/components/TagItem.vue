@@ -1,26 +1,51 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { Button } from '@/shared/components/ui/button'
 import { Badge } from '@/shared/components/ui/badge'
-import { Dialog, DialogTrigger, DialogContent } from '@/shared/components/ui/dialog'
+import { useClipboard } from '@vueuse/core'
+import { useApiErrorToast, useSuccessToast, useInfoToast } from '@/shared/utils/toast'
 import { Icon } from '@iconify/vue'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/shared/components/ui/tooltip'
 
 const props = defineProps<{
   tag: { id: string; description?: string }
 }>()
 
-const isEditing = ref(false)
-const isDeleting = ref(false)
+const { copy: copyId } = useClipboard({ source: props.tag.id })
+const { showApiErrorToast } = useApiErrorToast()
+const { showSuccessToast } = useSuccessToast()
+const { showInfoToast } = useInfoToast()
+
+const handleCopyId = async () => {
+  try {
+    await copyId()
+    showInfoToast('Tag copied to clipboard')
+  } catch (err) {
+    showApiErrorToast('Failed to copy Tag')
+  }
+}
+
 </script>
 
 <template>
-  <div
-    class="flex items-start justify-between gap-4 rounded-lg border p-4 transition hover:shadow-sm"
-  >
+  <div class="flex items-start justify-between gap-4 rounded-lg border p-4 transition hover:shadow-sm">
     <div>
-      <Badge variant="secondary" class="cursor-pointer" @click="">
-        <span class="font-mono">#{{ tag.id }}</span>
-      </Badge>
+      <TooltipProvider :delay-duration="800">
+        <Tooltip>
+          <TooltipTrigger>
+            <Badge variant="secondary" class="cursor-pointer" @click="handleCopyId">
+              <span class="font-mono">#{{ tag.id }}</span>
+            </Badge>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Click to copy</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <p v-if="tag.description" class="text-muted-foreground mt-1 text-sm">
         {{ tag.description }}
       </p>

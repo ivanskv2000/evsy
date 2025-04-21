@@ -18,23 +18,16 @@ import {
   getFilteredRowModel,
 } from '@tanstack/vue-table'
 
-import { ArrowUpDown, ChevronDown } from 'lucide-vue-next'
+import DataTableInputFilter from '@/shared/components/data/DataTableInputFilter.vue'
+import DataTableSingleSelectFilter from '@/shared/components/data/DataTableSingleSelectFilter.vue'
 import { Icon } from '@iconify/vue'
 
-import { h, ref, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { valueUpdater } from '@/shared/utils/general'
 
-import { Input } from '@/shared/components/ui/input'
 import { Button } from '@/shared/components/ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/components/ui/select'
+import DataTablePagination from '@/shared/components/data/DataTablePagination.vue'
+import { FieldType } from '@/modules/fields/types'
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
@@ -67,7 +60,7 @@ const table = useVueTable({
   },
 })
 
-const fieldTypes = ['string', 'integer', 'number', 'boolean', 'array', 'object']
+const fieldTypes = Object.values(FieldType)
 const isTypeFilterSet = computed(() =>
   columnFilters.value.some(f => f.id === 'field_type' && !!f.value)
 )
@@ -75,51 +68,32 @@ const isTypeFilterSet = computed(() =>
 
 <template>
   <div>
-  <div class="flex flex-wrap items-center justify-between gap-4 py-4">
-    <!-- Filters -->
-    <div class="flex items-center gap-4 flex-nowrap">
-      <!-- Name Filter -->
-      <Input
-        class="max-w-3xs"
-        placeholder="Filter by name..."
-        :model-value="table.getColumn('name')?.getFilterValue() as string"
-        @update:model-value="table.getColumn('name')?.setFilterValue($event)"
-      />
+    <div class="flex flex-wrap items-center justify-between gap-4 py-4">
+      <!-- Filters -->
+      <div class="flex flex-nowrap items-center gap-4">
+        <!-- Name Filter -->
+        <DataTableInputFilter
+          class="max-w-3xs"
+          :column="table.getColumn('name')!"
+          placeholder="Filter by name..."
+        />
 
-      <!-- Type Filter -->
-      <div class="flex items-center gap-1">
-        <Select
-          :model-value="table.getColumn('field_type')?.getFilterValue() as string"
-          @update:model-value="table.getColumn('field_type')?.setFilterValue($event)"
-        >
-          <SelectTrigger>
-            <SelectValue class="min-w-[12ch]" placeholder="Select a type..." />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem v-for="type in fieldTypes" :key="type" :value="type">{{ type }}</SelectItem>
-          </SelectContent>
-        </Select>
-
-        <Button
-          :disabled="!isTypeFilterSet"
-          variant="ghost"
-          size="sm"
-          @click="table.getColumn('field_type')?.setFilterValue('')"
-        >
-          <Icon class="h-4 w-4" icon="radix-icons:cross-2" />
-          <span class="sr-only">Clear type filter</span>
-        </Button>
+        <!-- Type Filter -->
+        <DataTableSingleSelectFilter
+          :column="table.getColumn('field_type')!"
+          placeholder="Select a type..."
+          :options="fieldTypes"
+          :show-clear-button="isTypeFilterSet"
+        />
       </div>
+
+      <Button as-child>
+        <RouterLink to="/fields/new">
+          <Icon icon="radix-icons:plus" class="mr-2 h-4 w-4" />
+          Add Field
+        </RouterLink>
+      </Button>
     </div>
-
-    <Button as-child size="sm">
-      <RouterLink to="/fields/new">
-        <Icon icon="radix-icons:plus" class="h-4 w-4 mr-2" />
-        Add Field
-      </RouterLink>
-    </Button>
-
-  </div>
 
     <!-- Table -->
     <div class="rounded-md border">
@@ -158,24 +132,8 @@ const isTypeFilterSet = computed(() =>
       </Table>
     </div>
 
-    <!-- Pagination -->
-    <div class="flex items-center justify-end space-x-2 py-4">
-      <Button
-        variant="outline"
-        size="sm"
-        :disabled="!table.getCanPreviousPage()"
-        @click="table.previousPage()"
-      >
-        Previous
-      </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        :disabled="!table.getCanNextPage()"
-        @click="table.nextPage()"
-      >
-        Next
-      </Button>
+    <div class="py-4">
+      <DataTablePagination :table="table" />
     </div>
   </div>
 </template>

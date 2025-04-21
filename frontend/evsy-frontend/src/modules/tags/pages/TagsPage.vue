@@ -9,9 +9,12 @@ const tags = ref<Tag[]>([])
 const { run, isLoading } = useAsyncTask()
 
 onMounted(() => {
-  run(() => tagApi.getAll(), (data) => {
-    tags.value = data
-  })
+  run(
+    () => tagApi.getAll(),
+    data => {
+      tags.value = data
+    }
+  )
 })
 </script>
 

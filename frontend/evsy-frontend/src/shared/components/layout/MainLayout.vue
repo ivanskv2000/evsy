@@ -21,32 +21,32 @@ import ThemeProvider from '@/shared/components/providers/theme-provider.vue'
     >
       <div class="container flex h-14 items-center">
         <div class="mr-4 flex">
-    <RouterLink to="/" class="mr-6 flex items-center space-x-2">
-      <span class="font-handwritten text-xl">Evsy</span>
-    </RouterLink>
+          <RouterLink to="/" class="mr-6 flex items-center space-x-2">
+            <span class="font-handwritten text-xl">Evsy</span>
+          </RouterLink>
 
-    <NavigationMenu>
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuLink as-child>
-            <RouterLink to="/events">Events</RouterLink>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuLink as-child>
+                  <RouterLink to="/events">Events</RouterLink>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
 
-        <NavigationMenuItem>
-          <NavigationMenuLink as-child>
-            <RouterLink to="/fields">Fields</RouterLink>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink as-child>
+                  <RouterLink to="/fields">Fields</RouterLink>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
 
-        <NavigationMenuItem>
-          <NavigationMenuLink as-child>
-            <RouterLink to="/tags">Tags</RouterLink>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
-  </div>
+              <NavigationMenuItem>
+                <NavigationMenuLink as-child>
+                  <RouterLink to="/tags">Tags</RouterLink>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        </div>
         <div class="flex flex-1 items-center justify-end space-x-2">
           <ThemeProvider v-slot="{ toggleTheme }">
             <Button variant="ghost" size="icon" @click="toggleTheme">

@@ -2,19 +2,34 @@
 import { ref, onMounted } from 'vue'
 import { fieldApi } from '@/modules/fields/api'
 import type { Field } from '@/modules/fields/types'
-import { columns } from '@/modules/fields/components/columns'
-import DataTable from '@/shared/components/data/DataTable.vue'
-import { useApiErrorToast } from '@/shared/utils/toast'
+import FieldsDataTable from '@/modules/fields/components/FieldsDataTable.vue'
 import Header from '@/shared/components/layout/Header.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 
+// import { columns } from '@/modules/fields/components/columns'
 const fields = ref<Field[]>([])
+import { getFieldColumns } from '@/modules/fields/components/fieldColumns'
+const updateRow = (updated: Field) => {
+  const index = fields.value.findIndex((f) => f.id === updated.id)
+  if (index !== -1) {
+    fields.value = fields.value.map((f) => 
+      f.id === updated.id ? updated : f
+    )
+  }
+}
+const deleteRow = (id: number) => {
+  fields.value = fields.value.filter((f) => f.id !== id)
+}
+const columns = getFieldColumns(updateRow, deleteRow)
 const { isLoading, run } = useAsyncTask()
 
 onMounted(() => {
-  run(() => fieldApi.getAll(), (data) => {
-    fields.value = data
-  })
+  run(
+    () => fieldApi.getAll(),
+    data => {
+      fields.value = data
+    }
+  )
 })
 </script>
 
@@ -22,7 +37,7 @@ onMounted(() => {
   <div>
     <Header title="Fields" />
     <div class="container mx-auto">
-      <DataTable :columns="columns" :data="fields" />
+      <FieldsDataTable :columns="columns" :data="fields" />
     </div>
   </div>
 </template>
