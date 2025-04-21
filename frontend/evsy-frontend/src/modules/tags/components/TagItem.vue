@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { Button } from '@/shared/components/ui/button'
 import { Badge } from '@/shared/components/ui/badge'
 import { useClipboard } from '@vueuse/core'
@@ -10,9 +11,15 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/shared/components/ui/tooltip'
+import type { Tag } from '@/modules/tags/types'
 
 const props = defineProps<{
-  tag: { id: string; description?: string }
+  tag: Tag
+}>()
+
+const emit = defineEmits<{
+  (e: 'updateMe', id: string): void
+  (e: 'deleteMe', id: string): void
 }>()
 
 const { copy: copyId } = useClipboard({ source: props.tag.id })
@@ -52,10 +59,10 @@ const handleCopyId = async () => {
     </div>
 
     <div class="flex gap-2">
-      <Button size="icon" variant="ghost" @click="">
+      <Button size="icon" variant="ghost" @click="emit('updateMe', tag.id)">
         <Icon icon="radix-icons:pencil-2" class="h-4 w-4" />
       </Button>
-      <Button size="icon" variant="ghost" @click="">
+      <Button size="icon" variant="ghost" @click="emit('deleteMe', tag.id)">
         <Icon icon="radix-icons:trash" class="text-destructive h-4 w-4" />
       </Button>
     </div>
