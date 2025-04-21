@@ -21,7 +21,9 @@ import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
 
 const props = defineProps<{
-  field: Field
+  field: Field,
+  handleUpdateRow: () => void,
+  handleDeleteRow: () => void,
 }>()
 
 const router = useRouter()
@@ -33,7 +35,7 @@ const emit = defineEmits<{
 
 const handleUpdate = (updatedField: Field) => {
   emit('updated', updatedField)
-  router.go('/fields')
+  props.handleUpdateRow(updatedField)
 }
 
 const handleDelete = () => {
@@ -41,7 +43,7 @@ const handleDelete = () => {
     await fieldApi.delete(props.field.id)
     showSuccessToast('Field deleted successfully!')
     showDeleteModal.value = false
-    router.go('/fields')
+    props.handleDeleteRow()
     emit('deleted')
   })
 }

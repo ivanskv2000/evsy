@@ -14,10 +14,13 @@ const { showSuccessToast } = useSuccessToast()
 const router = useRouter()
 
 const onSubmit = (values: FieldFormValues) => {
-  run(() => fieldApi.create(values), (created) => {
-    router.push(`/fields/${created.id}`)
-    showSuccessToast('Field created successfully!')
-  })
+  run(
+    () => fieldApi.create(values),
+    created => {
+      router.push(`/fields/${created.id}`)
+      showSuccessToast('Field created successfully!')
+    }
+  )
 }
 </script>
 

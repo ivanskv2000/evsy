@@ -18,11 +18,14 @@ const emit = defineEmits<{
 const { showSuccessToast } = useSuccessToast()
 
 const onSubmit = (values: FieldFormValues) => {
-  run(() => fieldApi.update(props.field.id, values), (updated) => {
-    showSuccessToast('Field updated successfully!')
-    emit('updated', updated)
-    emit('close')
-  })
+  run(
+    () => fieldApi.update(props.field.id, values),
+    updated => {
+      showSuccessToast('Field updated successfully!')
+      emit('updated', updated)
+      emit('close')
+    }
+  )
 }
 </script>
 
