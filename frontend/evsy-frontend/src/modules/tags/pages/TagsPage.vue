@@ -8,6 +8,7 @@ import DeleteModal from '@/shared/components/data/DeleteModal.vue'
 import TagEditModal from '@/modules/tags/components/TagEditModal.vue'
 import { useApiErrorToast, useSuccessToast, useInfoToast } from '@/shared/utils/toast'
 import type { TagFormValues } from '@/modules/tags/validation/tagSchema'
+import Header from '@/shared/components/layout/Header.vue'
 
 const { showApiErrorToast } = useApiErrorToast()
 const { showSuccessToast } = useSuccessToast()
@@ -67,11 +68,10 @@ onMounted(() => {
 
 <template>
   <div>
-    <!-- Header -->
-    <div class="mb-6 flex items-center justify-between">
-      <h1 class="flex-1 text-center text-2xl font-bold">Tags</h1>
+    <Header title="Tags" />
+    <div class="container mx-auto">
+      <FieldsDataTable :columns="columns" :data="fields" />
     </div>
-
     <div class="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
       <TagItem
         v-for="tag in tags"

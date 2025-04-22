@@ -53,6 +53,7 @@ def get_event(event_id: int, db: Session = Depends(get_db)):
 @router.get(
     "/",
     response_model=list[schemas.EventOut],
+    response_model_by_alias=False,
     summary="List all events",
     description="Return a paginated list of all events with their tags and fields.",
     responses={200: {"description": "List of events returned"}},
