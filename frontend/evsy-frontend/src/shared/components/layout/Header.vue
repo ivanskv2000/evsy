@@ -1,23 +1,31 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
 import { Button } from '@/shared/components/ui/button'
 import { Icon } from '@iconify/vue'
-import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const props = defineProps<{
   title: string
-  backLink?: string
+  backLink?: boolean,
+  fallbackBackLink?: string
 }>()
 
-const hasBackLink = computed(() => props.backLink !== undefined)
+const goBack = () => {
+  if (window.history.length > 1) {
+    router.back()
+  } else {
+    if (props.fallbackBackLink) {
+      router.push(props.fallbackBackLink)
+    }
+  }
+}
 </script>
 
 <template>
   <div class="mb-6 flex items-center justify-between">
-    <Button as-child v-if="hasBackLink" variant="ghost" class="w-[30px]">
-      <RouterLink :to="backLink!">
+    <Button v-if="backLink || false" variant="ghost" class="w-[30px]" @click="goBack">
         <Icon icon="radix-icons:caret-left" class="h-4 w-4" />
-      </RouterLink>
     </Button>
 
     <div class="mx-auto">
@@ -27,6 +35,6 @@ const hasBackLink = computed(() => props.backLink !== undefined)
     </div>
 
     <!-- Пустой элемент для симметрии -->
-    <div v-if="hasBackLink" class="w-[30px]"></div>
+    <div v-if="backLink || false" class="w-[30px]"></div>
   </div>
 </template>

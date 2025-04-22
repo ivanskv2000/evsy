@@ -67,11 +67,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div class="container mx-auto">
     <Header title="Tags" />
-    <div class="container mx-auto">
-      <FieldsDataTable :columns="columns" :data="fields" />
-    </div>
     <div class="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
       <TagItem
         v-for="tag in tags"
@@ -81,9 +78,8 @@ onMounted(() => {
         @deleteMe="(id) => { showDeleteModal = true; selectedTagId = id; }"
         />
     </div>
-  </div>
-
-  <TagEditModal
+  
+    <TagEditModal
     v-if="editedTag"
     :open="showEditModal"
     :tag="editedTag"
@@ -98,4 +94,6 @@ onMounted(() => {
     :isDeleting="isDeleting" 
     description="Once deleted, this tag will be unlinked from any events it's part of." 
   />
+  
+  </div>
 </template>

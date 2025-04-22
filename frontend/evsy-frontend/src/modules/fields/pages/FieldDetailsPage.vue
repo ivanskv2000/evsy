@@ -29,7 +29,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <Header title="Field details" backLink="/fields" />
+    <Header title="Field details" backLink fallbackBackLink="/fields" />
     <FieldDetailsCard v-if="field" :field="field!" @updated="handleUpdate" />
   </div>
 </template>
