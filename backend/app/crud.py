@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.orm import joinedload
 
 from . import models, schemas
 
@@ -19,7 +20,17 @@ def get_event(db: Session, event_id: int):
 
 # Получение всех событий
 def get_events(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Event).offset(skip).limit(limit).all()
+    # return db.query(models.Event).offset(skip).limit(limit).all()
+    return (
+        db.query(models.Event)
+        .options(
+            joinedload(models.Event.tags).joinedload(models.EventTag.tag),
+            joinedload(models.Event.fields).joinedload(models.EventField.field),
+        )
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
 
 
 # Обновление события

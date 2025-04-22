@@ -73,7 +73,7 @@ const handleCopyId = async () => {
 const handleCopyName = async () => {
   try {
     await copyName()
-    showInfoToast('ID copied to clipboard')
+    showInfoToast('Name copied to clipboard')
   } catch (err) {
     showApiErrorToast('Failed to copy name')
   }
@@ -89,7 +89,8 @@ const handleCopyName = async () => {
           <TooltipProvider :delay-duration="800">
             <Tooltip>
               <TooltipTrigger>
-                <CardTitle class="cursor-pointer font-mono hover:underline" @click="handleCopyName">{{ field.name }}
+                <CardTitle class="cursor-pointer font-mono text-xl tracking-wide" @click="handleCopyName">
+                  {{ field.name }}
                 </CardTitle>
               </TooltipTrigger>
               <TooltipContent>
@@ -134,7 +135,12 @@ const handleCopyName = async () => {
       </div>
     </CardContent>
 
-    <FieldEditModal v-if="showEditModal" :field="field" @close="showEditModal = false" @updated="handleUpdate" />
+    <FieldEditModal
+      v-if="showEditModal"
+      :field="field"
+      @close="showEditModal = false"
+      @updated="handleUpdate" 
+    />
     <DeleteModal :open="showDeleteModal" :onClose="() => (showDeleteModal = false)" :onConfirm="handleDelete"
       :isDeleting="isDeleting" description="Once deleted, this field will be unlinked from any events it's part of." />
   </Card>
