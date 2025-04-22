@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import joinedload
+from fastapi import HTTPException, Response
 
 from . import models, schemas
 
@@ -62,11 +63,14 @@ def update_event(db: Session, event_id: int, event: schemas.EventCreate):
 # Удаление события
 def delete_event(db: Session, event_id: int):
     db_event = db.query(models.Event).filter(models.Event.id == event_id).first()
-    if db_event:
-        db.delete(db_event)
-        db.commit()
-        return db_event
-    return None
+
+    if not db_event:
+        raise HTTPException(status_code=404, detail="Event not found")
+
+    db.delete(db_event)
+    db.commit()
+    return Response(status_code=204)
+
 
 
 # Создание нового тега
