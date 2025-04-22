@@ -72,9 +72,12 @@ class EventOut(BaseModel):
     id: int
     name: str
     description: Optional[str] = None
-    tags: list[TagOut] = Field(alias="tag_objects")
-    fields: list[FieldOut] = Field(alias="field_objects")
+    tags: list[TagOut]
+    fields: list[FieldOut]
     created_at: datetime
     updated_at: datetime
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(
+        from_attributes=True,
+        validate_by_name = True
+        )

@@ -1,27 +1,27 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import type { Field } from '@/modules/fields/types'
-import FieldDetailsCard from '@/modules/fields/components/FieldDetailsCard.vue'
+import type { Event } from '@/modules/events/types'
+import EventDetailsCard from '@/modules/events/components/EventDetailsCard.vue'
 import { useApiErrorToast } from '@/shared/utils/toast'
-import { fieldApi } from '@/modules/fields/api'
+import { eventApi } from '@/modules/events/api'
 import Header from '@/shared/components/layout/Header.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 const { showApiErrorToast } = useApiErrorToast()
 const route = useRoute()
-const field = ref<Field | null>(null)
+const event = ref<Event | null>(null)
 const { run, isLoading } = useAsyncTask()
 
-const handleUpdate = (updatedField: Field) => {
-  field.value = updatedField
+const handleUpdate = (updatedEvent: Event) => {
+  event.value = updatedEvent
 }
 
 onMounted(() => {
   const id = Number(route.params.id)
   run(
-    () => fieldApi.getById(id),
+    () => eventApi.getById(id),
     result => {
-      if (result) field.value = result
+      if (result) event.value = result
     }
   )
 })
@@ -29,7 +29,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <Header title="Field details" backLink fallbackBackLink="/fields" />
-    <FieldDetailsCard v-if="field" :field="field!" @updated="handleUpdate" />
+    <Header title="Event details" backLink fallbackBackLink="/events" />
+    <EventDetailsCard v-if="event" :event="event!" @updated="handleUpdate" />
   </div>
 </template>
