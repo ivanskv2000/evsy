@@ -102,6 +102,7 @@ const handleCopyName = async () => {
             field.field_type
             }}</Badge>
         </div>
+
         <!-- Edit & Delete -->
         <div class="flex space-x-2">
           <Button size="icon" variant="ghost" @click="showEditModal = true">
@@ -113,34 +114,34 @@ const handleCopyName = async () => {
         </div>
       </div>
 
-      <CardDescription v-if="field.description">{{ field.description }}</CardDescription>
-    </CardHeader>
+      <CardDescription v-if="field.description">
+        {{ field.description }}
+      </CardDescription>
 
-    <CardContent class="text-muted-foreground space-y-3 text-sm">
-      <div class="space-y-1">
-        <div class="hover:text-foreground flex cursor-pointer items-center gap-2" @click="handleCopyId">
-          <Icon icon="radix-icons:id-card" class="h-3 w-3" />
+      <!-- Details section -->
+      <div class="text-muted-foreground space-y-3 text-sm mt-4">
+        <!-- ID -->
+        <div class="flex flex-wrap items-center gap-2 hover:text-foreground cursor-pointer" @click="handleCopyId">
+          <Icon icon="radix-icons:id-card" class="h-4 w-4" />
           <span>ID: {{ field.id }}</span>
         </div>
+        <!-- Example -->
         <div class="flex items-center gap-2">
-          <Icon icon="radix-icons:file-text" class="h-3 w-3" />
+          <Icon icon="radix-icons:file-text" class="h-4 w-4" />
           <span>Example: <span class="font-mono">aa9d3c3404bcef58965e4bb1fe9fb23c</span></span>
-          <!-- Placeholder -->
         </div>
+        <!-- Used in -->
         <div class="flex items-center gap-2">
-          <Icon icon="radix-icons:bar-chart" class="h-3 w-3" />
+          <Icon icon="radix-icons:bar-chart" class="h-4 w-4" />
           <span>Used in: 0 events</span>
-          <!-- Placeholder -->
         </div>
       </div>
+    </CardHeader>
+
+    <CardContent>
     </CardContent>
 
-    <FieldEditModal
-      v-if="showEditModal"
-      :field="field"
-      @close="showEditModal = false"
-      @updated="handleUpdate" 
-    />
+    <FieldEditModal v-if="showEditModal" :field="field" @close="showEditModal = false" @updated="handleUpdate" />
     <DeleteModal :open="showDeleteModal" :onClose="() => (showDeleteModal = false)" :onConfirm="handleDelete"
       :isDeleting="isDeleting" description="Once deleted, this field will be unlinked from any events it's part of." />
   </Card>

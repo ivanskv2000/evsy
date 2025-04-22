@@ -22,7 +22,6 @@ onMounted(() => {
     () => eventApi.getById(id),
     result => {
       if (result) event.value = result
-      console.log(result)
     }
   )
 })
@@ -30,7 +29,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <Header title="Event details" backLink="/events" />
+    <Header title="Event details" backLink fallbackBackLink="/events" />
     <EventDetailsCard v-if="event" :event="event!" @updated="handleUpdate" />
   </div>
 </template>
