@@ -5,12 +5,12 @@ import random
 
 faker = Faker()
 
-ACTIONS = ['click', 'view', 'submit', 'open', 'close', 'scroll', 'hover', 'load', 'hide', 'show', 'change', 'remove', 'add', 'edit', 'delete']
+SHORT_ACTIONS = ['click', 'view', 'submit', 'open', 'close', 'scroll', 'hover', 'load', 'hide', 'show', 'change', 'remove', 'add', 'edit', 'delete']
 TARGETS = ['button', 'page', 'form', 'modal', 'tab', 'section', 'tooltip', 'link', 'dialog', 'dropdown', 'table', 'chart', 'image', 'text']
 
 def generate_event_slug():
     adjective = faker.word(part_of_speech='adjective')
-    action = random.choice(ACTIONS)
+    action = random.choice(SHORT_ACTIONS)
     target = random.choice(TARGETS)
     return f"{adjective}_{target}_{action}"
 

@@ -29,14 +29,24 @@ class Event(Base, TimestampMixin):
     description = Column(String, nullable=True)
 
     # Связь с тегами
-    tags = relationship(
+    tag_links = relationship(
         "EventTag", back_populates="event", cascade="all, delete-orphan"
     )
-    tag_objects = association_proxy("tags", "tag")
+    tags = relationship(
+        "Tag",
+        secondary="event_tags",
+        back_populates="events",
+        viewonly=True,
+    )
 
     # Связь с полями
-    fields = relationship("EventField", back_populates="event")
-    field_objects = association_proxy("fields", "field")
+    field_links = relationship("EventField", back_populates="event", cascade="all, delete-orphan")
+    fields = relationship(
+        "Field",
+        secondary="event_fields",
+        back_populates="events",
+        viewonly=True,
+    )
 
 
 # Модель для тега
@@ -47,7 +57,8 @@ class Tag(Base, TimestampMixin):
     description = Column(String, nullable=True)
 
     # Связь с событиями
-    events = relationship("EventTag", back_populates="tag")
+    events = relationship("Event", secondary="event_tags", back_populates="tags", viewonly=True)
+    tag_links = relationship("EventTag", back_populates="tag", cascade="all, delete-orphan")
 
 
 # Модель для связи многие ко многим между событиями и тегами
@@ -58,8 +69,8 @@ class EventTag(Base, TimestampMixin):
     tag_id = Column(String, ForeignKey("tags.id"), primary_key=True)
 
     # Связи с Event и Tag
-    event = relationship("Event", back_populates="tags")
-    tag = relationship("Tag", back_populates="events")
+    event = relationship("Event", back_populates="tag_links")
+    tag = relationship("Tag", back_populates="tag_links")
 
 
 # Модель для поля
@@ -71,7 +82,8 @@ class Field(Base, TimestampMixin):
     description = Column(String, nullable=True)
     field_type = Column(Enum(FieldType), nullable=False)
 
-    events = relationship("EventField", back_populates="field")
+    events = relationship("Event", secondary="event_fields", back_populates="fields", viewonly=True)
+    field_links = relationship("EventField", back_populates="field", cascade="all, delete-orphan")
 
 
 # Модель для связи многие ко многим между событиями и полями
@@ -86,5 +98,5 @@ class EventField(Base, TimestampMixin):
     )
 
     # Связи с Event и Field
-    event = relationship("Event", back_populates="fields")
-    field = relationship("Field", back_populates="events")
+    event = relationship("Event", back_populates="field_links")
+    field = relationship("Field", back_populates="field_links")
