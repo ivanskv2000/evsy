@@ -82,7 +82,7 @@ const onSubmit = handleSubmit(values => {
         <FormLabel>Field Type</FormLabel>
         <FormControl>
           <Select v-bind="componentField">
-            <SelectTrigger>
+            <SelectTrigger class="min-w-[15ch]">
               <SelectValue placeholder="Select type" />
             </SelectTrigger>
             <SelectContent>
@@ -99,6 +99,8 @@ const onSubmit = handleSubmit(values => {
       </FormItem>
     </FormField>
 
-    <Button type="submit" :disabled="loading">{{ buttonText || 'Create Field' }}</Button>
+    <div class="flex justify-end">
+      <Button type="submit" :disabled="loading">{{ buttonText || 'Create Field' }}</Button>
+    </div>
   </form>
 </template>

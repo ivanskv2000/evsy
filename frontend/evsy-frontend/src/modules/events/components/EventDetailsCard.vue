@@ -6,7 +6,7 @@ import { Badge } from '@/shared/components/ui/badge'
 import { Icon } from '@iconify/vue'
 import { Button } from '@/shared/components/ui/button'
 import EventEditModal from '@/modules/events/components/EventEditModal.vue'
-import DeleteModal from '@/shared/components/data/DeleteModal.vue'
+import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { eventApi } from '@/modules/events/api'
 import { useApiErrorToast, useSuccessToast, useInfoToast } from '@/shared/utils/toast'
@@ -19,7 +19,7 @@ import {
 } from '@/shared/components/ui/tooltip'
 import { useClipboard } from '@vueuse/core'
 import { computed } from 'vue'
-
+import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts'
 
 const exampleValue = {
     user_id: 123,
@@ -66,6 +66,8 @@ const showEditModal = ref(false)
 const showDeleteModal = ref(false)
 
 const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
+const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
+
 const { showSuccessToast } = useSuccessToast()
 const { showApiErrorToast } = useApiErrorToast()
 const { showInfoToast } = useInfoToast()
@@ -81,6 +83,17 @@ const handleDelete = () => {
         showDeleteModal.value = false
         router.push('/events')
     })
+}
+
+const handleEditSubmit = (values: EventFormValues) => {
+  runUpdateTask(
+    () => eventApi.update(props.event.id, values),
+    updated => {
+      showSuccessToast('Event updated successfully!')
+      emit('updated', updated)
+      showEditModal.value = false
+    }
+  )
 }
 
 
@@ -234,9 +247,20 @@ const handleCopyJson = async () => {
         </CardContent>
 
         <!-- Modals -->
-        <EventEditModal v-if="showEditModal" :event="event" @close="showEditModal = false" @updated="handleUpdate" />
-        <DeleteModal :open="showDeleteModal" :onClose="() => (showDeleteModal = false)" :onConfirm="handleDelete"
+        <EventEditModal
+            :open="showEditModal"
+            :event="event"
+            :onClose="() => (showEditModal = false)"
+            :onSubmit="handleEditSubmit"
+            :isSaving="isSaving"
+
+        />
+        <DeleteModal 
+            :open="showDeleteModal" 
+            :onClose="() => (showDeleteModal = false)" 
+            :onConfirm="handleDelete"
             :isDeleting="isDeleting"
-            description="Once deleted, this event will be unlinked from any tags or fields it's associated with." />
+            description="Once deleted, this event will be unlinked from any tags or fields it's associated with."
+        />
     </Card>
 </template>

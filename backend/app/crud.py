@@ -25,8 +25,8 @@ def get_events(db: Session, skip: int = 0, limit: int = 100):
     return (
         db.query(models.Event)
         .options(
-            joinedload(models.Event.tags).joinedload(models.EventTag.tag),
-            joinedload(models.Event.fields).joinedload(models.EventField.field),
+            joinedload(models.Event.tags),
+            joinedload(models.Event.fields),
         )
         .offset(skip)
         .limit(limit)
