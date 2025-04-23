@@ -12,7 +12,7 @@ const updateRow = (updated: Event) => {
   const index = events.value.findIndex((e) => e.id === updated.id)
   if (index !== -1) {
     events.value = events.value.map((e) => 
-      f.id === updated.id ? updated : f
+      e.id === updated.id ? updated : e
     )
   }
 }

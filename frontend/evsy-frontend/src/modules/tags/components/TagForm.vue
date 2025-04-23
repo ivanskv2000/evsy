@@ -45,7 +45,7 @@ const onSubmit = handleSubmit(values => {
 </script>
 
 <template>
-  <form @submit="onSubmit" class="space-y-6">
+  <form @submit="onSubmit" class="space-y-6 mt-2">
     <!-- Tag ID -->
     <FormField name="id" v-slot="{ componentField }">
       <FormItem>
@@ -54,7 +54,7 @@ const onSubmit = handleSubmit(values => {
           <Input :disabled="disableIdField" type="text" placeholder="feature_login" v-bind="componentField" />
         </FormControl>
         <FormMessage />
-        <FormDescription v-if="disableIdField">This field cannot be changed after creation.</FormDescription>
+        <FormDescription v-if="disableIdField">Tag name cannot be changed after creation.</FormDescription>
       </FormItem>
     </FormField>
 

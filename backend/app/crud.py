@@ -11,6 +11,15 @@ def create_event(db: Session, event: schemas.EventCreate):
     db.add(db_event)
     db.commit()
     db.refresh(db_event)
+    
+    for tag_id in event.tags:
+        db.add(models.EventTag(event_id=db_event.id, tag_id=tag_id))
+
+    for field_id in event.fields:
+        db.add(models.EventField(event_id=db_event.id, field_id=field_id))
+
+    db.commit()
+    db.refresh(db_event)
     return db_event
 
 
@@ -43,17 +52,16 @@ def update_event(db: Session, event_id: int, event: schemas.EventCreate):
     db_event.name = event.name
     db_event.description = event.description
 
-    # Обновляем связи: теги
     if event.tags:
         db_tags = get_or_create_tags(db, event.tags)
-        db_event.tags = [models.EventTag(tag=tag) for tag in db_tags]  # заменяем связи
+        db_event.tags = [models.EventTag(tag=tag) for tag in db_tags]
 
-    # Обновляем связи: поля
-    if event.fields:
-        db_fields = (
-            db.query(models.Field).filter(models.Field.id.in_(event.fields)).all()
-        )
-        db_event.fields = db_fields
+    if event.fields is not None:
+        if event.fields:
+            db_fields = db.query(models.Field).filter(models.Field.id.in_(event.fields)).all()
+            db_event.fields = [models.EventField(field=field) for field in db_fields]
+        else:
+            db_event.fields = []
 
     db.commit()
     db.refresh(db_event)

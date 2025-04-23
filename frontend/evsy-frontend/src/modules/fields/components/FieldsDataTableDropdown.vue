@@ -22,7 +22,7 @@ const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
 
 const props = defineProps<{
   field: Field,
-  handleUpdateRow: () => void,
+  handleUpdateRow: (updatedField: Field) => void,
   handleDeleteRow: () => void,
 }>()
 

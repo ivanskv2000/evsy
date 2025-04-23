@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue'
-import type { ColumnDef, SortingState, ColumnFiltersState } from '@tanstack/vue-table'
+import type { ColumnDef, SortingState, ColumnFiltersState, VisibilityState } from '@tanstack/vue-table'
 import {
   getCoreRowModel,
   getSortedRowModel,
@@ -21,6 +21,8 @@ export function useDataTable<TData, TValue>(
 ) {
   const sorting = ref<SortingState>(defaultSorting ?? [])
   const columnFilters = ref<ColumnFiltersState>([])
+  const columnVisibility = ref<VisibilityState>({})
+  const rowSelection = ref({})
 
   const table = useVueTable({
     get data() {
@@ -35,6 +37,8 @@ export function useDataTable<TData, TValue>(
     getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
     onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
+    onColumnVisibilityChange: updaterOrValue => valueUpdater(updaterOrValue, columnVisibility),
+    onRowSelectionChange: updaterOrValue => valueUpdater(updaterOrValue, rowSelection),
     state: {
       get sorting() {
         return sorting.value
@@ -42,6 +46,12 @@ export function useDataTable<TData, TValue>(
       get columnFilters() {
         return columnFilters.value
       },
+      get columnVisibility() {
+        return columnVisibility.value
+      },
+        get rowSelection() {
+          return rowSelection.value
+        },
     },
   })
 

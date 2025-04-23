@@ -1,0 +1,56 @@
+<script setup lang="ts">
+import EventForm from '@/modules/events/components/EventForm.vue'
+import { Button } from '@/shared/components/ui/button'
+import { Icon } from '@iconify/vue'
+import { useRouter } from 'vue-router'
+import { useSuccessToast } from '@/shared/utils/toast'
+import { ref, onMounted } from 'vue'
+import { eventApi } from '@/modules/events/api'
+import { useAsyncTask } from '@/shared/composables/useAsyncTask'
+import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts'
+import Header from '@/shared/components/layout/Header.vue'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from '@/shared/components/ui/card'
+import { fieldApi } from '@/modules/fields/api'
+import type { Field } from '@/modules/fields/types'
+const fields = ref<Field[]>([])
+const { run: loadFields, isLoading: isLoadingFields } = useAsyncTask()
+
+const { isLoading, run } = useAsyncTask()
+const { showSuccessToast } = useSuccessToast()
+const router = useRouter()
+
+const onSubmit = (values: EventFormValues) => {
+  run(
+    () => eventApi.create(values),
+    created => {
+      router.push(`/events/${created.id}`)
+      showSuccessToast('Event created successfully!')
+    }
+  )
+}
+
+onMounted(() => {
+  loadFields(async () => {
+    fields.value = await fieldApi.getAll()
+  })
+})
+</script>
+
+<template>
+  <div>
+    <Header title="Create new event" backLink fallbackBackLink="/events" />
+
+    <Card class="max-w-md mx-auto">
+      <CardContent>
+      <EventForm :onSubmit="onSubmit" :availableFields="fields" />
+    </CardContent>
+  </Card>
+  </div>
+</template>
