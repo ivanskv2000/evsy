@@ -260,7 +260,6 @@ const handleCopyJson = async () => {
             :onClose="() => (showDeleteModal = false)" 
             :onConfirm="handleDelete"
             :isDeleting="isDeleting"
-            description="Once deleted, this event will be unlinked from any tags or fields it's associated with."
         />
     </Card>
 </template>

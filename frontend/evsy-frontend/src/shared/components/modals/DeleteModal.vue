@@ -11,7 +11,7 @@ import {
 import { Button } from '@/shared/components/ui/button'
 
 defineProps<{
-  description: string
+  description?: string
   open: boolean
   onClose: () => void
   onConfirm: () => void

@@ -43,19 +43,6 @@ export function getEventColumns(
       },
     },
     {
-      accessorKey: 'field_type',
-      header: ({ column }) =>
-        h(DataTableColumnHeader, {
-          column: column,
-          title: 'Type',
-        }),
-      cell: ({ row }) => {
-        const field_type = String(row.getValue('field_type'))
-        return h('div', { class: 'text-left font-medium' }, field_type)
-      },
-      filterFn: 'equals',
-    },
-    {
       id: 'actions',
       enableHiding: false,
       enableSorting: false,

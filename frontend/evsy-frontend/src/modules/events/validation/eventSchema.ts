@@ -11,6 +11,8 @@ export const eventSchema = z.object({
     .max(500, 'Description must be less than 500 characters')
     .optional()
     .nullable(),
+
+  fields: z.array(z.number()).optional().default([]),
 })
 
 export type EventFormValues = z.infer<typeof eventSchema>

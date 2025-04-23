@@ -17,16 +17,16 @@ import EventEditModal from '@/modules/events/components/EventEditModal.vue'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
+import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts'
 
 const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
+const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
 
 const props = defineProps<{
   event: Event,
-  handleUpdateRow: () => void,
+  handleUpdateRow: (updatedEvent: Event) => void,
   handleDeleteRow: () => void,
 }>()
-
-const router = useRouter()
 
 const emit = defineEmits<{
   (e: 'updated', event: Event): void
@@ -46,6 +46,18 @@ const handleDelete = () => {
     props.handleDeleteRow()
     emit('deleted')
   })
+}
+
+const handleEditSubmit = (values: EventFormValues) => {
+  runUpdateTask(
+    () => eventApi.update(props.event.id, values),
+    updated => {
+      showSuccessToast('Event updated successfully!')
+      emit('updated', updated)
+      showEditModal.value = false
+      props.handleUpdateRow(updated)
+    }
+  )
 }
 
 const showEditModal = ref(false)
@@ -75,11 +87,12 @@ const { showInfoToast } = useInfoToast()
   </DropdownMenu>
 
   <EventEditModal
-    v-if="showEditModal"
-    :event="event"
-    @close="showEditModal = false"
-    @updated="handleUpdate"
-  />
+      :open="showEditModal"
+      :event="event"
+      :onClose="() => (showEditModal = false)"
+      :onSubmit="handleEditSubmit"
+      :isSaving="isSaving"
+        />
   <DeleteModal
     :open="showDeleteModal"
     :onClose="() => (showDeleteModal = false)"
