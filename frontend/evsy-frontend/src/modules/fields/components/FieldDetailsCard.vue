@@ -5,7 +5,7 @@ import { Button } from '@/shared/components/ui/button'
 import { useApiErrorToast, useSuccessToast, useInfoToast } from '@/shared/utils/toast'
 import { fieldApi } from '@/modules/fields/api'
 
-import DeleteModal from '@/shared/components/data/DeleteModal.vue'
+import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
 import {
   Card,

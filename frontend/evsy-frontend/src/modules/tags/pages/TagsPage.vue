@@ -4,7 +4,7 @@ import { tagApi } from '@/modules/tags/api'
 import type { Tag } from '@/modules/tags/types'
 import { ref, onMounted } from 'vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
-import DeleteModal from '@/shared/components/data/DeleteModal.vue'
+import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import TagEditModal from '@/modules/tags/components/TagEditModal.vue'
 import { useApiErrorToast, useSuccessToast, useInfoToast } from '@/shared/utils/toast'
 import type { TagFormValues } from '@/modules/tags/validation/tagSchema'
@@ -79,7 +79,7 @@ onMounted(() => {
         />
     </div>
   
-    <TagEditModal
+  <TagEditModal
     v-if="editedTag"
     :open="showEditModal"
     :tag="editedTag"

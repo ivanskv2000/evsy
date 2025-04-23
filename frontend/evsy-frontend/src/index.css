@@ -132,8 +132,8 @@
 .page-enter-active,
 .page-leave-active {
   transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
+    opacity 0.2s ease-in-out,
+    transform 0.2s ease-in-out;
 }
 .page-enter-from {
   opacity: 0;

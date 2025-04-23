@@ -1,14 +1,14 @@
 import { h } from 'vue'
-import type { Field } from '@/modules/fields/types.ts'
+import type { Event } from '@/modules/events/types.ts'
 import type { ColumnDef } from '@tanstack/vue-table'
-import DataTableDropdown from '@/modules/fields/components/FieldsDataTableDropdown.vue'
+import EventsDataTableDropdown from '@/modules/events/components/EventsDataTableDropdown.vue'
 import { RouterLink } from 'vue-router'
 import DataTableColumnHeader from '@/shared/components/data/DataTableColumnHeader.vue'
 
-export function getFieldColumns(
-  onUpdated: (field: Field) => void,
+export function getEventColumns(
+  onUpdated: (event: Event) => void,
   onDeleted: (id: number) => void
-): ColumnDef<Field>[] {
+): ColumnDef<Event>[] {
   return [
     {
       accessorKey: 'id',
@@ -38,7 +38,7 @@ export function getFieldColumns(
         return h(
           'div',
           { class: 'text-left font-medium' },
-          h(RouterLink, { to: `/fields/${id}` }, { default: () => name })
+          h(RouterLink, { to: `/events/${id}` }, { default: () => name })
         )
       },
     },
@@ -60,15 +60,15 @@ export function getFieldColumns(
       enableHiding: false,
       enableSorting: false,
       cell: ({ row }) => {
-        const field = row.original
+        const event = row.original
 
         return h(
           'div',
           { class: 'relative' },
-          h(DataTableDropdown, {
-            field,
-            handleUpdateRow: (updatedField: Field) => onUpdated(updatedField),
-            handleDeleteRow: () => onDeleted(field.id),
+          h(EventsDataTableDropdown, {
+            event,
+            handleUpdateRow: (updatedEvent: Event) => onUpdated(updatedEvent),
+            handleDeleteRow: () => onDeleted(event.id),
           })
         )
       },

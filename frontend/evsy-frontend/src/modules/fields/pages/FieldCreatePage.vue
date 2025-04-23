@@ -8,6 +8,15 @@ import { ref } from 'vue'
 import { fieldApi } from '@/modules/fields/api'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
+import Header from '@/shared/components/layout/Header.vue'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from '@/shared/components/ui/card'
 
 const { isLoading, run } = useAsyncTask()
 const { showSuccessToast } = useSuccessToast()
@@ -26,20 +35,12 @@ const onSubmit = (values: FieldFormValues) => {
 
 <template>
   <div>
-    <!-- Header with Back button and Title -->
-    <div class="mb-6 flex items-center justify-between">
-      <Button as-child variant="ghost" class="w-[30px]">
-        <RouterLink to="/fields">
-          <Icon icon="radix-icons:caret-left" class="h-4 w-4" />
-        </RouterLink>
-      </Button>
+    <Header title="Create new field" backLink fallbackBackLink="/fields" />
 
-      <h1 class="flex-1 text-center text-2xl font-bold">Create new field</h1>
-
-      <!-- Пустой элемент для симметрии -->
-      <div class="w-[30px]"></div>
-    </div>
-
-    <FieldForm :onSubmit="onSubmit" />
+    <Card class="max-w-md mx-auto">
+      <CardContent>
+      <FieldForm :onSubmit="onSubmit" />
+    </CardContent>
+  </Card>
   </div>
 </template>

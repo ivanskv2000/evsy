@@ -6,7 +6,6 @@ import FieldsDataTable from '@/modules/fields/components/FieldsDataTable.vue'
 import Header from '@/shared/components/layout/Header.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 
-// import { columns } from '@/modules/fields/components/columns'
 const fields = ref<Field[]>([])
 import { getFieldColumns } from '@/modules/fields/components/fieldColumns'
 const updateRow = (updated: Field) => {
