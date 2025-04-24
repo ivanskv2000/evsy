@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
 import type { Field } from '@/modules/fields/types'
-import { Dialog, DialogContent, DialogTitle, DialogFooter } from '@/shared/components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle } from '@/shared/components/ui/dialog'
 import { fieldApi } from '@/modules/fields/api'
-import { useApiErrorToast, useSuccessToast } from '@/shared/utils/toast'
+import { useSuccessToast } from '@/shared/utils/toast'
 import FieldForm from '@/modules/fields/components/FieldForm.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
@@ -33,7 +32,7 @@ const onSubmit = (values: FieldFormValues) => {
   <Dialog :open="true" @update:open="val => !val && emit('close')">
     <DialogContent>
       <DialogTitle>Edit Field</DialogTitle>
-      <FieldForm button-text="Save" :field="field" :onSubmit="onSubmit" />
+      <FieldForm button-text="Save" :field="field" :onSubmit="onSubmit" :isLoading="isLoading" />
     </DialogContent>
   </Dialog>
 </template>

@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import EventForm from '@/modules/events/components/EventForm.vue'
-import { Button } from '@/shared/components/ui/button'
-import { Icon } from '@iconify/vue'
 import { useRouter } from 'vue-router'
 import { useSuccessToast } from '@/shared/utils/toast'
 import { ref, onMounted } from 'vue'
@@ -11,11 +9,7 @@ import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts
 import Header from '@/shared/components/layout/Header.vue'
 import {
   Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
+  CardContent
 } from '@/shared/components/ui/card'
 import { fieldApi } from '@/modules/fields/api'
 import type { Field } from '@/modules/fields/types'
@@ -61,6 +55,8 @@ onMounted(() => {
         <EventForm
           :availableFields="fields"
           :availableTags="tags"
+          :isLoadingFields="isLoadingFields"
+          :isLoadingTags="isLoadingTags"
           :onSubmit="onSubmit"
           :isLoading="isLoading"
           button-text="Create"

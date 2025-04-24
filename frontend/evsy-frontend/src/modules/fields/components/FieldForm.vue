@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import * as z from 'zod'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { Input } from '@/shared/components/ui/input'
 import { Button } from '@/shared/components/ui/button'
 import {
-  Form,
   FormField,
   FormItem,
   FormLabel,
@@ -20,18 +18,17 @@ import {
   SelectValue,
 } from '@/shared/components/ui/select'
 import type { Field } from '@/modules/fields/types'
-import { ref, watchEffect } from 'vue'
+import { watchEffect } from 'vue'
 import { fieldSchema, type FieldFormValues } from '@/modules/fields/validation/fieldSchema'
-
-const loading = ref(false)
 
 const props = defineProps<{
   field?: Field
-  onSubmit: (data) => void
-  buttonText?: string
+  onSubmit: (data: FieldFormValues) => void
+  buttonText?: string,
+  isLoading?: boolean
 }>()
 
-const { handleSubmit, values, setValues, errors } = useForm<FieldFormValues>({
+const { handleSubmit, setValues } = useForm<FieldFormValues>({
   validationSchema: toTypedSchema(fieldSchema),
 })
 
@@ -46,9 +43,7 @@ watchEffect(() => {
 })
 
 const onSubmit = handleSubmit(values => {
-  loading.value = true
   props.onSubmit(values)
-  loading.value = false
 })
 </script>
 
@@ -100,7 +95,7 @@ const onSubmit = handleSubmit(values => {
     </FormField>
 
     <div class="flex justify-end">
-      <Button type="submit" :disabled="loading">{{ buttonText || 'Create Field' }}</Button>
+      <Button type="submit" :disabled="isLoading">{{ buttonText || 'Create Field' }}</Button>
     </div>
   </form>
 </template>

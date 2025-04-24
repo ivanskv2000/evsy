@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { Button } from '@/shared/components/ui/button'
 import { Badge } from '@/shared/components/ui/badge'
 import { useClipboard } from '@vueuse/core'
@@ -24,7 +23,6 @@ const emit = defineEmits<{
 
 const { copy: copyId } = useClipboard({ source: props.tag.id })
 const { showApiErrorToast } = useApiErrorToast()
-const { showSuccessToast } = useSuccessToast()
 const { showInfoToast } = useInfoToast()
 
 const handleCopyId = async () => {

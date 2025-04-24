@@ -11,7 +11,7 @@ import {
 import { Badge } from '@/shared/components/ui/badge'
 import { Icon } from '@iconify/vue'
 import { Button } from '@/shared/components/ui/button'
-import EventEditModal from '@/modules/events/components/EventEditModal.vue'
+import EventEditModal from './EventEditModal.vue'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { eventApi } from '@/modules/events/api'
@@ -73,10 +73,6 @@ const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
 const { showSuccessToast } = useSuccessToast()
 const { showApiErrorToast } = useApiErrorToast()
 const { showInfoToast } = useInfoToast()
-
-const handleUpdate = (updatedEvent: Event) => {
-  emit('updated', updatedEvent)
-}
 
 const handleDelete = () => {
   runDeleteTask(async () => {

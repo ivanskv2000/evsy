@@ -5,7 +5,6 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { Input } from '@/shared/components/ui/input'
 import { Button } from '@/shared/components/ui/button'
 import {
-  Form,
   FormField,
   FormItem,
   FormLabel,
@@ -14,7 +13,7 @@ import {
   FormDescription,
 } from '@/shared/components/ui/form'
 import type { Tag } from '@/modules/tags/types'
-import { computed, ref, watchEffect } from 'vue'
+import { computed, watchEffect } from 'vue'
 import { tagSchema, type TagFormValues } from '@/modules/tags/validation/tagSchema'
 
 const props = defineProps<{
@@ -24,7 +23,7 @@ const props = defineProps<{
   isLoading?: boolean
 }>()
 
-const { handleSubmit, values, setValues, errors } = useForm<TagFormValues>({
+const { handleSubmit, setValues } = useForm<TagFormValues>({
   validationSchema: toTypedSchema(tagSchema),
 })
 

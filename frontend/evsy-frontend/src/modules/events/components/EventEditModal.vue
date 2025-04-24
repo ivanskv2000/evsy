@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Dialog, DialogContent, DialogTitle } from '@/shared/components/ui/dialog'
-import type { EventFormValues } from '@/modules/events/validation/eventSchema'
-import EventForm from '@/modules/events/components/EventForm.vue'
+import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts'
+import EventForm from './EventForm.vue'
 import type { Event } from '@/modules/events/types'
 import type { Field } from '@/modules/fields/types'
 import { fieldApi } from '@/modules/fields/api'
@@ -41,6 +41,8 @@ onMounted(() => {
         :event="event"
         :availableFields="fields"
         :availableTags="tags"
+        :isLoadingFields="isLoadingFields"
+        :isLoadingTags="isLoadingTags"
         :onSubmit="props.onSubmit"
         :isLoading="props.isSaving"
         button-text="Save"
