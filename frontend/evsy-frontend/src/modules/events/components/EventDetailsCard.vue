@@ -188,7 +188,9 @@ const handleCopyJson = async () => {
                         <span>Tags:</span>
                     </div>
                     <Badge v-for="tag in event.tags" :key="tag.id" variant="secondary"
-                        class="cursor-pointer font-mono tracking-wide" @click="router.push(`/tags/${tag.id}`)">
+                        class="cursor-pointer font-mono tracking-wide"
+                        @click="router.push(`/tags/${tag.id}`)"
+                        >
                         {{ tag.id }}
                     </Badge>
                 </div>
