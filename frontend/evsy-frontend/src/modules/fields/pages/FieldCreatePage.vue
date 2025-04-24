@@ -37,10 +37,10 @@ const onSubmit = (values: FieldFormValues) => {
   <div>
     <Header title="Create new field" backLink fallbackBackLink="/fields" />
 
-    <Card class="max-w-md mx-auto">
+    <Card class="mx-auto max-w-md">
       <CardContent>
-      <FieldForm :onSubmit="onSubmit" />
-    </CardContent>
-  </Card>
+        <FieldForm :onSubmit="onSubmit" />
+      </CardContent>
+    </Card>
   </div>
 </template>

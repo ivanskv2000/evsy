@@ -35,11 +35,12 @@ const handleCopyId = async () => {
     showApiErrorToast('Failed to copy Tag')
   }
 }
-
 </script>
 
 <template>
-  <div class="flex items-start justify-between gap-4 rounded-lg border p-4 transition hover:shadow-sm">
+  <div
+    class="flex items-start justify-between gap-4 rounded-lg border p-4 transition hover:shadow-sm"
+  >
     <div>
       <TooltipProvider :delay-duration="800">
         <Tooltip>

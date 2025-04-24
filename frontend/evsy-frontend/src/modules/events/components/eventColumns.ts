@@ -57,10 +57,11 @@ export function getEventColumns(
         return h(
           'div',
           {
-            class: 'flex flex-row gap-1 text-left font-medium max-w-40 overflow-auto hide-scrollbar scroll-x-bounce',
-            ref: 'scrollContainer'
+            class:
+              'flex flex-row gap-1 text-left font-medium max-w-40 overflow-auto hide-scrollbar scroll-x-bounce',
+            ref: 'scrollContainer',
           },
-          tags.map((tag) => h(Badge, { variant: 'outline' }, { default: () => tag.id }))
+          tags.map(tag => h(Badge, { variant: 'outline' }, { default: () => tag.id }))
         )
       },
     },

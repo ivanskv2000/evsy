@@ -13,7 +13,7 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-  FormDescription
+  FormDescription,
 } from '@/shared/components/ui/form'
 import {
   TagsInput,
@@ -31,7 +31,7 @@ import {
   ComboboxItem,
   ComboboxItemIndicator,
   ComboboxList,
-  ComboboxTrigger
+  ComboboxTrigger,
 } from '@/shared/components/ui/combobox'
 import type { Event } from '@/modules/events/types'
 import type { Field } from '@/modules/fields/types'
@@ -56,7 +56,10 @@ const { handleSubmit, values, setValues, setFieldValue, errors } = useForm<Event
 function toggleFieldSelection(id: number) {
   const current = values.fields || []
   if (current.includes(id)) {
-    setFieldValue('fields', current.filter(f => f !== id))
+    setFieldValue(
+      'fields',
+      current.filter(f => f !== id)
+    )
   } else {
     setFieldValue('fields', [...current, id])
   }
@@ -81,7 +84,9 @@ const searchTerm = ref('')
 const { contains } = useFilter({ sensitivity: 'base' })
 const filteredTags = computed(() => {
   const options = props.availableTags.filter(i => !values.tags.includes(i.id))
-  return searchTerm.value ? options.filter(option => contains(option.id, searchTerm.value)) : options
+  return searchTerm.value
+    ? options.filter(option => contains(option.id, searchTerm.value))
+    : options
 })
 const open = ref(false)
 function removeTag(tagId: string) {
@@ -92,7 +97,7 @@ function removeTag(tagId: string) {
 </script>
 
 <template>
-  <form @submit="onSubmit" class="space-y-6 mt-2">
+  <form @submit="onSubmit" class="mt-2 space-y-6">
     <!-- Event Name -->
     <FormField name="name" v-slot="{ componentField }">
       <FormItem>
@@ -120,36 +125,52 @@ function removeTag(tagId: string) {
       <FormItem>
         <FormLabel>Tags</FormLabel>
         <FormControl>
-        <Combobox v-model="componentField.modelValue" v-model:open="open" :ignore-filter="true">
+          <Combobox v-model="componentField.modelValue" v-model:open="open" :ignore-filter="true">
             <ComboboxAnchor as-child>
-              <TagsInput v-model="componentField.modelValue"
-                class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+              <TagsInput
+                v-model="componentField.modelValue"
+                class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+              >
                 <div class="flex flex-wrap items-center gap-2">
-                  <TagsInputItem v-for="item in componentField.modelValue" :key="item" :value="item">
+                  <TagsInputItem
+                    v-for="item in componentField.modelValue"
+                    :key="item"
+                    :value="item"
+                  >
                     <TagsInputItemText />
                     <TagsInputItemDelete @click.stop="removeTag(item)" />
                   </TagsInputItem>
                 </div>
 
                 <ComboboxInput v-model="searchTerm" as-child>
-                  <TagsInputInput placeholder="Tags..."
-                    class="w-auto min-w-[50px] flex-1 bg-transparent p-0 text-sm focus:outline-none" @keydown.enter.prevent />
+                  <TagsInputInput
+                    placeholder="Tags..."
+                    class="w-auto min-w-[50px] flex-1 bg-transparent p-0 text-sm focus:outline-none"
+                    @keydown.enter.prevent
+                  />
                 </ComboboxInput>
               </TagsInput>
 
               <ComboboxList class="w-[--reka-popper-anchor-width] min-w-[200px]">
                 <ComboboxEmpty />
                 <ComboboxGroup>
-                  <ComboboxItem v-for="tag in filteredTags" :key="tag.id" :value="tag.id" @select.prevent="(ev) => {
-                    if (typeof ev.detail.value === 'string') {
-                      searchTerm = ''
-                      componentField.modelValue.push(ev.detail.value)
-                    }
+                  <ComboboxItem
+                    v-for="tag in filteredTags"
+                    :key="tag.id"
+                    :value="tag.id"
+                    @select.prevent="
+                      ev => {
+                        if (typeof ev.detail.value === 'string') {
+                          searchTerm = ''
+                          componentField.modelValue.push(ev.detail.value)
+                        }
 
-                    if (filteredTags.length === 0) {
-                      open = false
-                    }
-                  }">
+                        if (filteredTags.length === 0) {
+                          open = false
+                        }
+                      }
+                    "
+                  >
                     {{ tag.id }}
                   </ComboboxItem>
                 </ComboboxGroup>
@@ -167,10 +188,15 @@ function removeTag(tagId: string) {
         <FormLabel>Linked Fields</FormLabel>
         <FormDescription>Choose one or more fields this event uses.</FormDescription>
         <FormControl>
-          <div class="max-h-48 overflow-y-auto border rounded-md p-4 space-y-2">
+          <div class="max-h-48 space-y-2 overflow-y-auto rounded-md border p-4">
             <div v-for="field in availableFields" :key="field.id" class="flex items-center gap-2">
-              <input type="checkbox" :checked="values.fields?.includes(field.id)"
-                @change="() => toggleFieldSelection(field.id)" :id="`field-${field.id}`" class="form-checkbox" />
+              <input
+                type="checkbox"
+                :checked="values.fields?.includes(field.id)"
+                @change="() => toggleFieldSelection(field.id)"
+                :id="`field-${field.id}`"
+                class="form-checkbox"
+              />
               <label :for="`field-${field.id}`" class="text-sm">{{ field.name }}</label>
             </div>
           </div>

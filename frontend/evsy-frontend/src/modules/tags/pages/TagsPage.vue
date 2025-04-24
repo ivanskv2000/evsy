@@ -46,13 +46,11 @@ const handleEditSubmit = (values: TagFormValues) => {
     () => tagApi.update(editedTag.value!.id, values),
     updated => {
       showSuccessToast('Tag updated successfully!')
-      tags.value = tags.value.map(tag => tag.id === updated.id ? updated : tag)
+      tags.value = tags.value.map(tag => (tag.id === updated.id ? updated : tag))
       showEditModal.value = false
     }
   )
 }
-
-
 
 const { run, isLoading } = useAsyncTask()
 
@@ -74,26 +72,35 @@ onMounted(() => {
         v-for="tag in tags"
         :key="tag.id"
         :tag="tag"
-        @updateMe="(id) => { showEditModal = true; editedTag = tag; }"
-        @deleteMe="(id) => { showDeleteModal = true; selectedTagId = id; }"
-        />
+        @updateMe="
+          id => {
+            showEditModal = true
+            editedTag = tag
+          }
+        "
+        @deleteMe="
+          id => {
+            showDeleteModal = true
+            selectedTagId = id
+          }
+        "
+      />
     </div>
-  
-  <TagEditModal
-    v-if="editedTag"
-    :open="showEditModal"
-    :tag="editedTag"
-    :onClose="() => (showEditModal = false)"
-    :onSubmit="handleEditSubmit"
-    :isSaving="isSaving"
-  />
-  <DeleteModal 
-    :open="showDeleteModal" 
-    :onClose="() => (showDeleteModal = false)" 
-    :onConfirm="handleDelete"
-    :isDeleting="isDeleting" 
-    description="Once deleted, this tag will be unlinked from any events it's part of." 
-  />
-  
+
+    <TagEditModal
+      v-if="editedTag"
+      :open="showEditModal"
+      :tag="editedTag"
+      :onClose="() => (showEditModal = false)"
+      :onSubmit="handleEditSubmit"
+      :isSaving="isSaving"
+    />
+    <DeleteModal
+      :open="showDeleteModal"
+      :onClose="() => (showDeleteModal = false)"
+      :onConfirm="handleDelete"
+      :isDeleting="isDeleting"
+      description="Once deleted, this tag will be unlinked from any events it's part of."
+    />
   </div>
 </template>

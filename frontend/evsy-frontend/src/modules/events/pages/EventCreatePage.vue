@@ -56,16 +56,16 @@ onMounted(() => {
   <div>
     <Header title="Create new event" backLink fallbackBackLink="/events" />
 
-    <Card class="max-w-md mx-auto">
+    <Card class="mx-auto max-w-md">
       <CardContent>
-      <EventForm
-        :availableFields="fields"
-        :availableTags="tags"
-        :onSubmit="onSubmit"
-        :isLoading="isLoading"
-        button-text="Create"
-      />
-    </CardContent>
-  </Card>
+        <EventForm
+          :availableFields="fields"
+          :availableTags="tags"
+          :onSubmit="onSubmit"
+          :isLoading="isLoading"
+          button-text="Create"
+        />
+      </CardContent>
+    </Card>
   </div>
 </template>

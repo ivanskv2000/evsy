@@ -4,7 +4,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-
 /* Theme */
 @theme inline {
   --color-background: var(--background);
@@ -129,12 +128,10 @@
   --sidebar-ring: oklch(0.439 0 0);
 }
 
-
 /* Font */
 .font-handwritten {
   font-family: 'Pacifico', cursive;
 }
-
 
 /* Page transition */
 .page-enter-active,
@@ -160,7 +157,6 @@
   transform: translateY(-10px);
 }
 
-
 /* Scrolling */
 .hide-scrollbar {
   scrollbar-width: none; /* Firefox */
@@ -184,7 +180,6 @@
 .scroll-x-bounce:focus {
   outline: none; /* remove weird outline if focused */
 }
-
 
 /* Main */
 @layer base {

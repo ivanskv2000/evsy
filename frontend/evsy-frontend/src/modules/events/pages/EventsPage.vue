@@ -9,21 +9,18 @@ import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 const events = ref<Event[]>([])
 import { getEventColumns } from '@/modules/events/components/eventColumns'
 const updateRow = (updated: Event) => {
-  const index = events.value.findIndex((e) => e.id === updated.id)
+  const index = events.value.findIndex(e => e.id === updated.id)
   if (index !== -1) {
-    events.value = events.value.map((e) => 
-      e.id === updated.id ? updated : e
-    )
+    events.value = events.value.map(e => (e.id === updated.id ? updated : e))
   }
 }
 const deleteRow = (id: number) => {
-  events.value = events.value.filter((e) => e.id !== id)
+  events.value = events.value.filter(e => e.id !== id)
 }
 const columns = getEventColumns(updateRow, deleteRow)
 const { isLoading, run } = useAsyncTask()
 
 onMounted(() => {
-
   run(
     () => eventApi.getAll(),
     data => {

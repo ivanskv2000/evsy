@@ -21,9 +21,9 @@ import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
 
 const props = defineProps<{
-  field: Field,
-  handleUpdateRow: (updatedField: Field) => void,
-  handleDeleteRow: () => void,
+  field: Field
+  handleUpdateRow: (updatedField: Field) => void
+  handleDeleteRow: () => void
 }>()
 
 const router = useRouter()

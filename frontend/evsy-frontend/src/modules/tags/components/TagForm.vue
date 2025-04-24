@@ -11,7 +11,7 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-  FormDescription
+  FormDescription,
 } from '@/shared/components/ui/form'
 import type { Tag } from '@/modules/tags/types'
 import { computed, ref, watchEffect } from 'vue'
@@ -20,7 +20,7 @@ import { tagSchema, type TagFormValues } from '@/modules/tags/validation/tagSche
 const props = defineProps<{
   tag?: Tag
   onSubmit: (data: TagFormValues) => void
-  buttonText?: string,
+  buttonText?: string
   isLoading?: boolean
 }>()
 
@@ -45,16 +45,23 @@ const onSubmit = handleSubmit(values => {
 </script>
 
 <template>
-  <form @submit="onSubmit" class="space-y-6 mt-2">
+  <form @submit="onSubmit" class="mt-2 space-y-6">
     <!-- Tag ID -->
     <FormField name="id" v-slot="{ componentField }">
       <FormItem>
         <FormLabel>Tag ID</FormLabel>
         <FormControl>
-          <Input :disabled="disableIdField" type="text" placeholder="feature_login" v-bind="componentField" />
+          <Input
+            :disabled="disableIdField"
+            type="text"
+            placeholder="feature_login"
+            v-bind="componentField"
+          />
         </FormControl>
         <FormMessage />
-        <FormDescription v-if="disableIdField">Tag name cannot be changed after creation.</FormDescription>
+        <FormDescription v-if="disableIdField"
+          >Tag name cannot be changed after creation.</FormDescription
+        >
       </FormItem>
     </FormField>
 
@@ -71,4 +78,4 @@ const onSubmit = handleSubmit(values => {
 
     <Button type="submit" :disabled="isLoading">{{ buttonText || 'Create Tag' }}</Button>
   </form>
-</template> 
+</template>

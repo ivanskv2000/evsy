@@ -1,5 +1,10 @@
 import { ref, computed } from 'vue'
-import type { ColumnDef, SortingState, ColumnFiltersState, VisibilityState } from '@tanstack/vue-table'
+import type {
+  ColumnDef,
+  SortingState,
+  ColumnFiltersState,
+  VisibilityState,
+} from '@tanstack/vue-table'
 import {
   getCoreRowModel,
   getSortedRowModel,
@@ -10,9 +15,9 @@ import {
 import { valueUpdater } from '@/shared/utils/general'
 
 type SortingOption = {
-    id: string
-    desc: boolean
-  }
+  id: string
+  desc: boolean
+}
 
 export function useDataTable<TData, TValue>(
   data: () => TData[],
@@ -49,9 +54,9 @@ export function useDataTable<TData, TValue>(
       get columnVisibility() {
         return columnVisibility.value
       },
-        get rowSelection() {
-          return rowSelection.value
-        },
+      get rowSelection() {
+        return rowSelection.value
+      },
     },
   })
 
