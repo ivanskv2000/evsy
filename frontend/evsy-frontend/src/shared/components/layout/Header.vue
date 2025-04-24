@@ -7,7 +7,7 @@ const router = useRouter()
 
 const props = defineProps<{
   title: string
-  backLink?: boolean,
+  backLink?: boolean
   fallbackBackLink?: string
 }>()
 
@@ -25,7 +25,7 @@ const goBack = () => {
 <template>
   <div class="mb-6 flex items-center justify-between">
     <Button v-if="backLink || false" variant="ghost" class="w-[30px]" @click="goBack">
-        <Icon icon="radix-icons:caret-left" class="h-4 w-4" />
+      <Icon icon="radix-icons:caret-left" class="h-4 w-4" />
     </Button>
 
     <div class="mx-auto">

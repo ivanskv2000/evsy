@@ -23,9 +23,9 @@ const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
 
 const props = defineProps<{
-  event: Event,
-  handleUpdateRow: (updatedEvent: Event) => void,
-  handleDeleteRow: () => void,
+  event: Event
+  handleUpdateRow: (updatedEvent: Event) => void
+  handleDeleteRow: () => void
 }>()
 
 const emit = defineEmits<{
@@ -87,12 +87,12 @@ const { showInfoToast } = useInfoToast()
   </DropdownMenu>
 
   <EventEditModal
-      :open="showEditModal"
-      :event="event"
-      :onClose="() => (showEditModal = false)"
-      :onSubmit="handleEditSubmit"
-      :isSaving="isSaving"
-        />
+    :open="showEditModal"
+    :event="event"
+    :onClose="() => (showEditModal = false)"
+    :onSubmit="handleEditSubmit"
+    :isSaving="isSaving"
+  />
   <DeleteModal
     :open="showDeleteModal"
     :onClose="() => (showDeleteModal = false)"

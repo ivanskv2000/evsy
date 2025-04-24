@@ -9,15 +9,13 @@ import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 const fields = ref<Field[]>([])
 import { getFieldColumns } from '@/modules/fields/components/fieldColumns'
 const updateRow = (updated: Field) => {
-  const index = fields.value.findIndex((f) => f.id === updated.id)
+  const index = fields.value.findIndex(f => f.id === updated.id)
   if (index !== -1) {
-    fields.value = fields.value.map((f) => 
-      f.id === updated.id ? updated : f
-    )
+    fields.value = fields.value.map(f => (f.id === updated.id ? updated : f))
   }
 }
 const deleteRow = (id: number) => {
-  fields.value = fields.value.filter((f) => f.id !== id)
+  fields.value = fields.value.filter(f => f.id !== id)
 }
 const columns = getFieldColumns(updateRow, deleteRow)
 const { isLoading, run } = useAsyncTask()

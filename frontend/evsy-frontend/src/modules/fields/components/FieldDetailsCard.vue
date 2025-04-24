@@ -89,7 +89,10 @@ const handleCopyName = async () => {
           <TooltipProvider :delay-duration="800">
             <Tooltip>
               <TooltipTrigger>
-                <CardTitle class="cursor-pointer font-mono text-xl tracking-wide" @click="handleCopyName">
+                <CardTitle
+                  class="cursor-pointer font-mono text-xl tracking-wide"
+                  @click="handleCopyName"
+                >
                   {{ field.name }}
                 </CardTitle>
               </TooltipTrigger>
@@ -100,7 +103,7 @@ const handleCopyName = async () => {
           </TooltipProvider>
           <Badge variant="secondary" class="text-xs tracking-wide uppercase">{{
             field.field_type
-            }}</Badge>
+          }}</Badge>
         </div>
 
         <!-- Edit & Delete -->
@@ -119,9 +122,12 @@ const handleCopyName = async () => {
       </CardDescription>
 
       <!-- Details section -->
-      <div class="text-muted-foreground space-y-3 text-sm mt-4">
+      <div class="text-muted-foreground mt-4 space-y-3 text-sm">
         <!-- ID -->
-        <div class="flex flex-wrap items-center gap-2 hover:text-foreground cursor-pointer" @click="handleCopyId">
+        <div
+          class="hover:text-foreground flex cursor-pointer flex-wrap items-center gap-2"
+          @click="handleCopyId"
+        >
           <Icon icon="radix-icons:id-card" class="h-4 w-4" />
           <span>ID: {{ field.id }}</span>
         </div>
@@ -138,11 +144,20 @@ const handleCopyName = async () => {
       </div>
     </CardHeader>
 
-    <CardContent>
-    </CardContent>
+    <CardContent> </CardContent>
 
-    <FieldEditModal v-if="showEditModal" :field="field" @close="showEditModal = false" @updated="handleUpdate" />
-    <DeleteModal :open="showDeleteModal" :onClose="() => (showDeleteModal = false)" :onConfirm="handleDelete"
-      :isDeleting="isDeleting" description="Once deleted, this field will be unlinked from any events it's part of." />
+    <FieldEditModal
+      v-if="showEditModal"
+      :field="field"
+      @close="showEditModal = false"
+      @updated="handleUpdate"
+    />
+    <DeleteModal
+      :open="showDeleteModal"
+      :onClose="() => (showDeleteModal = false)"
+      :onConfirm="handleDelete"
+      :isDeleting="isDeleting"
+      description="Once deleted, this field will be unlinked from any events it's part of."
+    />
   </Card>
 </template>
