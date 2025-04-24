@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import * as z from 'zod'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { Input } from '@/shared/components/ui/input'
 import { Button } from '@/shared/components/ui/button'
-import { Icon } from '@iconify/vue'
-// import Checkbox from '@/shared/components/ui/checkbox.vue'
 import {
-  Form,
   FormField,
   FormItem,
   FormLabel,
@@ -29,9 +25,7 @@ import {
   ComboboxGroup,
   ComboboxInput,
   ComboboxItem,
-  ComboboxItemIndicator,
   ComboboxList,
-  ComboboxTrigger,
 } from '@/shared/components/ui/combobox'
 import type { Event } from '@/modules/events/types'
 import type { Field } from '@/modules/fields/types'
@@ -44,12 +38,14 @@ const props = defineProps<{
   event?: Event
   availableFields: Field[]
   availableTags: Tag[]
+  isLoadingFields?: boolean
+  isLoadingTags?: boolean
   onSubmit: (data: EventFormValues) => void
   buttonText?: string
   isLoading?: boolean
 }>()
 
-const { handleSubmit, values, setValues, setFieldValue, errors } = useForm<EventFormValues>({
+const { handleSubmit, values, setValues, setFieldValue } = useForm<EventFormValues>({
   validationSchema: toTypedSchema(eventSchema),
 })
 
@@ -183,7 +179,7 @@ function removeTag(tagId: string) {
     </FormField>
 
     <!-- Linked Fields -->
-    <FormField name="fields" v-slot="{ componentField }">
+    <FormField name="fields">
       <FormItem>
         <FormLabel>Linked Fields</FormLabel>
         <FormDescription>Choose one or more fields this event uses.</FormDescription>

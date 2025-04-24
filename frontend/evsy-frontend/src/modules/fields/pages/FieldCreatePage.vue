@@ -1,21 +1,14 @@
 <script setup lang="ts">
 import FieldForm from '@/modules/fields/components/FieldForm.vue'
-import { Button } from '@/shared/components/ui/button'
-import { Icon } from '@iconify/vue'
 import { useRouter } from 'vue-router'
 import { useSuccessToast } from '@/shared/utils/toast'
-import { ref } from 'vue'
 import { fieldApi } from '@/modules/fields/api'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 import Header from '@/shared/components/layout/Header.vue'
 import {
   Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
+  CardContent
 } from '@/shared/components/ui/card'
 
 const { isLoading, run } = useAsyncTask()
@@ -39,7 +32,7 @@ const onSubmit = (values: FieldFormValues) => {
 
     <Card class="mx-auto max-w-md">
       <CardContent>
-        <FieldForm :onSubmit="onSubmit" />
+        <FieldForm :onSubmit="onSubmit" :isLoading="isLoading" />
       </CardContent>
     </Card>
   </div>

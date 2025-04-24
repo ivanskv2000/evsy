@@ -4,17 +4,14 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu'
 import { Icon } from '@iconify/vue'
 import type { Field } from '@/modules/fields/types'
-import { useApiErrorToast, useSuccessToast, useInfoToast } from '@/shared/utils/toast'
+import { useSuccessToast } from '@/shared/utils/toast'
 import { fieldApi } from '@/modules/fields/api'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
-import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 
@@ -25,8 +22,6 @@ const props = defineProps<{
   handleUpdateRow: (updatedField: Field) => void
   handleDeleteRow: () => void
 }>()
-
-const router = useRouter()
 
 const emit = defineEmits<{
   (e: 'updated', field: Field): void
@@ -50,10 +45,7 @@ const handleDelete = () => {
 
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
-
-const { showApiErrorToast } = useApiErrorToast()
 const { showSuccessToast } = useSuccessToast()
-const { showInfoToast } = useInfoToast()
 </script>
 
 <template>
@@ -84,6 +76,7 @@ const { showInfoToast } = useInfoToast()
     :open="showDeleteModal"
     :onClose="() => (showDeleteModal = false)"
     :onConfirm="handleDelete"
+    :isDeleting="isDeleting"
     description="Once deleted, this field will be unlinked from any events it's part of."
   />
 </template>

@@ -3,11 +3,9 @@ import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import type { Event } from '@/modules/events/types'
 import EventDetailsCard from '@/modules/events/components/EventDetailsCard.vue'
-import { useApiErrorToast } from '@/shared/utils/toast'
 import { eventApi } from '@/modules/events/api'
 import Header from '@/shared/components/layout/Header.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
-const { showApiErrorToast } = useApiErrorToast()
 const route = useRoute()
 const event = ref<Event | null>(null)
 const { run, isLoading } = useAsyncTask()

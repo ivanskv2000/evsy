@@ -5,9 +5,10 @@ import type { Event } from '@/modules/events/types'
 import EventsDataTable from '@/modules/events/components/EventsDataTable.vue'
 import Header from '@/shared/components/layout/Header.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
+import { getEventColumns } from '@/modules/events/components/eventColumns'
 
 const events = ref<Event[]>([])
-import { getEventColumns } from '@/modules/events/components/eventColumns'
+
 const updateRow = (updated: Event) => {
   const index = events.value.findIndex(e => e.id === updated.id)
   if (index !== -1) {
@@ -18,7 +19,7 @@ const deleteRow = (id: number) => {
   events.value = events.value.filter(e => e.id !== id)
 }
 const columns = getEventColumns(updateRow, deleteRow)
-const { isLoading, run } = useAsyncTask()
+const { run, isLoading } = useAsyncTask()
 
 onMounted(() => {
   run(

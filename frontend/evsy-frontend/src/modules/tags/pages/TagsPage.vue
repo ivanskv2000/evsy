@@ -6,16 +6,14 @@ import { ref, onMounted } from 'vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import TagEditModal from '@/modules/tags/components/TagEditModal.vue'
-import { useApiErrorToast, useSuccessToast, useInfoToast } from '@/shared/utils/toast'
+import { useSuccessToast } from '@/shared/utils/toast'
 import type { TagFormValues } from '@/modules/tags/validation/tagSchema'
 import Header from '@/shared/components/layout/Header.vue'
 
-const { showApiErrorToast } = useApiErrorToast()
 const { showSuccessToast } = useSuccessToast()
-const { showInfoToast } = useInfoToast()
 
 const tags = ref<Tag[]>([])
-const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
+const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
 
 const showEditModal = ref(false)
@@ -23,10 +21,6 @@ const showDeleteModal = ref(false)
 
 const selectedTagId = ref<string | null>(null)
 const editedTag = ref<Tag | null>(null)
-
-const handleUpdate = (updatedTag: Tag) => {
-  emit('updated', updatedTag)
-}
 
 const handleDelete = () => {
   if (!selectedTagId.value) return
@@ -73,7 +67,7 @@ onMounted(() => {
         :key="tag.id"
         :tag="tag"
         @updateMe="
-          id => {
+          () => {
             showEditModal = true
             editedTag = tag
           }

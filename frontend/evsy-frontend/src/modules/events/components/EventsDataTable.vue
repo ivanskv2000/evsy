@@ -2,7 +2,6 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import DataTableInputFilter from '@/shared/components/data/DataTableInputFilter.vue'
 import { Icon } from '@iconify/vue'
-import { ref, computed } from 'vue'
 import { Button } from '@/shared/components/ui/button'
 import DataTablePagination from '@/shared/components/data/DataTablePagination.vue'
 import DataTable from '@/shared/components/data/DataTable.vue'
