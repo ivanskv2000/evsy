@@ -6,6 +6,8 @@ import type { Event } from '@/modules/events/types'
 import type { Field } from '@/modules/fields/types'
 import { fieldApi } from '@/modules/fields/api'
 import { ref, onMounted } from 'vue'
+import type { Tag } from '@/modules/tags/types'
+import { tagApi } from '@/modules/tags/api'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 
 const props = defineProps<{
@@ -17,11 +19,16 @@ const props = defineProps<{
 }>()
 
 const fields = ref<Field[]>([])
+const tags = ref<Tag[]>([])
 const { run: loadFields, isLoading: isLoadingFields } = useAsyncTask()
+const { run: loadTags, isLoading: isLoadingTags } = useAsyncTask()
 
 onMounted(() => {
   loadFields(async () => {
     fields.value = await fieldApi.getAll()
+  })
+  loadTags(async () => {
+    tags.value = await tagApi.getAll()
   })
 })
 </script>
@@ -33,6 +40,7 @@ onMounted(() => {
       <EventForm
         :event="event"
         :availableFields="fields"
+        :availableTags="tags"
         :onSubmit="props.onSubmit"
         :isLoading="props.isSaving"
         button-text="Save"

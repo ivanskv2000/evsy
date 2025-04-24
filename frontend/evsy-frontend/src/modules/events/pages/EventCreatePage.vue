@@ -19,8 +19,14 @@ import {
 } from '@/shared/components/ui/card'
 import { fieldApi } from '@/modules/fields/api'
 import type { Field } from '@/modules/fields/types'
+import type { Tag } from '@/modules/tags/types'
+import { tagApi } from '@/modules/tags/api'
+
 const fields = ref<Field[]>([])
+const tags = ref<Tag[]>([])
+
 const { run: loadFields, isLoading: isLoadingFields } = useAsyncTask()
+const { run: loadTags, isLoading: isLoadingTags } = useAsyncTask()
 
 const { isLoading, run } = useAsyncTask()
 const { showSuccessToast } = useSuccessToast()
@@ -40,6 +46,9 @@ onMounted(() => {
   loadFields(async () => {
     fields.value = await fieldApi.getAll()
   })
+  loadTags(async () => {
+    tags.value = await tagApi.getAll()
+  })
 })
 </script>
 
@@ -49,7 +58,13 @@ onMounted(() => {
 
     <Card class="max-w-md mx-auto">
       <CardContent>
-      <EventForm :onSubmit="onSubmit" :availableFields="fields" />
+      <EventForm
+        :availableFields="fields"
+        :availableTags="tags"
+        :onSubmit="onSubmit"
+        :isLoading="isLoading"
+        button-text="Create"
+      />
     </CardContent>
   </Card>
   </div>

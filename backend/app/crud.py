@@ -52,9 +52,11 @@ def update_event(db: Session, event_id: int, event: schemas.EventCreate):
     db_event.name = event.name
     db_event.description = event.description
 
-    if event.tags:
-        db_tags = get_or_create_tags(db, event.tags)
-        db_event.tags = [models.EventTag(tag=tag) for tag in db_tags]
+    if event.tags is not None:
+        db.query(models.EventTag).filter(models.EventTag.event_id == db_event.id).delete()
+        if event.tags:
+            for tag_id in event.tags:
+                db.add(models.EventTag(event_id=db_event.id, tag_id=tag_id))
 
     if event.fields is not None:
         db.query(models.EventField).filter(models.EventField.event_id == db_event.id).delete()

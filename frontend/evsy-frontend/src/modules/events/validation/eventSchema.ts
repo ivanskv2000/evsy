@@ -13,6 +13,8 @@ export const eventSchema = z.object({
     .nullable(),
 
   fields: z.array(z.number()).optional().default([]),
+
+  tags: z.array(z.string()).optional().default([]),
 })
 
 export type EventFormValues = z.infer<typeof eventSchema>
