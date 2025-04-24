@@ -23,6 +23,7 @@ const columns = getEventColumns(updateRow, deleteRow)
 const { isLoading, run } = useAsyncTask()
 
 onMounted(() => {
+
   run(
     () => eventApi.getAll(),
     data => {

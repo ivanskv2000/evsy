@@ -4,6 +4,7 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import EventsDataTableDropdown from '@/modules/events/components/EventsDataTableDropdown.vue'
 import { RouterLink } from 'vue-router'
 import DataTableColumnHeader from '@/shared/components/data/DataTableColumnHeader.vue'
+import { Badge } from '@/shared/components/ui/badge'
 
 export function getEventColumns(
   onUpdated: (event: Event) => void,
@@ -39,6 +40,27 @@ export function getEventColumns(
           'div',
           { class: 'text-left font-medium' },
           h(RouterLink, { to: `/events/${id}` }, { default: () => name })
+        )
+      },
+    },
+    {
+      accessorKey: 'tags',
+      enableHiding: false,
+      header: ({ column }) =>
+        h(DataTableColumnHeader, {
+          column: column,
+          title: 'Tags',
+        }),
+      cell: ({ row }) => {
+        const event = row.original
+        const tags = event.tags
+        return h(
+          'div',
+          {
+            class: 'flex flex-row gap-1 text-left font-medium max-w-40 overflow-auto hide-scrollbar scroll-x-bounce',
+            ref: 'scrollContainer'
+          },
+          tags.map((tag) => h(Badge, { variant: 'outline' }, { default: () => tag.id }))
         )
       },
     },
