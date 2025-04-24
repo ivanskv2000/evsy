@@ -57,11 +57,10 @@ def update_event(db: Session, event_id: int, event: schemas.EventCreate):
         db_event.tags = [models.EventTag(tag=tag) for tag in db_tags]
 
     if event.fields is not None:
+        db.query(models.EventField).filter(models.EventField.event_id == db_event.id).delete()
         if event.fields:
-            db_fields = db.query(models.Field).filter(models.Field.id.in_(event.fields)).all()
-            db_event.fields = [models.EventField(field=field) for field in db_fields]
-        else:
-            db_event.fields = []
+            for field_id in event.fields:
+                db.add(models.EventField(event_id=db_event.id, field_id=field_id))
 
     db.commit()
     db.refresh(db_event)
