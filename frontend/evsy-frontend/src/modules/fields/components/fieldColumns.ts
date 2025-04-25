@@ -1,12 +1,13 @@
 import { h } from 'vue'
 import type { Field } from '@/modules/fields/types.ts'
 import type { ColumnDef } from '@tanstack/vue-table'
-import DataTableDropdown from '@/modules/fields/components/FieldsDataTableDropdown.vue'
+import FieldsDataTableDropdown from '@/modules/fields/components/FieldsDataTableDropdown.vue'
 import { RouterLink } from 'vue-router'
 import DataTableColumnHeader from '@/shared/components/data/DataTableColumnHeader.vue'
+import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 
 export function getFieldColumns(
-  onUpdated: (field: Field) => void,
+  onUpdated: (field: FieldFormValues) => void,
   onDeleted: (id: number) => void
 ): ColumnDef<Field>[] {
   return [
@@ -65,9 +66,9 @@ export function getFieldColumns(
         return h(
           'div',
           { class: 'relative' },
-          h(DataTableDropdown, {
+          h(FieldsDataTableDropdown, {
             field,
-            handleUpdateRow: (updatedField: Field) => onUpdated(updatedField),
+            handleUpdateRow: (updatedField: FieldFormValues) => onUpdated(updatedField),
             handleDeleteRow: () => onDeleted(field.id),
           })
         )

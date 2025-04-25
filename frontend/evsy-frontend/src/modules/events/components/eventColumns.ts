@@ -6,6 +6,7 @@ import { RouterLink } from 'vue-router'
 import DataTableColumnHeader from '@/shared/components/data/DataTableColumnHeader.vue'
 import { Badge } from '@/shared/components/ui/badge'
 
+
 export function getEventColumns(
   onUpdated: (event: Event) => void,
   onDeleted: (id: number) => void
