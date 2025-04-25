@@ -26,18 +26,12 @@ const props = defineProps<{
   handleDeleteRow: () => void
 }>()
 
-const emit = defineEmits<{
-  (e: 'updated', event: Event): void
-  (e: 'deleted'): void
-}>()
-
 const handleDelete = () => {
   runDeleteTask(async () => {
     await eventApi.delete(props.event.id)
     showDeleted('Event')
     showDeleteModal.value = false
     props.handleDeleteRow()
-    emit('deleted')
   })
 }
 
@@ -46,7 +40,6 @@ const handleEditSubmit = (values: EventFormValues) => {
     () => eventApi.update(props.event.id, values),
     updated => {
       showUpdated('Event')
-      emit('updated', updated)
       showEditModal.value = false
       props.handleUpdateRow(updated)
     }

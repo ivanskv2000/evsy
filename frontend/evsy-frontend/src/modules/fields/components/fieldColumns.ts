@@ -15,8 +15,8 @@ export function getFieldColumns(
       accessorKey: 'id',
       enableHiding: false,
       header: ({ column }) =>
-        h(DataTableColumnHeader, {
-          column: column,
+        h(DataTableColumnHeader<Field, unknown>, {
+          column,
           title: 'ID',
           align: 'center',
         }),
@@ -29,8 +29,8 @@ export function getFieldColumns(
       accessorKey: 'name',
       enableHiding: false,
       header: ({ column }) =>
-        h(DataTableColumnHeader, {
-          column: column,
+        h(DataTableColumnHeader<Field, unknown>, {
+          column,
           title: 'Name',
         }),
       cell: ({ row }) => {
@@ -46,8 +46,8 @@ export function getFieldColumns(
     {
       accessorKey: 'field_type',
       header: ({ column }) =>
-        h(DataTableColumnHeader, {
-          column: column,
+        h(DataTableColumnHeader<Field, unknown>, {
+          column,
           title: 'Type',
         }),
       cell: ({ row }) => {
