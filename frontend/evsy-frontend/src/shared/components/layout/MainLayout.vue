@@ -4,11 +4,9 @@ import { Button } from '@/shared/components/ui/button'
 import { Icon } from '@iconify/vue'
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
+  NavigationMenuList
 } from '@/shared/components/ui/navigation-menu'
 import ThemeProvider from '@/shared/components/providers/theme-provider.vue'
 </script>
@@ -17,11 +15,11 @@ import ThemeProvider from '@/shared/components/providers/theme-provider.vue'
   <div class="bg-background min-h-screen">
     <!-- Header -->
     <header
-      class="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur"
+      class="sticky top-0 w-full border-b"
     >
       <div class="container flex h-14 items-center">
-        <div class="mr-4 flex">
-          <RouterLink to="/" class="mr-6 flex items-center space-x-2">
+        <div class="flex">
+          <RouterLink to="/" class="mr-6">
             <span class="font-handwritten text-xl">Evsy</span>
           </RouterLink>
 
@@ -52,11 +50,11 @@ import ThemeProvider from '@/shared/components/providers/theme-provider.vue'
             <Button variant="ghost" size="icon" @click="toggleTheme">
               <Icon
                 icon="radix-icons:moon"
-                class="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
+                class="h-4 w-4 transition-all duration-300 ease-in-out opacity-100 scale-100 rotate-0 dark:opacity-0 dark:scale-0 dark:-rotate-90"
               />
               <Icon
                 icon="radix-icons:sun"
-                class="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
+                class="absolute h-4 w-4 transition-all duration-300 ease-in-out opacity-0 scale-0 rotate-90 dark:opacity-100 dark:scale-100 dark:rotate-0"
               />
               <span class="sr-only">Toggle theme</span>
             </Button>
