@@ -32,7 +32,11 @@ const onSubmit = (values: FieldFormValues) => {
 
     <Card class="mx-auto max-w-md">
       <CardContent>
-        <FieldForm :onSubmit="onSubmit" :isLoading="isLoading" />
+        <FieldForm 
+          :onSubmit="onSubmit"
+          :isLoading="isLoading"
+          button-text="Create"
+        />
       </CardContent>
     </Card>
   </div>
