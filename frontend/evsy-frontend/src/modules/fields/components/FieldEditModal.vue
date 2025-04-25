@@ -2,7 +2,7 @@
 import type { Field } from '@/modules/fields/types'
 import { Dialog, DialogContent, DialogTitle } from '@/shared/components/ui/dialog'
 import { fieldApi } from '@/modules/fields/api'
-import { useSuccessToast } from '@/shared/utils/toast'
+import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import FieldForm from '@/modules/fields/components/FieldForm.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
@@ -14,13 +14,13 @@ const emit = defineEmits<{
   (e: 'updated', field: Field): void
 }>()
 
-const { showSuccessToast } = useSuccessToast()
+const { showUpdated } = useEnhancedToast()
 
 const onSubmit = (values: FieldFormValues) => {
   run(
     () => fieldApi.update(props.field.id, values),
     updated => {
-      showSuccessToast('Field updated successfully!')
+      showUpdated('Field')
       emit('updated', updated)
       emit('close')
     }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import FieldForm from '@/modules/fields/components/FieldForm.vue'
 import { useRouter } from 'vue-router'
-import { useSuccessToast } from '@/shared/utils/toast'
+import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { fieldApi } from '@/modules/fields/api'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
@@ -12,7 +12,7 @@ import {
 } from '@/shared/components/ui/card'
 
 const { isLoading, run } = useAsyncTask()
-const { showSuccessToast } = useSuccessToast()
+const { showCreated } = useEnhancedToast()
 const router = useRouter()
 
 const onSubmit = (values: FieldFormValues) => {
@@ -20,7 +20,7 @@ const onSubmit = (values: FieldFormValues) => {
     () => fieldApi.create(values),
     created => {
       router.push(`/fields/${created.id}`)
-      showSuccessToast('Field created successfully!')
+      showCreated('Field')
     }
   )
 }

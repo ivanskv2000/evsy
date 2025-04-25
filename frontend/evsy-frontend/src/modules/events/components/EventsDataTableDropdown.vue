@@ -8,7 +8,7 @@ import {
 } from '@/shared/components/ui/dropdown-menu'
 import { Icon } from '@iconify/vue'
 import type { Event } from '@/modules/events/types'
-import { useSuccessToast } from '@/shared/utils/toast'
+import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { eventApi } from '@/modules/events/api'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import EventEditModal from './EventEditModal.vue'
@@ -18,6 +18,7 @@ import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts
 
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
+const { showDeleted, showUpdated } = useEnhancedToast()
 
 const props = defineProps<{
   event: Event
@@ -33,7 +34,7 @@ const emit = defineEmits<{
 const handleDelete = () => {
   runDeleteTask(async () => {
     await eventApi.delete(props.event.id)
-    showSuccessToast('Event deleted successfully!')
+    showDeleted('Event')
     showDeleteModal.value = false
     props.handleDeleteRow()
     emit('deleted')
@@ -44,7 +45,7 @@ const handleEditSubmit = (values: EventFormValues) => {
   runUpdateTask(
     () => eventApi.update(props.event.id, values),
     updated => {
-      showSuccessToast('Event updated successfully!')
+      showUpdated('Event')
       emit('updated', updated)
       showEditModal.value = false
       props.handleUpdateRow(updated)
@@ -54,8 +55,6 @@ const handleEditSubmit = (values: EventFormValues) => {
 
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
-
-const { showSuccessToast } = useSuccessToast()
 </script>
 
 <template>
