@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import type { Field } from '@/modules/fields/types'
 import { Button } from '@/shared/components/ui/button'
-import { useApiErrorToast, useSuccessToast, useInfoToast } from '@/shared/utils/toast'
+import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { fieldApi } from '@/modules/fields/api'
 
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
@@ -28,6 +28,7 @@ import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 
 const router = useRouter()
 const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
+const { showDeleted, showCopied, showCopyError } = useEnhancedToast()
 
 const props = defineProps<{
   field: Field
@@ -47,15 +48,11 @@ const showDeleteModal = ref(false)
 const handleDelete = () => {
   runDeleteTask(async () => {
     await fieldApi.delete(props.field.id)
-    showSuccessToast('Field deleted successfully!')
+    showDeleted('Field')
     showDeleteModal.value = false
     router.push('/fields')
   })
 }
-
-const { showApiErrorToast } = useApiErrorToast()
-const { showSuccessToast } = useSuccessToast()
-const { showInfoToast } = useInfoToast()
 
 const { copy: copyId } = useClipboard({ source: props.field.id.toString() })
 const { copy: copyName } = useClipboard({ source: props.field.name })
@@ -63,18 +60,18 @@ const { copy: copyName } = useClipboard({ source: props.field.name })
 const handleCopyId = async () => {
   try {
     await copyId()
-    showInfoToast('ID copied to clipboard')
+    showCopied('ID')
   } catch (err) {
-    showApiErrorToast('Failed to copy ID')
+    showCopyError('ID')
   }
 }
 
 const handleCopyName = async () => {
   try {
     await copyName()
-    showInfoToast('Name copied to clipboard')
+    showCopied('Name')
   } catch (err) {
-    showApiErrorToast('Failed to copy name')
+    showCopyError('Name')
   }
 }
 </script>

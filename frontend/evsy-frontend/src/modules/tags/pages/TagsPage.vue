@@ -6,11 +6,11 @@ import { ref, onMounted } from 'vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import TagEditModal from '@/modules/tags/components/TagEditModal.vue'
-import { useSuccessToast } from '@/shared/utils/toast'
 import type { TagFormValues } from '@/modules/tags/validation/tagSchema'
 import Header from '@/shared/components/layout/Header.vue'
+import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 
-const { showSuccessToast } = useSuccessToast()
+const { showUpdated, showDeleted } = useEnhancedToast()
 
 const tags = ref<Tag[]>([])
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
@@ -27,7 +27,7 @@ const handleDelete = () => {
 
   runDeleteTask(async () => {
     await tagApi.delete(selectedTagId.value!)
-    showSuccessToast('Tag deleted successfully!')
+    showDeleted('Tag')
     showDeleteModal.value = false
 
     tags.value = tags.value.filter(tag => tag.id !== selectedTagId.value)
@@ -39,7 +39,7 @@ const handleEditSubmit = (values: TagFormValues) => {
   runUpdateTask(
     () => tagApi.update(editedTag.value!.id, values),
     updated => {
-      showSuccessToast('Tag updated successfully!')
+      showUpdated('Tag')
       tags.value = tags.value.map(tag => (tag.id === updated.id ? updated : tag))
       showEditModal.value = false
     }

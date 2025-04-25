@@ -8,7 +8,7 @@ import {
 } from '@/shared/components/ui/dropdown-menu'
 import { Icon } from '@iconify/vue'
 import type { Field } from '@/modules/fields/types'
-import { useSuccessToast } from '@/shared/utils/toast'
+import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { fieldApi } from '@/modules/fields/api'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
@@ -16,6 +16,7 @@ import { ref } from 'vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 
 const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
+const { showDeleted } = useEnhancedToast()
 
 const props = defineProps<{
   field: Field
@@ -36,7 +37,7 @@ const handleUpdate = (updatedField: Field) => {
 const handleDelete = () => {
   runDeleteTask(async () => {
     await fieldApi.delete(props.field.id)
-    showSuccessToast('Field deleted successfully!')
+    showDeleted('Field')
     showDeleteModal.value = false
     props.handleDeleteRow()
     emit('deleted')
@@ -45,7 +46,6 @@ const handleDelete = () => {
 
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
-const { showSuccessToast } = useSuccessToast()
 </script>
 
 <template>

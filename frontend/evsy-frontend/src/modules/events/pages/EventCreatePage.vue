@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import EventForm from '@/modules/events/components/EventForm.vue'
 import { useRouter } from 'vue-router'
-import { useSuccessToast } from '@/shared/utils/toast'
+import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { ref, onMounted } from 'vue'
 import { eventApi } from '@/modules/events/api'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
@@ -23,7 +23,7 @@ const { run: loadFields, isLoading: isLoadingFields } = useAsyncTask()
 const { run: loadTags, isLoading: isLoadingTags } = useAsyncTask()
 
 const { isLoading, run } = useAsyncTask()
-const { showSuccessToast } = useSuccessToast()
+const { showCreated } = useEnhancedToast()
 const router = useRouter()
 
 const onSubmit = (values: EventFormValues) => {
@@ -31,7 +31,7 @@ const onSubmit = (values: EventFormValues) => {
     () => eventApi.create(values),
     created => {
       router.push(`/events/${created.id}`)
-      showSuccessToast('Event created successfully!')
+      showCreated('Event')
     }
   )
 }

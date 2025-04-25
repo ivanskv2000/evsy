@@ -15,7 +15,7 @@ import EventEditModal from './EventEditModal.vue'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { eventApi } from '@/modules/events/api'
-import { useApiErrorToast, useSuccessToast, useInfoToast } from '@/shared/utils/toast'
+import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { useRouter } from 'vue-router'
 import {
   Tooltip,
@@ -37,6 +37,7 @@ const exampleValue = {
     campaign: 'spring_sale',
   },
 }
+
 function getJsonPreview(obj: object, maxKeys = 2): string {
   const entries = Object.entries(obj)
   const limited = entries.slice(0, maxKeys)
@@ -52,6 +53,7 @@ function getJsonPreview(obj: object, maxKeys = 2): string {
   const suffix = entries.length > maxKeys ? ', ...' : ''
   return `{ ${formatted}${suffix} }`
 }
+
 const exampleShortPreview = computed(() => getJsonPreview(exampleValue))
 const examplePrettyJson = computed(() => JSON.stringify(exampleValue, null, 2))
 
@@ -70,14 +72,12 @@ const showDeleteModal = ref(false)
 const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
 
-const { showSuccessToast } = useSuccessToast()
-const { showApiErrorToast } = useApiErrorToast()
-const { showInfoToast } = useInfoToast()
+const { showDeleted, showUpdated, showCopied, showCopyError } = useEnhancedToast()
 
 const handleDelete = () => {
   runDeleteTask(async () => {
     await eventApi.delete(props.event.id)
-    showSuccessToast('Event deleted successfully!')
+    showDeleted('Event')
     showDeleteModal.value = false
     router.push('/events')
   })
@@ -87,7 +87,7 @@ const handleEditSubmit = (values: EventFormValues) => {
   runUpdateTask(
     () => eventApi.update(props.event.id, values),
     updated => {
-      showSuccessToast('Event updated successfully!')
+      showUpdated('Event')
       emit('updated', updated)
       showEditModal.value = false
     }
@@ -101,27 +101,27 @@ const { copy: copyJson } = useClipboard({ source: examplePrettyJson })
 const handleCopyId = async () => {
   try {
     await copyId()
-    showInfoToast('ID copied to clipboard')
+    showCopied('ID')
   } catch (err) {
-    showApiErrorToast('Failed to copy ID')
+    showCopyError('ID')
   }
 }
 
 const handleCopyName = async () => {
   try {
     await copyName()
-    showInfoToast('Name copied to clipboard')
+    showCopied('Name')
   } catch (err) {
-    showApiErrorToast('Failed to copy name')
+    showCopyError('Name')
   }
 }
 
 const handleCopyJson = async () => {
   try {
     await copyJson()
-    showInfoToast('Name copied to clipboard')
+    showCopied('Example')
   } catch (err) {
-    showApiErrorToast('Failed to copy name')
+    showCopyError('Example')
   }
 }
 </script>

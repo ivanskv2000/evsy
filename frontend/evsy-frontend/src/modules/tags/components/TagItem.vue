@@ -2,7 +2,6 @@
 import { Button } from '@/shared/components/ui/button'
 import { Badge } from '@/shared/components/ui/badge'
 import { useClipboard } from '@vueuse/core'
-import { useApiErrorToast, useSuccessToast, useInfoToast } from '@/shared/utils/toast'
 import { Icon } from '@iconify/vue'
 import {
   Tooltip,
@@ -11,6 +10,7 @@ import {
   TooltipTrigger,
 } from '@/shared/components/ui/tooltip'
 import type { Tag } from '@/modules/tags/types'
+import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 
 const props = defineProps<{
   tag: Tag
@@ -22,15 +22,14 @@ const emit = defineEmits<{
 }>()
 
 const { copy: copyId } = useClipboard({ source: props.tag.id })
-const { showApiErrorToast } = useApiErrorToast()
-const { showInfoToast } = useInfoToast()
+const { showCopied, showCopyError } = useEnhancedToast()
 
 const handleCopyId = async () => {
   try {
     await copyId()
-    showInfoToast('Tag copied to clipboard')
+    showCopied('Tag')
   } catch (err) {
-    showApiErrorToast('Failed to copy Tag')
+    showCopyError('Tag')
   }
 }
 </script>
