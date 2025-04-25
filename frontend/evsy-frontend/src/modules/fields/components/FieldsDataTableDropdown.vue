@@ -14,22 +14,23 @@ import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
 import { ref } from 'vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
+import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 
 const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
 const { showDeleted } = useEnhancedToast()
 
 const props = defineProps<{
   field: Field
-  handleUpdateRow: (updatedField: Field) => void
+  handleUpdateRow: (updatedField: FieldFormValues) => void
   handleDeleteRow: () => void
 }>()
 
 const emit = defineEmits<{
-  (e: 'updated', field: Field): void
+  (e: 'updated', field: FieldFormValues): void
   (e: 'deleted'): void
 }>()
 
-const handleUpdate = (updatedField: Field) => {
+const handleUpdate = (updatedField: FieldFormValues) => {
   emit('updated', updatedField)
   props.handleUpdateRow(updatedField)
 }
@@ -67,10 +68,11 @@ const showDeleteModal = ref(false)
   </DropdownMenu>
 
   <FieldEditModal
-    v-if="showEditModal"
+    :open="showEditModal"
     :field="field"
-    @close="showEditModal = false"
-    @updated="handleUpdate"
+    :onClose="() => (showEditModal = false)"
+    :onSubmit="handleUpdate"
+    :isSaving="isSaving"
   />
   <DeleteModal
     :open="showDeleteModal"
