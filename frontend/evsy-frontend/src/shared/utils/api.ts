@@ -9,11 +9,9 @@ export const api = axios.create({
   },
 })
 
-// Add response interceptor for error handling
 api.interceptors.response.use(
   response => response,
   error => {
-    // You can add custom error handling here
     return Promise.reject(error)
   }
 )
