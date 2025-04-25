@@ -16,7 +16,7 @@ export function getEventColumns(
       accessorKey: 'id',
       enableHiding: false,
       header: ({ column }) =>
-        h(DataTableColumnHeader, {
+        h(DataTableColumnHeader<Event, unknown>, {
           column: column,
           title: 'ID',
           align: 'center',
@@ -30,7 +30,7 @@ export function getEventColumns(
       accessorKey: 'name',
       enableHiding: false,
       header: ({ column }) =>
-        h(DataTableColumnHeader, {
+        h(DataTableColumnHeader<Event, unknown>, {
           column: column,
           title: 'Name',
         }),
@@ -48,7 +48,7 @@ export function getEventColumns(
       accessorKey: 'tags',
       enableHiding: false,
       header: ({ column }) =>
-        h(DataTableColumnHeader, {
+        h(DataTableColumnHeader<Event, unknown>, {
           column: column,
           title: 'Tags',
         }),

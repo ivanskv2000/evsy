@@ -25,13 +25,7 @@ const props = defineProps<{
   handleDeleteRow: () => void
 }>()
 
-const emit = defineEmits<{
-  (e: 'updated', field: FieldFormValues): void
-  (e: 'deleted'): void
-}>()
-
 const handleUpdate = (updatedField: FieldFormValues) => {
-  emit('updated', updatedField)
   props.handleUpdateRow(updatedField)
 }
 
@@ -41,7 +35,6 @@ const handleDelete = () => {
     showDeleted('Field')
     showDeleteModal.value = false
     props.handleDeleteRow()
-    emit('deleted')
   })
 }
 
@@ -72,7 +65,6 @@ const showDeleteModal = ref(false)
     :field="field"
     :onClose="() => (showEditModal = false)"
     :onSubmit="handleUpdate"
-    :isSaving="isSaving"
   />
   <DeleteModal
     :open="showDeleteModal"
