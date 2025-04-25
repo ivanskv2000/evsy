@@ -24,7 +24,7 @@ import { fieldSchema, type FieldFormValues } from '@/modules/fields/validation/f
 const props = defineProps<{
   field?: Field
   onSubmit: (data: FieldFormValues) => void
-  buttonText?: string,
+  buttonText?: string
   isLoading?: boolean
 }>()
 

@@ -4,7 +4,7 @@ import type { Field } from '@/modules/fields/types'
 import { Button } from '@/shared/components/ui/button'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { fieldApi } from '@/modules/fields/api'
-
+import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
 import {
@@ -28,7 +28,8 @@ import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 
 const router = useRouter()
 const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
-const { showDeleted, showCopied, showCopyError } = useEnhancedToast()
+const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
+const { showDeleted, showUpdated, showCopied, showCopyError } = useEnhancedToast()
 
 const props = defineProps<{
   field: Field
@@ -52,6 +53,17 @@ const handleDelete = () => {
     showDeleteModal.value = false
     router.push('/fields')
   })
+}
+
+const handleEditSubmit = (values: FieldFormValues) => {
+  runUpdateTask(
+    () => fieldApi.update(props.field.id, values),
+    updated => {
+      showUpdated('Field')
+      emit('updated', updated)
+      showEditModal.value = false
+    }
+  )
 }
 
 const { copy: copyId } = useClipboard({ source: props.field.id.toString() })
@@ -143,10 +155,11 @@ const handleCopyName = async () => {
     <CardContent> </CardContent>
 
     <FieldEditModal
-      v-if="showEditModal"
+      :open="showEditModal"
       :field="field"
-      @close="showEditModal = false"
-      @updated="handleUpdate"
+      :onClose="() => (showEditModal = false)"
+      :onSubmit="handleEditSubmit"
+      :isSaving="isSaving"
     />
     <DeleteModal
       :open="showDeleteModal"
