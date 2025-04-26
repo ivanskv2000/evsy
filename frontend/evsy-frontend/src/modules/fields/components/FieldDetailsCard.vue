@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import type { Field } from '@/modules/fields/types'
 import { Button } from '@/shared/components/ui/button'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
-import { fieldApi } from '@/modules/fields/api'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
@@ -24,46 +23,34 @@ import { useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
 import { Badge } from '@/shared/components/ui/badge'
 import { Icon } from '@iconify/vue'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 
 const router = useRouter()
-const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
-const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
-const { showDeleted, showUpdated, showCopied, showCopyError } = useEnhancedToast()
+const { showCopied, showCopyError } = useEnhancedToast()
 
 const props = defineProps<{
   field: Field
+  loading: {
+    isSaving: boolean
+    isDeleting: boolean
+  }
 }>()
 
 const emit = defineEmits<{
-  (e: 'updated', field: Field): void
+  (e: 'update', values: FieldFormValues): void
+  (e: 'delete'): void
 }>()
-
-const handleUpdate = (updatedField: Field) => {
-  emit('updated', updatedField)
-}
 
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
 
-const handleDelete = () => {
-  runDeleteTask(async () => {
-    await fieldApi.delete(props.field.id)
-    showDeleted('Field')
-    showDeleteModal.value = false
-    router.push('/fields')
-  })
+const submitEdit = (values: FieldFormValues) => {
+  emit('update', values)
+  showEditModal.value = false
 }
 
-const handleEditSubmit = (values: FieldFormValues) => {
-  runUpdateTask(
-    () => fieldApi.update(props.field.id, values),
-    updated => {
-      showUpdated('Field')
-      emit('updated', updated)
-      showEditModal.value = false
-    }
-  )
+const confirmDelete = () => {
+  emit('delete')
+  showDeleteModal.value = false
 }
 
 const { copy: copyId } = useClipboard({ source: props.field.id.toString() })
@@ -154,18 +141,19 @@ const handleCopyName = async () => {
 
     <CardContent> </CardContent>
 
+    <!-- Modals -->
     <FieldEditModal
       :open="showEditModal"
       :field="field"
       :onClose="() => (showEditModal = false)"
-      :onSubmit="handleEditSubmit"
-      :isSaving="isSaving"
+      :onSubmit="submitEdit"
+      :isSaving="loading.isSaving"
     />
     <DeleteModal
       :open="showDeleteModal"
       :onClose="() => (showDeleteModal = false)"
-      :onConfirm="handleDelete"
-      :isDeleting="isDeleting"
+      :onConfirm="confirmDelete"
+      :isDeleting="loading.isDeleting"
       description="Once deleted, this field will be unlinked from any events it's part of."
     />
   </Card>

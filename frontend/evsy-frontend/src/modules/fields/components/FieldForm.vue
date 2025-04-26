@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from '@/shared/components/ui/select'
 import type { Field } from '@/modules/fields/types'
+import { FieldType } from '@/modules/fields/types'
 import { watchEffect } from 'vue'
 import { fieldSchema, type FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 
@@ -45,6 +46,11 @@ watchEffect(() => {
 const onSubmit = handleSubmit(values => {
   props.onSubmit(values)
 })
+
+const fieldTypeOptions = Object.entries(FieldType).map(([key, value]) => ({
+  label: key.charAt(0) + key.slice(1).toLowerCase(),
+  value
+}))
 </script>
 
 <template>
@@ -81,12 +87,13 @@ const onSubmit = handleSubmit(values => {
               <SelectValue placeholder="Select type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="string">String</SelectItem>
-              <SelectItem value="integer">Integer</SelectItem>
-              <SelectItem value="number">Number</SelectItem>
-              <SelectItem value="boolean">Boolean</SelectItem>
-              <SelectItem value="array">Array</SelectItem>
-              <SelectItem value="object">Object</SelectItem>
+              <SelectItem
+                v-for="option in fieldTypeOptions"
+                :key="option.value"
+                :value="option.value"
+              >
+                {{ option.label }}
+              </SelectItem>
             </SelectContent>
           </Select>
         </FormControl>
