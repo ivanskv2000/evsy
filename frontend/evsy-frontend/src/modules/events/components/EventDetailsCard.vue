@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { Event } from '@/modules/events/types'
+import { Button } from '@/shared/components/ui/button'
+import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
+import type { EventFormValues } from '@/modules/events/validation/eventSchema'
+import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
+import EventEditModal from '@/modules/events/components/EventEditModal.vue'
 import {
   Card,
   CardContent,
@@ -8,95 +13,50 @@ import {
   CardTitle,
   CardDescription,
 } from '@/shared/components/ui/card'
-import { Badge } from '@/shared/components/ui/badge'
-import { Icon } from '@iconify/vue'
-import { Button } from '@/shared/components/ui/button'
-import EventEditModal from './EventEditModal.vue'
-import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
-import { eventApi } from '@/modules/events/api'
-import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
-import { useRouter } from 'vue-router'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/shared/components/ui/tooltip'
+import { useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
-import { computed } from 'vue'
-import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts'
+import { Badge } from '@/shared/components/ui/badge'
+import { Icon } from '@iconify/vue'
+import EventFieldsTable from './EventFieldsTable.vue'
+import EventJsonPreview from './EventJsonPreview.vue'
 
-const exampleValue = {
-  user_id: 123,
-  event_date: '2021-01-01',
-  event_time: '2021-01-01T00:00:00Z',
-  device: 'mobile',
-  metadata: {
-    source: 'landing',
-    campaign: 'spring_sale',
-  },
-}
-
-function getJsonPreview(obj: object, maxKeys = 2): string {
-  const entries = Object.entries(obj)
-  const limited = entries.slice(0, maxKeys)
-
-  const formatted = limited
-    .map(([key, value]) => {
-      const val =
-        typeof value === 'string' ? `"${value}"` : typeof value === 'object' ? '{...}' : value
-      return `${key}: ${val}`
-    })
-    .join(', ')
-
-  const suffix = entries.length > maxKeys ? ', ...' : ''
-  return `{ ${formatted}${suffix} }`
-}
-
-const exampleShortPreview = computed(() => getJsonPreview(exampleValue))
-const examplePrettyJson = computed(() => JSON.stringify(exampleValue, null, 2))
+const router = useRouter()
+const { showCopied, showCopyError } = useEnhancedToast()
 
 const props = defineProps<{
   event: Event
+  loading: {
+    isSaving: boolean
+    isDeleting: boolean
+  }
 }>()
 
 const emit = defineEmits<{
-  (e: 'updated', event: Event): void
+  (e: 'update', values: EventFormValues): void
+  (e: 'delete'): void
 }>()
 
-const router = useRouter()
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
 
-const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
-const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
-
-const { showDeleted, showUpdated, showCopied, showCopyError } = useEnhancedToast()
-
-const handleDelete = () => {
-  runDeleteTask(async () => {
-    await eventApi.delete(props.event.id)
-    showDeleted('Event')
-    showDeleteModal.value = false
-    router.push('/events')
-  })
+const submitEdit = (values: EventFormValues) => {
+  emit('update', values)
+  showEditModal.value = false
 }
 
-const handleEditSubmit = (values: EventFormValues) => {
-  runUpdateTask(
-    () => eventApi.update(props.event.id, values),
-    updated => {
-      showUpdated('Event')
-      emit('updated', updated)
-      showEditModal.value = false
-    }
-  )
+const confirmDelete = () => {
+  emit('delete')
+  showDeleteModal.value = false
 }
 
-const { copy: copyId, isSupported } = useClipboard({ source: props.event.id.toString() })
+const { copy: copyId } = useClipboard({ source: props.event.id.toString() })
 const { copy: copyName } = useClipboard({ source: props.event.name })
-const { copy: copyJson } = useClipboard({ source: examplePrettyJson })
 
 const handleCopyId = async () => {
   try {
@@ -113,15 +73,6 @@ const handleCopyName = async () => {
     showCopied('Name')
   } catch (err) {
     showCopyError('Name')
-  }
-}
-
-const handleCopyJson = async () => {
-  try {
-    await copyJson()
-    showCopied('Example')
-  } catch (err) {
-    showCopyError('Example')
   }
 }
 </script>
@@ -193,75 +144,19 @@ const handleCopyJson = async () => {
             v-for="tag in event.tags"
             :key="tag.id"
             variant="secondary"
-            class="cursor-pointer font-mono tracking-wide"
-            @click="router.push(`/tags/${tag.id}`)"
+            class="font-mono tracking-wide"
           >
             {{ tag.id }}
           </Badge>
         </div>
 
         <!-- Example -->
-        <TooltipProvider :delay-duration="200">
-          <Tooltip>
-            <TooltipTrigger>
-              <div class="flex items-center gap-2">
-                <Icon icon="radix-icons:file-text" class="h-4 w-4" />
-                <span
-                  >Example: <span class="font-mono">{{ exampleShortPreview }}</span></span
-                >
-              </div>
-            </TooltipTrigger>
-            <TooltipContent
-              side="bottom"
-              @click.stop
-              class="max-h-64 overflow-y-auto text-left text-xs"
-            >
-              <button
-                v-if="isSupported"
-                @click="handleCopyJson"
-                class="text-muted-foreground absolute top-2 right-2 text-[10px] hover:underline"
-              >
-                <Icon icon="radix-icons:copy" class="mr-1 inline h-3 w-3" />
-              </button>
-              <div class="font-mono leading-snug whitespace-pre-wrap select-text">
-                {{ examplePrettyJson }}
-              </div>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <EventJsonPreview />
       </div>
     </CardHeader>
 
     <CardContent>
-      <div class="mt-4">
-        <h3 class="text-muted-foreground mb-2 text-sm font-semibold">Associated Fields</h3>
-        <div class="overflow-x-auto">
-          <table class="border-muted w-full rounded-md border text-left text-sm">
-            <thead class="bg-muted/50">
-              <tr>
-                <th class="px-3 py-2">Name</th>
-                <th class="px-3 py-2">Type</th>
-                <th class="px-3 py-2">Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="field in event.fields"
-                :key="field.id"
-                class="border-muted hover:bg-muted/30 border-t"
-              >
-                <RouterLink :to="`/fields/${field.id}`" class="contents">
-                  <td class="px-3 py-2 font-mono">{{ field.name }}</td>
-                  <td class="px-3 py-2 capitalize">{{ field.field_type }}</td>
-                  <td class="text-muted-foreground px-3 py-2">
-                    {{ field.description || '—' }}
-                  </td>
-                </RouterLink>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <EventFieldsTable :fields="event.fields" />
     </CardContent>
 
     <!-- Modals -->
@@ -269,14 +164,14 @@ const handleCopyJson = async () => {
       :open="showEditModal"
       :event="event"
       :onClose="() => (showEditModal = false)"
-      :onSubmit="handleEditSubmit"
-      :isSaving="isSaving"
+      :onSubmit="submitEdit"
+      :isSaving="loading.isSaving"
     />
     <DeleteModal
       :open="showDeleteModal"
       :onClose="() => (showDeleteModal = false)"
-      :onConfirm="handleDelete"
-      :isDeleting="isDeleting"
+      :onConfirm="confirmDelete"
+      :isDeleting="loading.isDeleting"
     />
   </Card>
 </template>

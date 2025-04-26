@@ -2,17 +2,21 @@
 import TagItem from '../components/TagItem.vue'
 import { tagApi } from '@/modules/tags/api'
 import type { Tag } from '@/modules/tags/types'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import TagEditModal from '@/modules/tags/components/TagEditModal.vue'
 import type { TagFormValues } from '@/modules/tags/validation/tagSchema'
 import Header from '@/shared/components/layout/Header.vue'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
+import { Input } from '@/shared/components/ui/input'
+import { Button } from '@/shared/components/ui/button'
+import { Icon } from '@iconify/vue'
 
 const { showUpdated, showDeleted } = useEnhancedToast()
 
 const tags = ref<Tag[]>([])
+const searchQuery = ref('')
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
 
@@ -21,6 +25,15 @@ const showDeleteModal = ref(false)
 
 const selectedTagId = ref<string | null>(null)
 const editedTag = ref<Tag | null>(null)
+
+const filteredTags = computed(() => {
+  if (!searchQuery.value) return tags.value
+  const query = searchQuery.value.toLowerCase()
+  return tags.value.filter(tag => 
+    tag.id.toLowerCase().includes(query) || 
+    (tag.description?.toLowerCase().includes(query) ?? false)
+  )
+})
 
 const handleDelete = () => {
   if (!selectedTagId.value) return
@@ -61,9 +74,29 @@ onMounted(() => {
 <template>
   <div class="container mx-auto">
     <Header title="Tags" />
+    
+    <!-- Toolbar -->
+    <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex-1">
+        <Input
+          v-model="searchQuery"
+          placeholder="Search tags..."
+          class="max-w-xs"
+        >
+        </Input>
+      </div>
+      <Button as-child>
+        <RouterLink to="/tags/new">
+          <Icon icon="radix-icons:plus" class="mr-2 h-4 w-4" />
+          Add Tag
+        </RouterLink>
+      </Button>
+    </div>
+
+    <!-- Tags Grid -->
     <div class="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
       <TagItem
-        v-for="tag in tags"
+        v-for="tag in filteredTags"
         :key="tag.id"
         :tag="tag"
         @updateMe="
@@ -81,6 +114,7 @@ onMounted(() => {
       />
     </div>
 
+    <!-- Modals -->
     <TagEditModal
       v-if="editedTag"
       :open="showEditModal"

@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import TagsPage from './pages/TagsPage.vue'
+import TagCreatePage from './pages/TagCreatePage.vue'
 
 export const tagsRoutes: RouteRecordRaw[] = [
   {
@@ -10,10 +11,10 @@ export const tagsRoutes: RouteRecordRaw[] = [
   {
     path: '/tags/new',
     name: 'NewTag',
-    component: TagsPage,
+    component: TagCreatePage,
   },
   {
-    path: '/tags/:name',
+    path: '/tags/:id',
     name: 'TagDetails',
     component: TagsPage,
   },

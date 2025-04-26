@@ -6,12 +6,36 @@ import EventDetailsCard from '@/modules/events/components/EventDetailsCard.vue'
 import { eventApi } from '@/modules/events/api'
 import Header from '@/shared/components/layout/Header.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
+import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts'
+import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
+import { useRouter } from 'vue-router'
+
 const route = useRoute()
 const event = ref<Event | null>(null)
-const { run, isLoading } = useAsyncTask()
+const router = useRouter()
 
-const handleUpdate = (updatedEvent: Event) => {
-  event.value = updatedEvent
+const { run, isLoading } = useAsyncTask()
+const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
+const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
+
+const { showDeleted, showUpdated } = useEnhancedToast()
+
+const handleDelete = () => {
+  runDeleteTask(async () => {
+    await eventApi.delete(event.value!.id)
+    showDeleted('Event')
+    router.push('/events')
+  })
+}
+
+const handleUpdate = (values: EventFormValues) => {
+  runUpdateTask(
+    () => eventApi.update(event.value!.id, values),
+    updated => {
+      showUpdated('Event')
+      event.value = updated
+    }
+  )
 }
 
 onMounted(() => {
@@ -28,6 +52,12 @@ onMounted(() => {
 <template>
   <div>
     <Header title="Event details" backLink fallbackBackLink="/events" />
-    <EventDetailsCard v-if="event" :event="event!" @updated="handleUpdate" />
+    <EventDetailsCard
+      v-if="event"
+      :event="event"
+      :loading="{ isSaving, isDeleting }"
+      @update="handleUpdate"
+      @delete="handleDelete"
+    />
   </div>
 </template>
