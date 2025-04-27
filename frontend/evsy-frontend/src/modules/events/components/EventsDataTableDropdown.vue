@@ -8,46 +8,23 @@ import {
 } from '@/shared/components/ui/dropdown-menu'
 import { Icon } from '@iconify/vue'
 import type { Event } from '@/modules/events/types'
-import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
-import { eventApi } from '@/modules/events/api'
-import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
-import EventEditModal from './EventEditModal.vue'
-import { ref } from 'vue'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
-import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts'
-
-const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
-const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
-const { showDeleted, showUpdated } = useEnhancedToast()
 
 const props = defineProps<{
   event: Event
-  handleUpdateRow: (updatedEvent: Event) => void
-  handleDeleteRow: () => void
 }>()
 
+const emit = defineEmits<{
+  editMe: [event: Event]
+  deleteMe: [event: Event]
+}>()
+
+const handleEdit = () => {
+  emit('editMe', props.event)
+}
+
 const handleDelete = () => {
-  runDeleteTask(async () => {
-    await eventApi.delete(props.event.id)
-    showDeleted('Event')
-    showDeleteModal.value = false
-    props.handleDeleteRow()
-  })
+  emit('deleteMe', props.event)
 }
-
-const handleEditSubmit = (values: EventFormValues) => {
-  runUpdateTask(
-    () => eventApi.update(props.event.id, values),
-    updated => {
-      showUpdated('Event')
-      showEditModal.value = false
-      props.handleUpdateRow(updated)
-    }
-  )
-}
-
-const showEditModal = ref(false)
-const showDeleteModal = ref(false)
 </script>
 
 <template>
@@ -59,23 +36,8 @@ const showDeleteModal = ref(false)
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
-      <DropdownMenuItem @click="showEditModal = true"> Edit event </DropdownMenuItem>
-      <DropdownMenuItem @click="showDeleteModal = true"> Delete event </DropdownMenuItem>
+      <DropdownMenuItem @click="handleEdit"> Edit event </DropdownMenuItem>
+      <DropdownMenuItem @click="handleDelete"> Delete event </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
-
-  <EventEditModal
-    :open="showEditModal"
-    :event="event"
-    :onClose="() => (showEditModal = false)"
-    :onSubmit="handleEditSubmit"
-    :isSaving="isSaving"
-  />
-  <DeleteModal
-    :open="showDeleteModal"
-    :onClose="() => (showDeleteModal = false)"
-    :onConfirm="handleDelete"
-    :isDeleting="isDeleting"
-    description="Once deleted, this event will be unlinked from any events it's part of."
-  />
 </template>

@@ -6,8 +6,23 @@ import EventsDataTable from '@/modules/events/components/EventsDataTable.vue'
 import Header from '@/shared/components/layout/Header.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { getEventColumns } from '@/modules/events/components/eventColumns'
+import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
+import type { EventFormValues } from '@/modules/events/validation/eventSchema'
+import EventEditModal from '@/modules/events/components/EventEditModal.vue'
+import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
+
+const { isLoading, run } = useAsyncTask()
+const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
+const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
+const { showUpdated, showDeleted } = useEnhancedToast()
 
 const events = ref<Event[]>([])
+
+const selectedEventId = ref<number | null>(null)
+const editedEvent = ref<Event | null>(null)
+
+const showEditModal = ref(false)
+const showDeleteModal = ref(false)
 
 const updateRow = (updated: Event) => {
   const index = events.value.findIndex(e => e.id === updated.id)
@@ -18,8 +33,42 @@ const updateRow = (updated: Event) => {
 const deleteRow = (id: number) => {
   events.value = events.value.filter(e => e.id !== id)
 }
-const columns = getEventColumns(updateRow, deleteRow)
-const { run, isLoading } = useAsyncTask()
+
+const handleDelete = () => {
+  if (!selectedEventId.value) return
+
+  runDeleteTask(async () => {
+    await eventApi.delete(selectedEventId.value!)
+    showDeleted('Event')
+    showDeleteModal.value = false
+
+    deleteRow(selectedEventId.value!)
+    selectedEventId.value = null
+  })
+}
+
+const handleUpdate = (values: EventFormValues) => {
+  runUpdateTask(
+    () => eventApi.update(editedEvent.value!.id, values),
+    updated => {
+      showUpdated('Event')
+      updateRow(updated)
+      showEditModal.value = false
+    }
+  )
+}
+
+const selectEditEvent = (event: Event) => {
+  editedEvent.value = event
+  showEditModal.value = true
+}
+
+const selectDeleteEvent = (event: Event) => {
+  selectedEventId.value = event.id
+  showDeleteModal.value = true
+}
+
+const columns = getEventColumns(selectEditEvent, selectDeleteEvent)
 
 onMounted(() => {
   run(
@@ -37,5 +86,22 @@ onMounted(() => {
     <div class="container mx-auto">
       <EventsDataTable :columns="columns" :data="events" />
     </div>
+  
+  <!-- Modals -->
+  <EventEditModal
+    v-if="editedEvent"
+    :open="showEditModal"
+    :event="editedEvent"
+    :onClose="() => (showEditModal = false)"
+    :onSubmit="handleUpdate"
+    :isSaving="isSaving"
+  />
+  <DeleteModal
+    :open="showDeleteModal"
+    :onClose="() => (showDeleteModal = false)"
+    :onConfirm="handleDelete"
+    :isDeleting="isDeleting"
+    description="Once deleted, this event will be unlinked from any events it's part of."
+  />
   </div>
 </template>

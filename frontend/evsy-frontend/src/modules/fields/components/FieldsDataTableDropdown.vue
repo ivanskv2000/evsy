@@ -8,38 +8,23 @@ import {
 } from '@/shared/components/ui/dropdown-menu'
 import { Icon } from '@iconify/vue'
 import type { Field } from '@/modules/fields/types'
-import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
-import { fieldApi } from '@/modules/fields/api'
-import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
-import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
-import { ref } from 'vue'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
-import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
-
-const { isLoading: isDeleting, run: runDeleteTask } = useAsyncTask()
-const { showDeleted } = useEnhancedToast()
 
 const props = defineProps<{
   field: Field
-  handleUpdateRow: (updatedField: FieldFormValues) => void
-  handleDeleteRow: () => void
 }>()
 
-const handleUpdate = (updatedField: FieldFormValues) => {
-  props.handleUpdateRow(updatedField)
+const emit = defineEmits<{
+  editMe: [field: Field]
+  deleteMe: [field: Field]
+}>()
+
+const handleEdit = () => {
+  emit('editMe', props.field)
 }
 
 const handleDelete = () => {
-  runDeleteTask(async () => {
-    await fieldApi.delete(props.field.id)
-    showDeleted('Field')
-    showDeleteModal.value = false
-    props.handleDeleteRow()
-  })
+  emit('deleteMe', props.field)
 }
-
-const showEditModal = ref(false)
-const showDeleteModal = ref(false)
 </script>
 
 <template>
@@ -51,26 +36,8 @@ const showDeleteModal = ref(false)
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
-      <!-- <DropdownMenuLabel>Actions</DropdownMenuLabel> -->
-      <DropdownMenuItem @click="showEditModal = true"> Edit field </DropdownMenuItem>
-      <DropdownMenuItem @click="showDeleteModal = true"> Delete field </DropdownMenuItem>
-      <!-- <DropdownMenuSeparator />
-      <DropdownMenuItem>View customer</DropdownMenuItem>
-      <DropdownMenuItem>View payment details</DropdownMenuItem> -->
+      <DropdownMenuItem @click="handleEdit"> Edit field </DropdownMenuItem>
+      <DropdownMenuItem @click="handleDelete"> Delete field </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
-
-  <FieldEditModal
-    :open="showEditModal"
-    :field="field"
-    :onClose="() => (showEditModal = false)"
-    :onSubmit="handleUpdate"
-  />
-  <DeleteModal
-    :open="showDeleteModal"
-    :onClose="() => (showDeleteModal = false)"
-    :onConfirm="handleDelete"
-    :isDeleting="isDeleting"
-    description="Once deleted, this field will be unlinked from any events it's part of."
-  />
 </template>

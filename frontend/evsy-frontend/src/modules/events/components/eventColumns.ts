@@ -8,8 +8,8 @@ import { Badge } from '@/shared/components/ui/badge'
 
 
 export function getEventColumns(
-  onUpdated: (event: Event) => void,
-  onDeleted: (id: number) => void
+  onEdit: (event: Event) => void,
+  onDelete: (event: Event) => void
 ): ColumnDef<Event>[] {
   return [
     {
@@ -79,8 +79,8 @@ export function getEventColumns(
           { class: 'relative' },
           h(EventsDataTableDropdown, {
             event,
-            handleUpdateRow: (updatedEvent: Event) => onUpdated(updatedEvent),
-            handleDeleteRow: () => onDeleted(event.id),
+            onEditMe: () => onEdit(event),
+            onDeleteMe: () => onDelete(event),
           })
         )
       },
