@@ -10,26 +10,28 @@ import {
   TooltipTrigger,
 } from '@/shared/components/ui/tooltip'
 
-const exampleValue = {
-  user_id: 123,
-  event_date: '2021-01-01',
-  event_time: '2021-01-01T00:00:00Z',
-  device: 'mobile',
-  metadata: {
-    source: 'landing',
-    campaign: 'spring_sale',
-  },
-}
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 
-function getJsonPreview(obj: object, maxKeys = 2): string {
-  const entries = Object.entries(obj)
+const props = defineProps<{
+  value: JsonValue
+  maxKeys?: number
+}>()
+
+function getJsonPreview(value: JsonValue, maxKeys = 2): string {
+  if (value === null) return 'null'
+  if (typeof value !== 'object') return JSON.stringify(value)
+  if (Array.isArray(value)) {
+    const preview = value.slice(0, maxKeys).map(v => getJsonPreview(v, 1)).join(', ')
+    const suffix = value.length > maxKeys ? ', ...' : ''
+    return `[${preview}${suffix}]`
+  }
+  
+  const entries = Object.entries(value)
   const limited = entries.slice(0, maxKeys)
 
   const formatted = limited
-    .map(([key, value]) => {
-      const val =
-        typeof value === 'string' ? `"${value}"` : typeof value === 'object' ? '{...}' : value
-      return `${key}: ${val}`
+    .map(([key, val]) => {
+      return `${key}: ${getJsonPreview(val, 1)}`
     })
     .join(', ')
 
@@ -37,18 +39,18 @@ function getJsonPreview(obj: object, maxKeys = 2): string {
   return `{ ${formatted}${suffix} }`
 }
 
-const exampleShortPreview = computed(() => getJsonPreview(exampleValue))
-const examplePrettyJson = computed(() => JSON.stringify(exampleValue, null, 2))
+const shortPreview = computed(() => getJsonPreview(props.value, props.maxKeys))
+const prettyJson = computed(() => JSON.stringify(props.value, null, 2))
 
-const { copy: copyJson, isSupported } = useClipboard({ source: examplePrettyJson })
+const { copy: copyJson, isSupported } = useClipboard({ source: prettyJson })
 const { showCopied, showCopyError } = useEnhancedToast()
 
 const handleCopyJson = async () => {
   try {
     await copyJson()
-    showCopied('Example')
+    showCopied('JSON')
   } catch (err) {
-    showCopyError('Example')
+    showCopyError('JSON')
   }
 }
 </script>
@@ -57,10 +59,7 @@ const handleCopyJson = async () => {
   <TooltipProvider :delay-duration="200">
     <Tooltip>
       <TooltipTrigger>
-        <div class="flex items-center gap-2">
-          <Icon icon="radix-icons:file-text" class="h-4 w-4" />
-          <span>Example: <span class="font-mono">{{ exampleShortPreview }}</span></span>
-        </div>
+            <div class="font-mono">{{ shortPreview }}</div>
       </TooltipTrigger>
       <TooltipContent
         side="bottom"
@@ -75,7 +74,7 @@ const handleCopyJson = async () => {
           <Icon icon="radix-icons:copy" class="mr-1 inline h-3 w-3" />
         </button>
         <div class="font-mono leading-snug whitespace-pre-wrap select-text">
-          {{ examplePrettyJson }}
+          {{ prettyJson }}
         </div>
       </TooltipContent>
     </Tooltip>
