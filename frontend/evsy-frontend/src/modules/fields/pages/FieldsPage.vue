@@ -11,7 +11,7 @@ import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 
-const { isLoading, run } = useAsyncTask()
+const { run, isLoading } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
 const { showUpdated, showDeleted } = useEnhancedToast()

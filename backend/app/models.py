@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String, func
+from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String, func, JSON
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -81,6 +81,7 @@ class Field(Base, TimestampMixin):
     name = Column(String, unique=True, index=True)
     description = Column(String, nullable=True)
     field_type = Column(Enum(FieldType), nullable=False)
+    example = Column(JSON, nullable=True)
 
     events = relationship("Event", secondary="event_fields", back_populates="fields", viewonly=True)
     field_links = relationship("EventField", back_populates="field", cascade="all, delete-orphan")

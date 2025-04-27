@@ -70,6 +70,24 @@ def generate_field_description():
         source=random.choice(SOURCES)
     )
 
+def generate_field_example(field_type: models.FieldType):
+    if field_type == models.FieldType.string:
+        return fake.word()
+    elif field_type == models.FieldType.integer:
+        return random.randint(0, 1000000)
+    elif field_type == models.FieldType.number:
+        return random.uniform(0, 1000000)
+    elif field_type == models.FieldType.boolean:
+        return random.choice([True, False])
+    elif field_type == models.FieldType.array:
+        return [fake.word() for _ in range(random.randint(1, 10))]
+    elif field_type == models.FieldType.object:
+        return {
+            fake.word(part_of_speech="noun"): fake.word(part_of_speech="adjective") for _ in range(random.randint(1, 5))
+        }
+    else:
+        return None
+
 
 def seed_fields(db: Session, count: int = 20):
     existing_names = set()
@@ -78,10 +96,14 @@ def seed_fields(db: Session, count: int = 20):
         name = generate_field_slug(existing_names)
         existing_names.add(name)
 
+        field_type = random.choice(list(models.FieldType))
+        example = generate_field_example(field_type)
+
         db_field = models.Field(
             name=name,
             description=generate_field_description(),
-            field_type=random.choice(list(models.FieldType))
+            field_type=field_type,
+            example=example
         )
         db.add(db_field)
 

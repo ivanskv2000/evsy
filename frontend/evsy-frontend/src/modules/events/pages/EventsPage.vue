@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { eventApi } from '@/modules/events/api'
 import type { Event } from '@/modules/events/types'
-import EventsDataTable from '@/modules/events/components/EventsDataTable.vue'
+import EventsDataTable from '../components/EventsDataTable.vue'
 import Header from '@/shared/components/layout/Header.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { getEventColumns } from '@/modules/events/components/eventColumns'

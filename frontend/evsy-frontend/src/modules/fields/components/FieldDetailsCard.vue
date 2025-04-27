@@ -127,9 +127,9 @@ const handleCopyName = async () => {
           <span>ID: {{ field.id }}</span>
         </div>
         <!-- Example -->
-        <div class="flex items-center gap-2">
+        <div v-if="field.example" class="flex items-center gap-2">
           <Icon icon="radix-icons:file-text" class="h-4 w-4" />
-          <span>Example: <span class="font-mono">aa9d3c3404bcef58965e4bb1fe9fb23c</span></span>
+          <span>Example: <span class="font-mono">{{ field.example }}</span></span>
         </div>
         <!-- Used in -->
         <div class="flex items-center gap-2">

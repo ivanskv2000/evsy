@@ -12,6 +12,7 @@ export type Field = {
   name: string
   description: string | null
   field_type: FieldType
+  example: string | number | boolean | any[] | Record<string, any> | null
   created_at: string
   updated_at: string
 }
@@ -20,10 +21,12 @@ export type FieldFormData = {
   name: string
   description?: string | null
   field_type: FieldType
+  example?: string | number | boolean | any[] | Record<string, any> | null
 }
 
 export type FieldValidationErrors = {
   name?: string[]
   description?: string[]
   field_type?: string[]
+  example?: string[]
 }
