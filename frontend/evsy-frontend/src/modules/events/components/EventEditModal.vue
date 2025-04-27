@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Dialog, DialogContent, DialogTitle } from '@/shared/components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/shared/components/ui/dialog'
 import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts'
 import EventForm from './EventForm.vue'
 import type { Event } from '@/modules/events/types'
@@ -11,6 +11,7 @@ import { tagApi } from '@/modules/tags/api'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 
 const props = defineProps<{
+  description?: string
   event: Event
   open: boolean
   onClose: () => void
@@ -37,6 +38,9 @@ onMounted(() => {
   <Dialog :open="props.open" @update:open="val => !val && props.onClose()">
     <DialogContent>
       <DialogTitle>Edit Event</DialogTitle>
+      <DialogDescription>
+          {{ description }}
+      </DialogDescription>
       <EventForm
         :event="event"
         :availableFields="fields"
