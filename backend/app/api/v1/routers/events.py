@@ -86,6 +86,7 @@ def update_event(
     if len(db_fields) != len(event.fields):
         raise HTTPException(status_code=400, detail="One or more fields do not exist.")
 
+    _ = crud.get_or_create_tags(db, event.tags)
     db_event = crud.update_event(db=db, event_id=event_id, event=event)
     if db_event is None:
         raise HTTPException(status_code=404, detail="Event not found")

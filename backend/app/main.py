@@ -1,12 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.v1.routers import events, fields, tags
+from app.api.v1.routers import events, fields, tags, generic
 
 from . import models
 from .database import engine
+from app.settings import Settings
 
 models.Base.metadata.create_all(bind=engine)
+
+settings = Settings()
 
 app = FastAPI(
     title="Evsy API",
@@ -32,6 +35,8 @@ app = FastAPI(
     ],
 )
 
+app.state.settings = settings
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3012", "http://localhost:5173", "http://localhost:5174"],  # 👈 тут укажи адрес фронта
@@ -43,7 +48,7 @@ app.add_middleware(
 app.include_router(events.router, prefix="/api/v1", tags=["events"])
 app.include_router(tags.router, prefix="/api/v1", tags=["tags"])
 app.include_router(fields.router, prefix="/api/v1", tags=["fields"])
-
+app.include_router(generic.router, prefix="/api/v1", tags=["generic"])
 
 @app.get("/")
 def read_root():

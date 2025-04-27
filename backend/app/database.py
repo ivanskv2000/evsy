@@ -1,12 +1,12 @@
 import os
+from app.settings import Settings
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-# Определим базу данных
-DATABASE_URL = os.getenv(
-    "DATABASE_URL", "sqlite:///./test.db"
-)  # Если переменная окружения не задана, используем SQLite
+settings = Settings()
+
+DATABASE_URL = settings.database_url
 
 # Создаем движок для работы с базой данных
 engine = create_engine(
