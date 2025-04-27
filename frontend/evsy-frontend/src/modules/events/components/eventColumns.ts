@@ -47,6 +47,7 @@ export function getEventColumns(
     {
       accessorKey: 'tags',
       enableHiding: false,
+      enableSorting: false,
       header: ({ column }) =>
         h(DataTableColumnHeader<Event, unknown>, {
           column: column,
