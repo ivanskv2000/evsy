@@ -48,7 +48,7 @@ const handleDelete = () => {
   })
 }
 
-const handleEditSubmit = (values: TagFormValues) => {
+const handleUpdate = (values: TagFormValues) => {
   runUpdateTask(
     () => tagApi.update(editedTag.value!.id, values),
     updated => {
@@ -120,7 +120,7 @@ onMounted(() => {
       :open="showEditModal"
       :tag="editedTag"
       :onClose="() => (showEditModal = false)"
-      :onSubmit="handleEditSubmit"
+      :onSubmit="handleUpdate"
       :isSaving="isSaving"
     />
     <DeleteModal
