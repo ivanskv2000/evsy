@@ -24,7 +24,18 @@ import { useClipboard } from '@vueuse/core'
 import { Badge } from '@/shared/components/ui/badge'
 import { Icon } from '@iconify/vue'
 import EventFieldsTable from './EventFieldsTable.vue'
-import EventJsonPreview from './EventJsonPreview.vue'
+import JsonPreview from '@/shared/components/JsonPreview.vue'
+
+const exampleValue = {
+  user_id: 123,
+  event_date: '2021-01-01',
+  event_time: '2021-01-01T00:00:00Z',
+  device: 'mobile',
+  metadata: {
+    source: 'landing',
+    campaign: 'spring_sale',
+  },
+}
 
 const router = useRouter()
 const { showCopied, showCopyError } = useEnhancedToast()
@@ -86,10 +97,7 @@ const handleCopyName = async () => {
           <TooltipProvider :delay-duration="800">
             <Tooltip>
               <TooltipTrigger>
-                <CardTitle
-                  class="cursor-pointer font-mono text-xl tracking-wide"
-                  @click="handleCopyName"
-                >
+                <CardTitle class="cursor-pointer font-mono text-xl tracking-wide" @click="handleCopyName">
                   {{ event.name }}
                 </CardTitle>
               </TooltipTrigger>
@@ -102,11 +110,7 @@ const handleCopyName = async () => {
           <TooltipProvider :delay-duration="800">
             <Tooltip>
               <TooltipTrigger>
-                <Badge
-                  variant="outline"
-                  class="cursor-pointer text-xs tracking-wide"
-                  @click="handleCopyId"
-                >
+                <Badge variant="outline" class="cursor-pointer text-xs tracking-wide" @click="handleCopyId">
                   ID: {{ event.id }}
                 </Badge>
               </TooltipTrigger>
@@ -134,24 +138,26 @@ const handleCopyName = async () => {
 
       <!-- Details section -->
       <div class="text-muted-foreground mt-4 space-y-3 text-sm">
+
         <!-- Tags -->
-        <div v-if="event.tags.length > 0" class="flex flex-wrap items-center gap-2">
+        <div v-if="event.tags.length > 0" class="flex flex-wrap items-center gap-1">
           <div class="flex items-center gap-1">
             <Icon icon="radix-icons:component-1" class="h-4 w-4" />
             <span>Tags:</span>
           </div>
-          <Badge
-            v-for="tag in event.tags"
-            :key="tag.id"
-            variant="secondary"
-            class="font-mono tracking-wide"
-          >
+          <Badge v-for="tag in event.tags" :key="tag.id" variant="secondary" class="font-mono tracking-wide">
             {{ tag.id }}
           </Badge>
         </div>
 
         <!-- Example -->
-        <EventJsonPreview />
+        <div class="flex flex-wrap items-center gap-1">
+          <div class="flex items-center gap-1">
+            <Icon icon="radix-icons:file-text" class="h-4 w-4" />
+            <span>Example:</span>
+          </div>
+          <JsonPreview :value="exampleValue" />
+        </div>
       </div>
     </CardHeader>
 
@@ -160,18 +166,9 @@ const handleCopyName = async () => {
     </CardContent>
 
     <!-- Modals -->
-    <EventEditModal
-      :open="showEditModal"
-      :event="event"
-      :onClose="() => (showEditModal = false)"
-      :onSubmit="submitEdit"
-      :isSaving="loading.isSaving"
-    />
-    <DeleteModal
-      :open="showDeleteModal"
-      :onClose="() => (showDeleteModal = false)"
-      :onConfirm="confirmDelete"
-      :isDeleting="loading.isDeleting"
-    />
+    <EventEditModal :open="showEditModal" :event="event" :onClose="() => (showEditModal = false)" :onSubmit="submitEdit"
+      :isSaving="loading.isSaving" />
+    <DeleteModal :open="showDeleteModal" :onClose="() => (showDeleteModal = false)" :onConfirm="confirmDelete"
+      :isDeleting="loading.isDeleting" />
   </Card>
 </template>

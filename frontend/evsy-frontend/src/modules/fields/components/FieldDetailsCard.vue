@@ -23,6 +23,7 @@ import { useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
 import { Badge } from '@/shared/components/ui/badge'
 import { Icon } from '@iconify/vue'
+import JsonPreview from '@/shared/components/JsonPreview.vue'
 
 const router = useRouter()
 const { showCopied, showCopyError } = useEnhancedToast()
@@ -118,23 +119,32 @@ const handleCopyName = async () => {
 
       <!-- Details section -->
       <div class="text-muted-foreground mt-4 space-y-3 text-sm">
+
         <!-- ID -->
-        <div
-          class="hover:text-foreground flex cursor-pointer flex-wrap items-center gap-2"
-          @click="handleCopyId"
-        >
-          <Icon icon="radix-icons:id-card" class="h-4 w-4" />
-          <span>ID: {{ field.id }}</span>
+        <div class="flex flex-wrap items-center gap-1 hover:text-foreground cursor-pointer" @click="handleCopyId">
+          <div class="flex items-center gap-1">
+            <Icon icon="radix-icons:id-card" class="h-4 w-4" />
+            <span>ID:</span>
+          </div>
+          <span>{{ field.id }}</span>
         </div>
+
         <!-- Example -->
-        <div v-if="field.example" class="flex items-center gap-2">
-          <Icon icon="radix-icons:file-text" class="h-4 w-4" />
-          <span>Example: <span class="font-mono">{{ field.example }}</span></span>
+        <div class="flex flex-wrap items-center gap-1">
+          <div class="flex items-center gap-1">
+            <Icon icon="radix-icons:file-text" class="h-4 w-4" />
+            <span>Example:</span>
+          </div>
+          <JsonPreview :value="field.example" />
         </div>
+
         <!-- Used in -->
-        <div class="flex items-center gap-2">
-          <Icon icon="radix-icons:bar-chart" class="h-4 w-4" />
-          <span>Used in: 0 events</span>
+        <div class="flex flex-wrap items-center gap-1">
+          <div class="flex items-center gap-1">
+            <Icon icon="radix-icons:bar-chart" class="h-4 w-4" />
+            <span>Used in:</span>
+          </div>
+          <span>0 events</span>
         </div>
       </div>
     </CardHeader>
