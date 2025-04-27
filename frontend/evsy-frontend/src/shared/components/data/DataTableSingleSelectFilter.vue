@@ -48,7 +48,6 @@ export default {
     <Button
       :disabled="!showClearButton"
       variant="ghost"
-      size="sm"
       @click="column.setFilterValue('')"
     >
       <Icon class="h-4 w-4" icon="radix-icons:cross-2" />
