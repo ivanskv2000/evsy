@@ -7,5 +7,5 @@ class Settings(BaseSettings):
     secret_key: Optional[str] = None
 
     class Config:
-        env_file = ".env"  # указываем откуда грузить переменные
+        env_file = ".env"
         env_file_encoding = "utf-8"
