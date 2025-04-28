@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from app import models
+from app.schemas import LinkType
 from faker import Faker
 import random
 
@@ -57,6 +58,14 @@ def generate_event_description():
         interaction=random.choice(INTERACTIONS),
     )
 
+def generate_event_link():
+    link_type = random.choice(list(LinkType))
+    return {
+        "type": link_type,
+        "url": faker.url(),
+        "label": None if link_type != LinkType.other else faker.company(),
+    }
+
 def seed_events(db: Session, count: int = 10):
     tags = db.query(models.Tag).all()
     fields = db.query(models.Field).all()
@@ -73,9 +82,12 @@ def seed_events(db: Session, count: int = 10):
             name = generate_event_slug()
         used_names.add(name)
 
+        links = [generate_event_link() for _ in range(random.randint(0, 4))]
+
         event = models.Event(
             name=name,
             description=generate_event_description(),
+            links=links,
         )
         db.add(event)
         db.commit()

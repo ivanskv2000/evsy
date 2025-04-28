@@ -1,4 +1,5 @@
-from app.database import Base, engine
+from app.database import engine
+from app import models
 from sqlalchemy import MetaData
 
 def reset_database():
@@ -11,7 +12,7 @@ def reset_database():
     meta.drop_all(bind=engine)
 
     print("🛠 Recreating all tables...")
-    Base.metadata.create_all(bind=engine)
+    models.Base.metadata.create_all(bind=engine)
 
     print("✅ Database reset complete.")
 

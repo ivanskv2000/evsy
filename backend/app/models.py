@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String, func, JSON
+from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String, Boolean, JSON, func
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -27,6 +27,7 @@ class Event(Base, TimestampMixin):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     description = Column(String, nullable=True)
+    links = Column(JSON, nullable=True)
 
     # Связь с тегами
     tag_links = relationship(

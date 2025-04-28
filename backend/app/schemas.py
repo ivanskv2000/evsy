@@ -13,6 +13,21 @@ class FieldType(str, Enum):
     array = "array"
     object = "object"
 
+class LinkType(str, Enum):
+    figma = "figma"
+    miro = "miro"
+    confluence = "confluence"
+    notion = "notion"
+    loom = "loom"
+    slack = "slack"
+    google = "google"
+    other = "other"
+
+class EventLink(BaseModel):
+    type: LinkType
+    url: str
+    label: Optional[str] = None
+
 
 # Базовая схема для тега
 class TagBase(BaseModel):
@@ -59,8 +74,9 @@ class FieldOut(FieldBase):
 class EventBase(BaseModel):
     name: str
     description: Optional[str] = None
-    tags: List[str] = []  # Список slug'ов тегов
-    fields: List[int] = []  # Список ID полей
+    links: Optional[List[EventLink]] = None
+    tags: List[str] = []
+    fields: List[int] = []
 
 
 # Для создания события
@@ -73,6 +89,7 @@ class EventOut(BaseModel):
     id: int
     name: str
     description: Optional[str] = None
+    links: Optional[List[EventLink]] = None
     tags: list[TagOut]
     fields: list[FieldOut]
     created_at: datetime
