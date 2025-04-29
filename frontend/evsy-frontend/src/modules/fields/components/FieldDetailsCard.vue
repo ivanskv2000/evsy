@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { Field } from '@/modules/fields/types'
-import { Button } from '@/shared/components/ui/button'
+import { Button } from '@/shared/ui/button'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
@@ -12,16 +12,16 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-} from '@/shared/components/ui/card'
+} from '@/shared/ui/card'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/shared/components/ui/tooltip'
+} from '@/shared/ui/tooltip'
 import { useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
-import { Badge } from '@/shared/components/ui/badge'
+import { Badge } from '@/shared/ui/badge'
 import { Icon } from '@iconify/vue'
 import JsonPreview from '@/shared/components/JsonPreview.vue'
 import DetailsCardLayout from '@/shared/components/layout/DetailsCardLayout.vue'

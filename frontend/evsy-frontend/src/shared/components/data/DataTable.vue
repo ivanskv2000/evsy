@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/shared/components/ui/table'
+} from '@/shared/ui/table'
 
 import { FlexRender } from '@tanstack/vue-table'
 

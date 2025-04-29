@@ -8,7 +8,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/shared/components/ui/tooltip'
+} from '@/shared/ui/tooltip'
 
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 

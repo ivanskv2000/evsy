@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { Button } from '@/shared/components/ui/button'
+import { Button } from '@/shared/ui/button'
 import { Icon } from '@iconify/vue'
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList
-} from '@/shared/components/ui/navigation-menu'
+} from '@/shared/ui/navigation-menu'
 import ThemeProvider from '@/shared/components/providers/theme-provider.vue'
 </script>
 

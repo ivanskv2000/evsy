@@ -8,13 +8,13 @@ import {
   CardTitle,
   CardDescription,
   CardFooter,
-} from '@/shared/components/ui/card'
+} from '@/shared/ui/card'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/shared/components/ui/tooltip'
+} from '@/shared/ui/tooltip'
 
 const props = defineProps<{
   title: string

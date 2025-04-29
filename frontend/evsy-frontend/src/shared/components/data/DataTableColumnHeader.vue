@@ -3,14 +3,14 @@ import type { Column } from '@tanstack/vue-table'
 import { Icon } from '@iconify/vue'
 
 import { cn } from '@/shared/utils/general'
-import { Button } from '@/shared/components/ui/button'
+import { Button } from '@/shared/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/shared/components/ui/dropdown-menu'
+} from '@/shared/ui/dropdown-menu'
 
 interface DataTableColumnHeaderProps {
   column: Column<TData, TValue>

@@ -4,7 +4,7 @@ import DataTableInputFilter from '@/shared/components/data/DataTableInputFilter.
 import DataTableSingleSelectFilter from '@/shared/components/data/DataTableSingleSelectFilter.vue'
 import { Icon } from '@iconify/vue'
 import { computed } from 'vue'
-import { Button } from '@/shared/components/ui/button'
+import { Button } from '@/shared/ui/button'
 import DataTablePagination from '@/shared/components/data/DataTablePagination.vue'
 import { FieldType } from '@/modules/fields/types'
 import DataTable from '@/shared/components/data/DataTable.vue'

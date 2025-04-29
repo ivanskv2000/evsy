@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Dialog, DialogContent, DialogTitle } from '@/shared/components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle } from '@/shared/ui/dialog'
 import type { TagFormValues } from '@/modules/tags/validation/tagSchema'
 import TagForm from '@/modules/tags/components/TagForm.vue'
 import type { Tag } from '@/modules/tags/types'

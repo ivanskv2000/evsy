@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import { Input } from '@/shared/components/ui/input'
-import { Button } from '@/shared/components/ui/button'
+import { Input } from '@/shared/ui/input'
+import { Button } from '@/shared/ui/button'
 import {
   FormField,
   FormItem,
   FormLabel,
   FormControl,
   FormMessage,
-} from '@/shared/components/ui/form'
+} from '@/shared/ui/form'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/components/ui/select'
+} from '@/shared/ui/select'
 import type { Field } from '@/modules/fields/types'
 import { FieldType } from '@/modules/fields/types'
 import { watchEffect } from 'vue'

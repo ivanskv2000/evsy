@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Button } from '@/shared/components/ui/button'
+import { Button } from '@/shared/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/shared/components/ui/dropdown-menu'
+} from '@/shared/ui/dropdown-menu'
 import { Icon } from '@iconify/vue'
 import type { Event } from '@/modules/events/types'
 

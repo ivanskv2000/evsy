@@ -10,7 +10,7 @@ import Header from '@/shared/components/layout/Header.vue'
 import {
   Card,
   CardContent
-} from '@/shared/components/ui/card'
+} from '@/shared/ui/card'
 import { fieldApi } from '@/modules/fields/api'
 import type { Field } from '@/modules/fields/types'
 import type { Tag } from '@/modules/tags/types'

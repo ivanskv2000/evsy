@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Button } from '@/shared/components/ui/button'
-import { Badge } from '@/shared/components/ui/badge'
+import { Button } from '@/shared/ui/button'
+import { Badge } from '@/shared/ui/badge'
 import { useClipboard } from '@vueuse/core'
 import { Icon } from '@iconify/vue'
 import {
@@ -8,7 +8,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/shared/components/ui/tooltip'
+} from '@/shared/ui/tooltip'
 import type { Tag } from '@/modules/tags/types'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 

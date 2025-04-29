@@ -9,7 +9,7 @@ import Header from '@/shared/components/layout/Header.vue'
 import {
   Card,
   CardContent
-} from '@/shared/components/ui/card'
+} from '@/shared/ui/card'
 
 const { isLoading, run } = useAsyncTask()
 const { showCreated } = useEnhancedToast()

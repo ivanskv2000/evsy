@@ -6,8 +6,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogDescription,
-} from '@/shared/components/ui/dialog'
-import { Button } from '@/shared/components/ui/button'
+} from '@/shared/ui/dialog'
+import { Button } from '@/shared/ui/button'
 
 defineProps<{
   description?: string

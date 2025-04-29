@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { Event } from '@/modules/events/types'
-import { Button } from '@/shared/components/ui/button'
+import { Button } from '@/shared/ui/button'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import type { EventFormValues } from '@/modules/events/validation/eventSchema'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
@@ -11,10 +11,10 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/shared/components/ui/tooltip'
+} from '@/shared/ui/tooltip'
 import { useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
-import { Badge } from '@/shared/components/ui/badge'
+import { Badge } from '@/shared/ui/badge'
 import { Icon } from '@iconify/vue'
 import EventFieldsTable from './EventFieldsTable.vue'
 import JsonPreview from '@/shared/components/JsonPreview.vue'

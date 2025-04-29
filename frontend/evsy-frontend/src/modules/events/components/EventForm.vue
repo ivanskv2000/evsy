@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import { Input } from '@/shared/components/ui/input'
-import { Button } from '@/shared/components/ui/button'
+import { Input } from '@/shared/ui/input'
+import { Button } from '@/shared/ui/button'
 import {
   FormField,
   FormItem,
@@ -10,14 +10,14 @@ import {
   FormControl,
   FormMessage,
   FormDescription,
-} from '@/shared/components/ui/form'
+} from '@/shared/ui/form'
 import {
   TagsInput,
   TagsInputInput,
   TagsInputItem,
   TagsInputItemText,
   TagsInputItemDelete,
-} from '@/shared/components/ui/tags-input'
+} from '@/shared/ui/tags-input'
 import {
   Combobox,
   ComboboxAnchor,
@@ -26,7 +26,7 @@ import {
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
-} from '@/shared/components/ui/combobox'
+} from '@/shared/ui/combobox'
 import type { Event } from '@/modules/events/types'
 import type { Field } from '@/modules/fields/types'
 import type { Tag } from '@/modules/tags/types'

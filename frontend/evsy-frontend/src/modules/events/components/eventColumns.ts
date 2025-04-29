@@ -4,7 +4,7 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import EventsDataTableDropdown from '@/modules/events/components/EventsDataTableDropdown.vue'
 import { RouterLink } from 'vue-router'
 import DataTableColumnHeader from '@/shared/components/data/DataTableColumnHeader.vue'
-import { Badge } from '@/shared/components/ui/badge'
+import { Badge } from '@/shared/ui/badge'
 
 
 export function getEventColumns(

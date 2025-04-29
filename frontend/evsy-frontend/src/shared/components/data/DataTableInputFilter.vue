@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="TData, TValue">
 import type { Column } from '@tanstack/vue-table'
-import { Input } from '@/shared/components/ui/input'
+import { Input } from '@/shared/ui/input'
 
 interface DataTableInputFilterProps {
   column: Column<TData, TValue>

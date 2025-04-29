@@ -2,14 +2,14 @@
 import { type Table } from '@tanstack/vue-table'
 import { Icon } from '@iconify/vue'
 
-import { Button } from '@/shared/components/ui/button'
+import { Button } from '@/shared/ui/button'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/components/ui/select'
+} from '@/shared/ui/select'
 
 interface DataTablePaginationProps {
   table: Table<TData>

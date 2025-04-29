@@ -2,8 +2,8 @@
 import * as z from 'zod'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import { Input } from '@/shared/components/ui/input'
-import { Button } from '@/shared/components/ui/button'
+import { Input } from '@/shared/ui/input'
+import { Button } from '@/shared/ui/button'
 import {
   FormField,
   FormItem,
@@ -11,7 +11,7 @@ import {
   FormControl,
   FormMessage,
   FormDescription,
-} from '@/shared/components/ui/form'
+} from '@/shared/ui/form'
 import type { Tag } from '@/modules/tags/types'
 import { computed, watchEffect } from 'vue'
 import { tagSchema, type TagFormValues } from '@/modules/tags/validation/tagSchema'

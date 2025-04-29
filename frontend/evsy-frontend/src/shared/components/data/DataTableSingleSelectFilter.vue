@@ -9,8 +9,8 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/shared/components/ui/select'
-import { Button } from '@/shared/components/ui/button'
+} from '@/shared/ui/select'
+import { Button } from '@/shared/ui/button'
 import { Icon } from '@iconify/vue'
 
 interface DataTableInputFilterProps {

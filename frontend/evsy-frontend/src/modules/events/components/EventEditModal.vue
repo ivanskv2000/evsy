@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/shared/components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/shared/ui/dialog'
 import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts'
 import EventForm from './EventForm.vue'
 import type { Event } from '@/modules/events/types'

@@ -9,8 +9,8 @@ import TagEditModal from '@/modules/tags/components/TagEditModal.vue'
 import type { TagFormValues } from '@/modules/tags/validation/tagSchema'
 import Header from '@/shared/components/layout/Header.vue'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
-import { Input } from '@/shared/components/ui/input'
-import { Button } from '@/shared/components/ui/button'
+import { Input } from '@/shared/ui/input'
+import { Button } from '@/shared/ui/button'
 import { Icon } from '@iconify/vue'
 
 const { showUpdated, showDeleted } = useEnhancedToast()

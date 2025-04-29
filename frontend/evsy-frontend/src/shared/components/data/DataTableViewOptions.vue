@@ -3,7 +3,7 @@ import type { Table } from '@tanstack/vue-table'
 import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
 
-import { Button } from '@/shared/components/ui/button'
+import { Button } from '@/shared/ui/button'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -11,7 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/shared/components/ui/dropdown-menu'
+} from '@/shared/ui/dropdown-menu'
 
 interface DataTableViewOptionsProps {
   table: Table<TData>
