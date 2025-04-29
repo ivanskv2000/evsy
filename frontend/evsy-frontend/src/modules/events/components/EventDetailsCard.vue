@@ -7,13 +7,6 @@ import type { EventFormValues } from '@/modules/events/validation/eventSchema'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import EventEditModal from '@/modules/events/components/EventEditModal.vue'
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/shared/components/ui/card'
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -25,6 +18,8 @@ import { Badge } from '@/shared/components/ui/badge'
 import { Icon } from '@iconify/vue'
 import EventFieldsTable from './EventFieldsTable.vue'
 import JsonPreview from '@/shared/components/JsonPreview.vue'
+import DetailsCardLayout from '@/shared/components/layout/DetailsCardLayout.vue'
+import DetailsCardAttribute from '@/shared/components/layout/DetailsCardAttribute.vue'
 
 const exampleValue = {
   user_id: 123,
@@ -67,7 +62,6 @@ const confirmDelete = () => {
 }
 
 const { copy: copyId } = useClipboard({ source: props.event.id.toString() })
-const { copy: copyName } = useClipboard({ source: props.event.name })
 
 const handleCopyId = async () => {
   try {
@@ -77,98 +71,62 @@ const handleCopyId = async () => {
     showCopyError('ID')
   }
 }
-
-const handleCopyName = async () => {
-  try {
-    await copyName()
-    showCopied('Name')
-  } catch (err) {
-    showCopyError('Name')
-  }
-}
 </script>
 
 <template>
-  <Card>
-    <CardHeader>
-      <div class="flex items-center justify-between">
-        <!-- Title & ID -->
-        <div class="flex items-center space-x-2">
-          <TooltipProvider :delay-duration="800">
-            <Tooltip>
-              <TooltipTrigger>
-                <CardTitle class="cursor-pointer font-mono text-xl tracking-wide" @click="handleCopyName">
-                  {{ event.name }}
-                </CardTitle>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Click to copy</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+  <div>
+    <DetailsCardLayout :title="event.name" :description="event.description ?? undefined">
+      <template #badge>
+        <TooltipProvider :delay-duration="800">
+          <Tooltip>
+            <TooltipTrigger>
+              <Badge variant="outline" class="cursor-pointer text-xs tracking-wide" @click="handleCopyId">
+                ID: {{ event.id }}
+              </Badge>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Click to copy</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </template>
 
-          <TooltipProvider :delay-duration="800">
-            <Tooltip>
-              <TooltipTrigger>
-                <Badge variant="outline" class="cursor-pointer text-xs tracking-wide" @click="handleCopyId">
-                  ID: {{ event.id }}
-                </Badge>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Click to copy</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+      <template #actions>
+        <Button size="icon" variant="ghost" @click="showEditModal = true">
+          <Icon icon="radix-icons:pencil-2" class="h-4 w-4" />
+        </Button>
+        <Button size="icon" variant="ghost" @click="showDeleteModal = true">
+          <Icon icon="radix-icons:trash" class="text-destructive h-4 w-4" />
+        </Button>
+      </template>
 
-        <!-- Edit & Delete -->
-        <div class="flex space-x-2">
-          <Button size="icon" variant="ghost" @click="showEditModal = true">
-            <Icon icon="radix-icons:pencil-2" class="h-4 w-4" />
-          </Button>
-          <Button size="icon" variant="ghost" @click="showDeleteModal = true">
-            <Icon icon="radix-icons:trash" class="text-destructive h-4 w-4" />
-          </Button>
-        </div>
-      </div>
-
-      <CardDescription v-if="event.description">
-        {{ event.description }}
-      </CardDescription>
-
-      <!-- Details section -->
-      <div class="text-muted-foreground mt-4 space-y-3 text-sm">
-
+      <template #attributes>
         <!-- Tags -->
-        <div v-if="event.tags.length > 0" class="flex flex-wrap items-center gap-1">
-          <div class="flex items-center gap-1">
-            <Icon icon="radix-icons:component-1" class="h-4 w-4" />
-            <span>Tags:</span>
-          </div>
-          <Badge v-for="tag in event.tags" :key="tag.id" variant="secondary" class="font-mono tracking-wide">
-            {{ tag.id }}
-          </Badge>
-        </div>
+        <DetailsCardAttribute v-if="event.tags.length > 0" icon="ph:tag" label="Tags">
+          <template #value>
+            <Badge v-for="tag in event.tags" :key="tag.id" variant="secondary" class="font-mono tracking-wide">
+              {{ tag.id }}
+            </Badge>
+          </template>
+        </DetailsCardAttribute>
 
         <!-- Example -->
-        <div class="flex flex-wrap items-center gap-1">
-          <div class="flex items-center gap-1">
-            <Icon icon="radix-icons:file-text" class="h-4 w-4" />
-            <span>Example:</span>
-          </div>
-          <JsonPreview :value="exampleValue" />
-        </div>
-      </div>
-    </CardHeader>
+        <DetailsCardAttribute icon="radix-icons:file-text" label="Example">
+          <template #value>
+            <JsonPreview :value="exampleValue" />
+          </template>
+        </DetailsCardAttribute>
+      </template>
 
-    <CardContent>
-      <EventFieldsTable :fields="event.fields" />
-    </CardContent>
+      <template #content>
+        <EventFieldsTable :fields="event.fields" />
+      </template>
+    </DetailsCardLayout>
 
     <!-- Modals -->
     <EventEditModal :open="showEditModal" :event="event" :onClose="() => (showEditModal = false)" :onSubmit="submitEdit"
       :isSaving="loading.isSaving" />
     <DeleteModal :open="showDeleteModal" :onClose="() => (showDeleteModal = false)" :onConfirm="confirmDelete"
       :isDeleting="loading.isDeleting" />
-  </Card>
+  </div>
 </template>
