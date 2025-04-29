@@ -29,9 +29,10 @@ const editedTag = ref<Tag | null>(null)
 const filteredTags = computed(() => {
   if (!searchQuery.value) return tags.value
   const query = searchQuery.value.toLowerCase()
-  return tags.value.filter(tag => 
-    tag.id.toLowerCase().includes(query) || 
-    (tag.description?.toLowerCase().includes(query) ?? false)
+  return tags.value.filter(
+    tag =>
+      tag.id.toLowerCase().includes(query) ||
+      (tag.description?.toLowerCase().includes(query) ?? false)
   )
 })
 
@@ -74,16 +75,11 @@ onMounted(() => {
 <template>
   <div class="container mx-auto">
     <Header title="Tags" />
-    
+
     <!-- Toolbar -->
     <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
       <div class="flex-1">
-        <Input
-          v-model="searchQuery"
-          placeholder="Search tags..."
-          class="max-w-xs"
-        >
-        </Input>
+        <Input v-model="searchQuery" placeholder="Search tags..." class="max-w-xs"> </Input>
       </div>
       <Button as-child>
         <RouterLink to="/tags/new">

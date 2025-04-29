@@ -12,7 +12,6 @@ const props = defineProps<{
   onSubmit: (values: FieldFormValues) => void
   isSaving?: boolean
 }>()
-
 </script>
 
 <template>
@@ -20,9 +19,9 @@ const props = defineProps<{
     <DialogContent>
       <DialogTitle>Edit Field</DialogTitle>
       <DialogDescription>
-          {{ description }}
+        {{ description }}
       </DialogDescription>
-      <FieldForm 
+      <FieldForm
         :field="field"
         :onSubmit="props.onSubmit"
         :isLoading="props.isSaving"

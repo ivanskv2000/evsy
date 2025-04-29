@@ -37,4 +37,4 @@ const props = defineProps<{
       </table>
     </div>
   </div>
-</template> 
+</template>

@@ -24,4 +24,4 @@ defineSlots<{
       <slot name="footer" />
     </div>
   </div>
-</template> 
+</template>

@@ -3,12 +3,7 @@ import { computed } from 'vue'
 import { useClipboard } from '@vueuse/core'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { Icon } from '@iconify/vue'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/shared/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui/tooltip'
 
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 
@@ -21,11 +16,14 @@ function getJsonPreview(value: JsonValue, maxKeys = 2): string {
   if (value === null) return 'null'
   if (typeof value !== 'object') return JSON.stringify(value)
   if (Array.isArray(value)) {
-    const preview = value.slice(0, maxKeys).map(v => getJsonPreview(v, 1)).join(', ')
+    const preview = value
+      .slice(0, maxKeys)
+      .map(v => getJsonPreview(v, 1))
+      .join(', ')
     const suffix = value.length > maxKeys ? ', ...' : ''
     return `[${preview}${suffix}]`
   }
-  
+
   const entries = Object.entries(value)
   const limited = entries.slice(0, maxKeys)
 
@@ -59,13 +57,9 @@ const handleCopyJson = async () => {
   <TooltipProvider :delay-duration="200">
     <Tooltip>
       <TooltipTrigger>
-            <div class="font-mono">{{ shortPreview }}</div>
+        <div class="font-mono">{{ shortPreview }}</div>
       </TooltipTrigger>
-      <TooltipContent
-        side="bottom"
-        @click.stop
-        class="max-h-64 overflow-y-auto text-left text-xs"
-      >
+      <TooltipContent side="bottom" @click.stop class="max-h-64 overflow-y-auto text-left text-xs">
         <button
           v-if="isSupported"
           @click="handleCopyJson"
@@ -79,4 +73,4 @@ const handleCopyJson = async () => {
       </TooltipContent>
     </Tooltip>
   </TooltipProvider>
-</template> 
+</template>

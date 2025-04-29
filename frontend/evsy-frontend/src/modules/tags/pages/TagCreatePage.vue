@@ -6,10 +6,7 @@ import { tagApi } from '@/modules/tags/api'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { TagFormValues } from '@/modules/tags/validation/tagSchema'
 import Header from '@/shared/components/layout/Header.vue'
-import {
-  Card,
-  CardContent
-} from '@/shared/ui/card'
+import { Card, CardContent } from '@/shared/ui/card'
 
 const { isLoading, run } = useAsyncTask()
 const { showCreated } = useEnhancedToast()
@@ -32,12 +29,8 @@ const onSubmit = (values: TagFormValues) => {
 
     <Card class="mx-auto max-w-md">
       <CardContent>
-        <TagForm 
-          :onSubmit="onSubmit"
-          :isLoading="isLoading"
-          button-text="Create"
-        />
+        <TagForm :onSubmit="onSubmit" :isLoading="isLoading" button-text="Create" />
       </CardContent>
     </Card>
   </div>
-</template> 
+</template>

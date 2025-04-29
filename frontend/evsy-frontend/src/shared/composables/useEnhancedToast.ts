@@ -23,7 +23,8 @@ export function useEnhancedToast() {
 
       if (error && typeof error === 'object' && 'isAxiosError' in error) {
         const axiosError = error as AxiosError<any>
-        message = axiosError.response?.data?.detail || axiosError.response?.data?.message || fallbackMessage
+        message =
+          axiosError.response?.data?.detail || axiosError.response?.data?.message || fallbackMessage
       }
 
       showApiErrorToast(error, message)
@@ -36,4 +37,4 @@ export function useEnhancedToast() {
     showUpdateError: (entity: string) => showApiErrorToast(`Failed to update ${entity}`),
     showCreateError: (entity: string) => showApiErrorToast(`Failed to create ${entity}`),
   }
-} 
+}

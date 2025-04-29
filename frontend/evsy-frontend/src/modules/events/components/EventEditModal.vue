@@ -39,7 +39,7 @@ onMounted(() => {
     <DialogContent>
       <DialogTitle>Edit Event</DialogTitle>
       <DialogDescription>
-          {{ description }}
+        {{ description }}
       </DialogDescription>
       <EventForm
         :event="event"

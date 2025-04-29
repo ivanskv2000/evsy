@@ -58,9 +58,7 @@ const confirmDelete = () => {
 
       <template #attributes>
         <!-- ID -->
-        <DetailsCardAttribute
-          icon="radix-icons:id-card" label="ID" :value="field.id.toString()"
-        />
+        <DetailsCardAttribute icon="radix-icons:id-card" label="ID" :value="field.id.toString()" />
 
         <!-- Example -->
         <DetailsCardAttribute icon="radix-icons:file-text" label="Example">
@@ -70,18 +68,24 @@ const confirmDelete = () => {
         </DetailsCardAttribute>
 
         <!-- Used in -->
-        <DetailsCardAttribute
-          icon="radix-icons:bar-chart" label="Used in" value="0 events"
-        />
-
+        <DetailsCardAttribute icon="radix-icons:bar-chart" label="Used in" value="0 events" />
       </template>
     </DetailsCardLayout>
 
     <!-- Modals -->
-    <FieldEditModal :open="showEditModal" :field="field" :onClose="() => (showEditModal = false)" :onSubmit="submitEdit"
-      :isSaving="loading.isSaving" />
-    <DeleteModal :open="showDeleteModal" :onClose="() => (showDeleteModal = false)" :onConfirm="confirmDelete"
+    <FieldEditModal
+      :open="showEditModal"
+      :field="field"
+      :onClose="() => (showEditModal = false)"
+      :onSubmit="submitEdit"
+      :isSaving="loading.isSaving"
+    />
+    <DeleteModal
+      :open="showDeleteModal"
+      :onClose="() => (showDeleteModal = false)"
+      :onConfirm="confirmDelete"
       :isDeleting="loading.isDeleting"
-      description="Once deleted, this field will be unlinked from any events it's part of." />
+      description="Once deleted, this field will be unlinked from any events it's part of."
+    />
   </div>
 </template>

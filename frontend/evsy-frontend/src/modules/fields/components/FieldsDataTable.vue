@@ -32,11 +32,19 @@ const isTypeFilterSet = computed(() =>
   <DataTableLayout>
     <template #filters>
       <!-- Name Filter -->
-      <DataTableInputFilter class="max-w-3xs" :column="table.getColumn('name')!" placeholder="Filter by name..." />
+      <DataTableInputFilter
+        class="max-w-3xs"
+        :column="table.getColumn('name')!"
+        placeholder="Filter by name..."
+      />
 
       <!-- Type Filter -->
-      <DataTableSingleSelectFilter :column="table.getColumn('field_type')!" placeholder="Select a type..."
-        :options="fieldTypes" :show-clear-button="isTypeFilterSet" />
+      <DataTableSingleSelectFilter
+        :column="table.getColumn('field_type')!"
+        placeholder="Select a type..."
+        :options="fieldTypes"
+        :show-clear-button="isTypeFilterSet"
+      />
     </template>
     <template #buttons>
       <Button as-child>

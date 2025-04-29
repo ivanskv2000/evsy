@@ -24,7 +24,11 @@ const { table } = useDataTable(
   <DataTableLayout>
     <template #filters>
       <!-- Name Filter -->
-      <DataTableInputFilter class="max-w-3xs" :column="table.getColumn('name')!" placeholder="Filter by name..." />
+      <DataTableInputFilter
+        class="max-w-3xs"
+        :column="table.getColumn('name')!"
+        placeholder="Filter by name..."
+      />
     </template>
     <template #buttons>
       <Button as-child>

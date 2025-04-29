@@ -3,12 +3,7 @@ import { Button } from '@/shared/ui/button'
 import { Badge } from '@/shared/ui/badge'
 import { useClipboard } from '@vueuse/core'
 import { Icon } from '@iconify/vue'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/shared/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui/tooltip'
 import type { Tag } from '@/modules/tags/types'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 

@@ -7,10 +7,7 @@ import { eventApi } from '@/modules/events/api'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts'
 import Header from '@/shared/components/layout/Header.vue'
-import {
-  Card,
-  CardContent
-} from '@/shared/ui/card'
+import { Card, CardContent } from '@/shared/ui/card'
 import { fieldApi } from '@/modules/fields/api'
 import type { Field } from '@/modules/fields/types'
 import type { Tag } from '@/modules/tags/types'

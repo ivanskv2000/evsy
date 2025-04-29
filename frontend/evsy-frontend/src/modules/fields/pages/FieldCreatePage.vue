@@ -6,10 +6,7 @@ import { fieldApi } from '@/modules/fields/api'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 import Header from '@/shared/components/layout/Header.vue'
-import {
-  Card,
-  CardContent
-} from '@/shared/ui/card'
+import { Card, CardContent } from '@/shared/ui/card'
 
 const { isLoading, run } = useAsyncTask()
 const { showCreated } = useEnhancedToast()
@@ -32,11 +29,7 @@ const onSubmit = (values: FieldFormValues) => {
 
     <Card class="mx-auto max-w-md">
       <CardContent>
-        <FieldForm 
-          :onSubmit="onSubmit"
-          :isLoading="isLoading"
-          button-text="Create"
-        />
+        <FieldForm :onSubmit="onSubmit" :isLoading="isLoading" button-text="Create" />
       </CardContent>
     </Card>
   </div>

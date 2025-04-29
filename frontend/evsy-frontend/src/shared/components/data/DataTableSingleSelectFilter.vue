@@ -1,12 +1,6 @@
 <script setup lang="ts" generic="TData, TValue">
 import type { Column } from '@tanstack/vue-table'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select'
 import { Button } from '@/shared/ui/button'
 import { Icon } from '@iconify/vue'
 
@@ -42,11 +36,7 @@ export default {
       </SelectContent>
     </Select>
 
-    <Button
-      :disabled="!showClearButton"
-      variant="ghost"
-      @click="column.setFilterValue('')"
-    >
+    <Button :disabled="!showClearButton" variant="ghost" @click="column.setFilterValue('')">
       <Icon class="h-4 w-4" icon="radix-icons:cross-2" />
       <span class="sr-only">Clear type filter</span>
     </Button>

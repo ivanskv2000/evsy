@@ -6,12 +6,7 @@ import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import type { EventFormValues } from '@/modules/events/validation/eventSchema'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import EventEditModal from '@/modules/events/components/EventEditModal.vue'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/shared/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui/tooltip'
 import { useClipboard } from '@vueuse/core'
 import { Badge } from '@/shared/ui/badge'
 import { Icon } from '@iconify/vue'
@@ -78,7 +73,11 @@ const handleCopyId = async () => {
         <TooltipProvider :delay-duration="800">
           <Tooltip>
             <TooltipTrigger>
-              <Badge variant="outline" class="cursor-pointer text-xs tracking-wide" @click="handleCopyId">
+              <Badge
+                variant="outline"
+                class="cursor-pointer text-xs tracking-wide"
+                @click="handleCopyId"
+              >
                 ID: {{ event.id }}
               </Badge>
             </TooltipTrigger>
@@ -102,7 +101,12 @@ const handleCopyId = async () => {
         <!-- Tags -->
         <DetailsCardAttribute v-if="event.tags.length > 0" icon="ph:tag" label="Tags">
           <template #value>
-            <Badge v-for="tag in event.tags" :key="tag.id" variant="secondary" class="font-mono tracking-wide">
+            <Badge
+              v-for="tag in event.tags"
+              :key="tag.id"
+              variant="secondary"
+              class="font-mono tracking-wide"
+            >
               {{ tag.id }}
             </Badge>
           </template>
@@ -122,9 +126,18 @@ const handleCopyId = async () => {
     </DetailsCardLayout>
 
     <!-- Modals -->
-    <EventEditModal :open="showEditModal" :event="event" :onClose="() => (showEditModal = false)" :onSubmit="submitEdit"
-      :isSaving="loading.isSaving" />
-    <DeleteModal :open="showDeleteModal" :onClose="() => (showDeleteModal = false)" :onConfirm="confirmDelete"
-      :isDeleting="loading.isDeleting" />
+    <EventEditModal
+      :open="showEditModal"
+      :event="event"
+      :onClose="() => (showEditModal = false)"
+      :onSubmit="submitEdit"
+      :isSaving="loading.isSaving"
+    />
+    <DeleteModal
+      :open="showDeleteModal"
+      :onClose="() => (showDeleteModal = false)"
+      :onConfirm="confirmDelete"
+      :isDeleting="loading.isDeleting"
+    />
   </div>
 </template>

@@ -3,20 +3,8 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from '@/shared/ui/form'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/ui/select'
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/shared/ui/form'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select'
 import type { Field } from '@/modules/fields/types'
 import { FieldType } from '@/modules/fields/types'
 import { watchEffect } from 'vue'
@@ -49,7 +37,7 @@ const onSubmit = handleSubmit(values => {
 
 const fieldTypeOptions = Object.entries(FieldType).map(([key, value]) => ({
   label: key.charAt(0) + key.slice(1).toLowerCase(),
-  value
+  value,
 }))
 </script>
 

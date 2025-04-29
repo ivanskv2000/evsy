@@ -9,12 +9,7 @@ import {
   CardDescription,
   CardFooter,
 } from '@/shared/ui/card'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/shared/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui/tooltip'
 
 const props = defineProps<{
   title: string
@@ -45,7 +40,10 @@ const handleCopyTitle = async () => {
           <TooltipProvider :delay-duration="800">
             <Tooltip>
               <TooltipTrigger>
-                <CardTitle class="cursor-pointer font-mono text-xl tracking-wide leading-none" @click="handleCopyTitle">
+                <CardTitle
+                  class="cursor-pointer font-mono text-xl leading-none tracking-wide"
+                  @click="handleCopyTitle"
+                >
                   {{ title }}
                 </CardTitle>
               </TooltipTrigger>

@@ -87,22 +87,22 @@ onMounted(() => {
     <div class="container mx-auto">
       <FieldsDataTable :columns="columns" :data="fields" />
     </div>
-  
-  <!-- Modals -->
-  <FieldEditModal
-    v-if="editedField"
-    :open="showEditModal"
-    :field="editedField"
-    :onClose="() => (showEditModal = false)"
-    :onSubmit="handleUpdate"
-    :isSaving="isSaving"
-  />
-  <DeleteModal
-    :open="showDeleteModal"
-    :onClose="() => (showDeleteModal = false)"
-    :onConfirm="handleDelete"
-    :isDeleting="isDeleting"
-    description="Once deleted, this field will be unlinked from any events it's part of."
-  />
+
+    <!-- Modals -->
+    <FieldEditModal
+      v-if="editedField"
+      :open="showEditModal"
+      :field="editedField"
+      :onClose="() => (showEditModal = false)"
+      :onSubmit="handleUpdate"
+      :isSaving="isSaving"
+    />
+    <DeleteModal
+      :open="showDeleteModal"
+      :onClose="() => (showDeleteModal = false)"
+      :onConfirm="handleDelete"
+      :isDeleting="isDeleting"
+      description="Once deleted, this field will be unlinked from any events it's part of."
+    />
   </div>
 </template>

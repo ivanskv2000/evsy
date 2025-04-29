@@ -22,7 +22,7 @@ export const fieldSchema = z.object({
   field_type: z.nativeEnum(FieldType),
 
   example: z
-    .custom((val) => {
+    .custom(val => {
       if (val === null || val === undefined) return true
       try {
         // Try to parse as JSON if it's a string
