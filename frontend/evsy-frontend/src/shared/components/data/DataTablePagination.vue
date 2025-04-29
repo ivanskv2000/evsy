@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="TData, TValue">
+<script setup lang="ts" generic="TData">
 import { type Table } from '@tanstack/vue-table'
 import { Icon } from '@iconify/vue'
 
@@ -28,7 +28,7 @@ defineProps<DataTablePaginationProps>()
         <p class="text-sm font-medium">Rows per page</p>
         <Select
           :model-value="`${table.getState().pagination.pageSize}`"
-          @update:model-value="table.setPageSize"
+          @update:model-value="value => table.setPageSize(Number(value))"
         >
           <SelectTrigger class="h-8 w-[70px]">
             <SelectValue :placeholder="`${table.getState().pagination.pageSize}`" />
