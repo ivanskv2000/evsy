@@ -1,4 +1,4 @@
-from app.database import engine
+from app.database.database import engine
 from app import models
 from sqlalchemy import MetaData
 

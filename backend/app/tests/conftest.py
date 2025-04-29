@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.database import Base, get_db
+from app.database.database import Base, get_db
 from app.settings import Settings
 from fastapi.testclient import TestClient
 from fastapi import Depends

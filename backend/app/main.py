@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.v1.routers import events, fields, tags, generic
+from app.api.v1.routes import events, fields, tags, generic
 
 from . import models
-from .database import engine
+from app.database.database import engine
 from app.settings import Settings
 
 models.Base.metadata.create_all(bind=engine)

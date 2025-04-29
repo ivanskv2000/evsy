@@ -4,8 +4,8 @@ from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String, Bool
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .database import Base
-from .schemas import FieldType
+from app.database.database import Base
+from app.schemas import FieldType
 
 
 class TimestampMixin:

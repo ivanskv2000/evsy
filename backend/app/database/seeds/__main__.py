@@ -1,7 +1,7 @@
-from app.database import get_db
-from app.seeds.seed_tags import seed_tags
-from app.seeds.seed_fields import seed_fields
-from app.seeds.seed_events import seed_events
+from app.database.database import get_db
+from app.database.seeds.seed_tags import seed_tags
+from app.database.seeds.seed_fields import seed_fields
+from app.database.seeds.seed_events import seed_events
 
 def run_all_seeds():
     db_gen = get_db()

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app import crud, schemas
-from app.database import get_db
+from app.database.database import get_db
 
 router = APIRouter(prefix="/tags", tags=["tags"])
 

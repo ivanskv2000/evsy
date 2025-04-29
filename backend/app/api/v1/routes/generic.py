@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Response, Depends
-from app.deps import get_settings
+from app.api.deps import get_settings
 from app.settings import Settings
 from app.schemas import LinkType, FieldType
 
