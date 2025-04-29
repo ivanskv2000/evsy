@@ -1,6 +1,11 @@
 import { useApiErrorToast, useSuccessToast, useInfoToast } from '@/shared/utils/toast'
 import type { AxiosError } from 'axios'
 
+type ErrorResponse = {
+  detail?: string
+  message?: string
+}
+
 export function useEnhancedToast() {
   const { showApiErrorToast } = useApiErrorToast()
   const { showSuccessToast } = useSuccessToast()
@@ -22,9 +27,11 @@ export function useEnhancedToast() {
       let message = fallbackMessage
 
       if (error && typeof error === 'object' && 'isAxiosError' in error) {
-        const axiosError = error as AxiosError<unknown>
+        const axiosError = error as AxiosError<ErrorResponse>
         message =
-          axiosError.response?.data?.detail || axiosError.response?.data?.message || fallbackMessage
+          axiosError.response?.data?.detail ||
+          axiosError.response?.data?.message ||
+          fallbackMessage
       }
 
       showApiErrorToast(error, message)
