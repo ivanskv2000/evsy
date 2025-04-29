@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="TData, TValue">
+<script setup lang="ts" generic="TData">
 import type { Table } from '@tanstack/vue-table'
 import { computed } from 'vue'
 import { Icon } from '@iconify/vue'

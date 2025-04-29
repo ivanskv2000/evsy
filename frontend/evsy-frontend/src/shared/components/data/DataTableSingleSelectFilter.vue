@@ -1,12 +1,9 @@
 <script setup lang="ts" generic="TData, TValue">
 import type { Column } from '@tanstack/vue-table'
-import { h, ref, computed } from 'vue'
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '@/shared/ui/select'
