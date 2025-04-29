@@ -5,7 +5,7 @@ import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { tagApi } from '@/modules/tags/api'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { TagFormValues } from '@/modules/tags/validation/tagSchema'
-import Header from '@/shared/components/layout/Header.vue'
+import Header from '@/shared/components/layout/PageHeader.vue'
 import { Card, CardContent } from '@/shared/ui/card'
 
 const { isLoading, run } = useAsyncTask()

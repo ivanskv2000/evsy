@@ -11,7 +11,8 @@ export default defineConfig([
       "node_modules",
       "dist",
       "public",
-      "src/shared/components/ui",
+      "src/shared/ui",
+      ".vite/"
     ],
   },
   { files: ["**/*.{js,mjs,cjs,ts,vue}"], plugins: { js }, extends: ["js/recommended"] },

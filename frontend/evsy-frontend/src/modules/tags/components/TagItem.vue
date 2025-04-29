@@ -23,7 +23,7 @@ const handleCopyId = async () => {
   try {
     await copyId()
     showCopied('Tag')
-  } catch (err) {
+  } catch {
     showCopyError('Tag')
   }
 }

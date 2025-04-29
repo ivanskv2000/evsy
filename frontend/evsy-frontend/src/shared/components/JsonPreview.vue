@@ -47,7 +47,7 @@ const handleCopyJson = async () => {
   try {
     await copyJson()
     showCopied('JSON')
-  } catch (err) {
+  } catch {
     showCopyError('JSON')
   }
 }

@@ -7,13 +7,16 @@ export function handleApiError(error: unknown, fallbackMessage = 'Something went
   let message = fallbackMessage
 
   if (error && typeof error === 'object' && 'isAxiosError' in error) {
-    const axiosError = error as AxiosError<any>
+    const axiosError = error as AxiosError<{
+      message?: string
+      detail?: string
+    }>
     message =
-      axiosError.response?.data?.detail || axiosError.response?.data?.message || fallbackMessage
+      axiosError.response?.data?.detail ??
+      axiosError.response?.data?.message ??
+      fallbackMessage
   }
 
-  // Show toast error
   showApiErrorToast(error, message)
-
   console.error('[API ERROR]', error)
 }

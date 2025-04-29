@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { eventApi } from '@/modules/events/api'
 import type { Event } from '@/modules/events/types'
 import EventsDataTable from '../components/EventsDataTable.vue'
-import Header from '@/shared/components/layout/Header.vue'
+import Header from '@/shared/components/layout/PageHeader.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { getEventColumns } from '@/modules/events/components/eventColumns'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
@@ -11,7 +11,7 @@ import type { EventFormValues } from '@/modules/events/validation/eventSchema'
 import EventEditModal from '@/modules/events/components/EventEditModal.vue'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 
-const { isLoading, run } = useAsyncTask()
+const { run } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
 const { showUpdated, showDeleted } = useEnhancedToast()

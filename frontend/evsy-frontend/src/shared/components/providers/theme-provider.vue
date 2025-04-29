@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, provide } from 'vue'
+import { provide } from 'vue'
 import { useColorMode } from '@vueuse/core'
 
 const theme = useColorMode()

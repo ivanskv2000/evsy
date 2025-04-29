@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import type { Event } from '@/modules/events/types'
 import EventDetailsCard from '@/modules/events/components/EventDetailsCard.vue'
 import { eventApi } from '@/modules/events/api'
-import Header from '@/shared/components/layout/Header.vue'
+import Header from '@/shared/components/layout/PageHeader.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
@@ -14,7 +14,7 @@ const route = useRoute()
 const event = ref<Event | null>(null)
 const router = useRouter()
 
-const { run, isLoading } = useAsyncTask()
+const { run } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
 

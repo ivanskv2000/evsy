@@ -5,7 +5,7 @@ import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { fieldApi } from '@/modules/fields/api'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
-import Header from '@/shared/components/layout/Header.vue'
+import Header from '@/shared/components/layout/PageHeader.vue'
 import { Card, CardContent } from '@/shared/ui/card'
 
 const { isLoading, run } = useAsyncTask()

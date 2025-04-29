@@ -60,7 +60,7 @@ const handleCopyId = async () => {
   try {
     await copyId()
     showCopied('ID')
-  } catch (err) {
+  } catch {
     showCopyError('ID')
   }
 }

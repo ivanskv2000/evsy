@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { fieldApi } from '@/modules/fields/api'
 import type { Field } from '@/modules/fields/types'
 import FieldsDataTable from '@/modules/fields/components/FieldsDataTable.vue'
-import Header from '@/shared/components/layout/Header.vue'
+import Header from '@/shared/components/layout/PageHeader.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { getFieldColumns } from '@/modules/fields/components/fieldColumns'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
@@ -11,7 +11,7 @@ import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 
-const { run, isLoading } = useAsyncTask()
+const { run } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
 const { showUpdated, showDeleted } = useEnhancedToast()

@@ -22,7 +22,7 @@ export function useEnhancedToast() {
       let message = fallbackMessage
 
       if (error && typeof error === 'object' && 'isAxiosError' in error) {
-        const axiosError = error as AxiosError<any>
+        const axiosError = error as AxiosError<unknown>
         message =
           axiosError.response?.data?.detail || axiosError.response?.data?.message || fallbackMessage
       }

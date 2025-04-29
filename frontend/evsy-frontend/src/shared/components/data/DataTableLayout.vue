@@ -1,10 +1,4 @@
 <script setup lang="ts">
-defineSlots<{
-  filters?: () => any
-  buttons?: () => any
-  table?: () => any
-  footer?: () => any
-}>()
 </script>
 
 <template>

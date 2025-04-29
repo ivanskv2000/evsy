@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import type { Field } from '@/modules/fields/types'
 import FieldDetailsCard from '@/modules/fields/components/FieldDetailsCard.vue'
 import { fieldApi } from '@/modules/fields/api'
-import Header from '@/shared/components/layout/Header.vue'
+import Header from '@/shared/components/layout/PageHeader.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
@@ -13,7 +13,7 @@ const route = useRoute()
 const router = useRouter()
 const field = ref<Field | null>(null)
 
-const { run, isLoading } = useAsyncTask()
+const { run } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
 

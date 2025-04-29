@@ -7,12 +7,21 @@ export enum FieldType {
   OBJECT = 'object',
 }
 
+type FieldExampleMap = {
+  [FieldType.STRING]: string
+  [FieldType.INTEGER]: number
+  [FieldType.NUMBER]: number
+  [FieldType.BOOLEAN]: boolean
+  [FieldType.ARRAY]: unknown[]
+  [FieldType.OBJECT]: Record<string, unknown>
+}
+
 export type Field = {
   id: number
   name: string
   description: string | null
   field_type: FieldType
-  example: string | number | boolean | any[] | Record<string, any> | null
+  example: string | number | boolean | unknown[] | Record<string, unknown> | null
   created_at: string
   updated_at: string
 }
@@ -21,7 +30,7 @@ export type FieldFormData = {
   name: string
   description?: string | null
   field_type: FieldType
-  example?: string | number | boolean | any[] | Record<string, any> | null
+  example?: FieldExampleMap[FieldType]
 }
 
 export type FieldValidationErrors = {

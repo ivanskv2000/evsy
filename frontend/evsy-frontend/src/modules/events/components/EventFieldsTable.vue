@@ -2,7 +2,7 @@
 import type { Event } from '@/modules/events/types'
 import { RouterLink } from 'vue-router'
 
-const props = defineProps<{
+defineProps<{
   fields: Event['fields']
 }>()
 </script>

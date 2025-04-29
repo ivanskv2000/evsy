@@ -23,7 +23,7 @@ const handleCopyTitle = async () => {
   try {
     await copyTitle()
     showCopied('ID')
-  } catch (err) {
+  } catch {
     showCopyError('ID')
   }
 }
