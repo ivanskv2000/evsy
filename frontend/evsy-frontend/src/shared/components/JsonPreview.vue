@@ -39,6 +39,7 @@ function getJsonPreview(value: JsonValue, maxKeys = 2): string {
 
 const shortPreview = computed(() => getJsonPreview(props.value, props.maxKeys))
 const prettyJson = computed(() => JSON.stringify(props.value, null, 2))
+const isShort = computed(() => shortPreview.value === prettyJson.value)
 
 const { copy: copyJson, isSupported } = useClipboard({ source: prettyJson })
 const { showCopied, showCopyError } = useEnhancedToast()
@@ -63,7 +64,7 @@ const handleCopyJson = async () => {
         <button
           v-if="isSupported"
           @click="handleCopyJson"
-          class="text-muted-foreground absolute top-2 right-2 text-[10px] hover:underline"
+          class="text-muted-foreground absolute top-2 right-2 text-[10px]"
         >
           <Icon icon="radix-icons:copy" class="mr-1 inline h-3 w-3" />
         </button>
