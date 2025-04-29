@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Response, Depends
+from fastapi import APIRouter, Depends, Response
+
 from app.api.deps import get_settings
+from app.schemas import FieldType, LinkType
 from app.settings import Settings
-from app.schemas import LinkType, FieldType
 
 router = APIRouter()
+
 
 @router.get("/ping")
 def ping(settings: Settings = Depends(get_settings)):
@@ -17,10 +19,12 @@ def get_config(settings: Settings = Depends(get_settings)):
         "debug": settings.debug,
     }
 
+
 @router.get("/link-types", response_model=list[str])
 async def get_link_types(response: Response):
     response.headers["Cache-Control"] = "public, max-age=3600"
     return [link_type.value for link_type in LinkType]
+
 
 @router.get("/field-types", response_model=list[str])
 async def get_field_types(response: Response):

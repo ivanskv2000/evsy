@@ -1,7 +1,15 @@
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String, Boolean, JSON, func
-from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy import (
+    JSON,
+    Column,
+    DateTime,
+    Enum,
+    ForeignKey,
+    Integer,
+    String,
+    func,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.database import Base
@@ -41,7 +49,9 @@ class Event(Base, TimestampMixin):
     )
 
     # Связь с полями
-    field_links = relationship("EventField", back_populates="event", cascade="all, delete-orphan")
+    field_links = relationship(
+        "EventField", back_populates="event", cascade="all, delete-orphan"
+    )
     fields = relationship(
         "Field",
         secondary="event_fields",
@@ -58,8 +68,12 @@ class Tag(Base, TimestampMixin):
     description = Column(String, nullable=True)
 
     # Связь с событиями
-    events = relationship("Event", secondary="event_tags", back_populates="tags", viewonly=True)
-    tag_links = relationship("EventTag", back_populates="tag", cascade="all, delete-orphan")
+    events = relationship(
+        "Event", secondary="event_tags", back_populates="tags", viewonly=True
+    )
+    tag_links = relationship(
+        "EventTag", back_populates="tag", cascade="all, delete-orphan"
+    )
 
 
 # Модель для связи многие ко многим между событиями и тегами
@@ -84,8 +98,12 @@ class Field(Base, TimestampMixin):
     field_type = Column(Enum(FieldType), nullable=False)
     example = Column(JSON, nullable=True)
 
-    events = relationship("Event", secondary="event_fields", back_populates="fields", viewonly=True)
-    field_links = relationship("EventField", back_populates="field", cascade="all, delete-orphan")
+    events = relationship(
+        "Event", secondary="event_fields", back_populates="fields", viewonly=True
+    )
+    field_links = relationship(
+        "EventField", back_populates="field", cascade="all, delete-orphan"
+    )
 
 
 # Модель для связи многие ко многим между событиями и полями

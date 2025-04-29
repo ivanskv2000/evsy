@@ -1,13 +1,11 @@
+import pytest
+from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.database.database import Base, get_db
-from app.settings import Settings
-from fastapi.testclient import TestClient
-from fastapi import Depends
 from app.main import app
-
-import pytest
+from app.settings import Settings
 
 # Загружаем настройки специально для тестов
 test_settings = Settings(_env_file=".env.test")
@@ -18,6 +16,7 @@ test_engine = create_engine(test_settings.database_url)
 # Создаем отдельный SessionLocal для тестов
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
 
+
 @pytest.fixture(scope="session")
 def override_get_db():
     def _override_get_db():
@@ -26,7 +25,9 @@ def override_get_db():
             yield db
         finally:
             db.close()
+
     return _override_get_db
+
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_database(override_get_db):

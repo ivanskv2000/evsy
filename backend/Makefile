@@ -1,5 +1,18 @@
 .PHONY: format lint test test-cov test-html dev
 
+APP_MODULE=app.main:app
+HOST=0.0.0.0
+PORT=8000
+
+dev:
+	poetry run uvicorn $(APP_MODULE) --host $(HOST) --port $(PORT) --reload
+
+run:
+	poetry run uvicorn $(APP_MODULE) --host $(HOST) --port $(PORT)
+
+migrate:
+	poetry run alembic upgrade head
+
 format:
 	poetry run isort .
 	poetry run black .
@@ -13,13 +26,10 @@ test:
 test-fast:
 	poetry run pytest app/tests
 
-dev:
-	poetry run uvicorn app.main:app --reload
+drop-db:
+	PYTHONPATH=./ poetry run python app/database/seeds/reset_db.py
 
 seed:
 	poetry run python -m app.seeds
-
-drop-db:
-	PYTHONPATH=./ poetry run python app/database/seeds/reset_db.py
 
 reseed: drop-db seed

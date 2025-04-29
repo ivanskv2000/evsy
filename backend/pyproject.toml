@@ -42,10 +42,31 @@ testpaths = ["app/tests"]
 
 [tool.isort]
 profile = "black"
+skip = [
+    "migrations",
+    "alembic",
+    "__pycache__",
+    ".pytest_chache",
+    ".venv"
+]
 
 [tool.coverage.run]
 data_file = ".coverage"
 
 [tool.poetry]
 package-mode = false
+
+[tool.black]
+exclude = '''
+/(
+    migrations
+  | alembic
+  | __pycache__
+  | .venv
+  | .pytest_chache
+  | .*\.pyc
+  | .*\.pyo
+  | .*\.pyd
+)/
+'''
 

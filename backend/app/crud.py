@@ -1,6 +1,5 @@
-from sqlalchemy.orm import Session
-from sqlalchemy.orm import joinedload
 from fastapi import HTTPException, Response
+from sqlalchemy.orm import Session, joinedload
 
 from . import models, schemas
 
@@ -11,7 +10,7 @@ def create_event(db: Session, event: schemas.EventCreate):
     db.add(db_event)
     db.commit()
     db.refresh(db_event)
-    
+
     for tag_id in event.tags:
         db.add(models.EventTag(event_id=db_event.id, tag_id=tag_id))
 
@@ -53,13 +52,17 @@ def update_event(db: Session, event_id: int, event: schemas.EventCreate):
     db_event.description = event.description
 
     if event.tags is not None:
-        db.query(models.EventTag).filter(models.EventTag.event_id == db_event.id).delete()
+        db.query(models.EventTag).filter(
+            models.EventTag.event_id == db_event.id
+        ).delete()
         if event.tags:
             for tag_id in event.tags:
                 db.add(models.EventTag(event_id=db_event.id, tag_id=tag_id))
 
     if event.fields is not None:
-        db.query(models.EventField).filter(models.EventField.event_id == db_event.id).delete()
+        db.query(models.EventField).filter(
+            models.EventField.event_id == db_event.id
+        ).delete()
         if event.fields:
             for field_id in event.fields:
                 db.add(models.EventField(event_id=db_event.id, field_id=field_id))
@@ -79,7 +82,6 @@ def delete_event(db: Session, event_id: int):
     db.delete(db_event)
     db.commit()
     return Response(status_code=204)
-
 
 
 # Создание нового тега
@@ -179,7 +181,9 @@ def update_field(db: Session, field_id: int, field: schemas.FieldCreate):
 def delete_field(db: Session, field_id: int):
     db_field = db.query(models.Field).filter(models.Field.id == field_id).first()
     if db_field:
-        db.query(models.EventField).filter(models.EventField.field_id == field_id).delete()
+        db.query(models.EventField).filter(
+            models.EventField.field_id == field_id
+        ).delete()
         db.delete(db_field)
         db.commit()
         return db_field

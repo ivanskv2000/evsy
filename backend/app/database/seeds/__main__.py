@@ -1,7 +1,8 @@
 from app.database.database import get_db
-from app.database.seeds.seed_tags import seed_tags
-from app.database.seeds.seed_fields import seed_fields
 from app.database.seeds.seed_events import seed_events
+from app.database.seeds.seed_fields import seed_fields
+from app.database.seeds.seed_tags import seed_tags
+
 
 def run_all_seeds():
     db_gen = get_db()
@@ -14,6 +15,7 @@ def run_all_seeds():
         print("🌱 All seeds completed.")
     finally:
         db_gen.close()
+
 
 if __name__ == "__main__":
     run_all_seeds()

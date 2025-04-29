@@ -17,4 +17,5 @@ exclude =
     .mypy_cache,
     .pytest_cache,
     build,
-    dist
+    dist,
+    migrations

@@ -1,8 +1,8 @@
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional, Any
+from typing import Any, List, Optional
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict
 
 
 class FieldType(str, Enum):
@@ -12,6 +12,7 @@ class FieldType(str, Enum):
     boolean = "boolean"
     array = "array"
     object = "object"
+
 
 class LinkType(str, Enum):
     figma = "figma"
@@ -23,24 +24,22 @@ class LinkType(str, Enum):
     google = "google"
     other = "other"
 
+
 class EventLink(BaseModel):
     type: LinkType
     url: str
     label: Optional[str] = None
 
 
-# Базовая схема для тега
 class TagBase(BaseModel):
     id: str
     description: str | None = None
 
 
-# Для создания
 class TagCreate(TagBase):
     pass
 
 
-# Для чтения из БД (в API)
 class TagOut(TagBase):
     created_at: datetime
     updated_at: datetime
@@ -48,7 +47,6 @@ class TagOut(TagBase):
     model_config = ConfigDict(from_attributes=True)
 
 
-# Базовая схема для поля
 class FieldBase(BaseModel):
     name: str
     description: Optional[str] = None
@@ -56,12 +54,10 @@ class FieldBase(BaseModel):
     example: Optional[Any] = None
 
 
-# Для создания
 class FieldCreate(FieldBase):
     pass
 
 
-# Для отдачи в API
 class FieldOut(FieldBase):
     id: int
     created_at: datetime
@@ -70,7 +66,6 @@ class FieldOut(FieldBase):
     model_config = ConfigDict(from_attributes=True)
 
 
-# Базовая схема для события
 class EventBase(BaseModel):
     name: str
     description: Optional[str] = None
@@ -79,12 +74,10 @@ class EventBase(BaseModel):
     fields: List[int] = []
 
 
-# Для создания события
 class EventCreate(EventBase):
     pass
 
 
-# Для ответа из API
 class EventOut(BaseModel):
     id: int
     name: str
@@ -95,7 +88,4 @@ class EventOut(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    model_config = ConfigDict(
-        from_attributes=True,
-        validate_by_name = True
-        )
+    model_config = ConfigDict(from_attributes=True, validate_by_name=True)

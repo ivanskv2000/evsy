@@ -1,6 +1,8 @@
-from app.database.database import engine
-from app import models
 from sqlalchemy import MetaData
+
+from app import models
+from app.database.database import engine
+
 
 def reset_database():
     print("📂 DB URL:", engine.url)
@@ -15,6 +17,7 @@ def reset_database():
     models.Base.metadata.create_all(bind=engine)
 
     print("✅ Database reset complete.")
+
 
 if __name__ == "__main__":
     reset_database()

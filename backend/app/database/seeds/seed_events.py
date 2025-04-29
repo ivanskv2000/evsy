@@ -1,41 +1,95 @@
+import random
+
+from faker import Faker
 from sqlalchemy.orm import Session
+
 from app import models
 from app.schemas import LinkType
-from faker import Faker
-import random
 
 faker = Faker()
 
-SHORT_ACTIONS = ['click', 'view', 'submit', 'open', 'close', 'scroll', 'hover', 'load', 'hide', 'show', 'change', 'remove', 'add', 'edit', 'delete']
-TARGETS = ['button', 'page', 'form', 'modal', 'tab', 'section', 'tooltip', 'link', 'dialog', 'dropdown', 'table', 'chart', 'image', 'text']
+SHORT_ACTIONS = [
+    "click",
+    "view",
+    "submit",
+    "open",
+    "close",
+    "scroll",
+    "hover",
+    "load",
+    "hide",
+    "show",
+    "change",
+    "remove",
+    "add",
+    "edit",
+    "delete",
+]
+TARGETS = [
+    "button",
+    "page",
+    "form",
+    "modal",
+    "tab",
+    "section",
+    "tooltip",
+    "link",
+    "dialog",
+    "dropdown",
+    "table",
+    "chart",
+    "image",
+    "text",
+]
+
 
 def generate_event_slug():
-    adjective = faker.word(part_of_speech='adjective')
+    adjective = faker.word(part_of_speech="adjective")
     action = random.choice(SHORT_ACTIONS)
     target = random.choice(TARGETS)
     return f"{adjective}_{target}_{action}"
 
 
 ACTIONS = [
-    "clicks a button", "views a page", "completes a form", "logs in",
-    "signs up", "adds an item to cart", "removes a product", "starts checkout",
+    "clicks a button",
+    "views a page",
+    "completes a form",
+    "logs in",
+    "signs up",
+    "adds an item to cart",
+    "removes a product",
+    "starts checkout",
 ]
 
 SCENARIOS = [
-    "successful login", "signup failure", "purchase", "password reset",
-    "newsletter subscription", "referral flow", "onboarding step",
+    "successful login",
+    "signup failure",
+    "purchase",
+    "password reset",
+    "newsletter subscription",
+    "referral flow",
+    "onboarding step",
 ]
 
 CONTEXTS = [
-    "purchase", "checkout process", "user flow", "conversion funnel",
+    "purchase",
+    "checkout process",
+    "user flow",
+    "conversion funnel",
 ]
 
 STATES = [
-    "verified their email", "enabled two-factor auth", "accepted terms",
+    "verified their email",
+    "enabled two-factor auth",
+    "accepted terms",
 ]
 
 INTERACTIONS = [
-    "click", "hover", "submit", "scroll", "drag-and-drop",
+    "click",
+    "hover",
+    "submit",
+    "scroll",
+    "drag-and-drop",
 ]
 
 EVENT_DESCRIPTION_TEMPLATES = [
@@ -58,6 +112,7 @@ def generate_event_description():
         interaction=random.choice(INTERACTIONS),
     )
 
+
 def generate_event_link():
     link_type = random.choice(list(LinkType))
     return {
@@ -66,6 +121,7 @@ def generate_event_link():
         "label": None if link_type != LinkType.other else faker.company(),
     }
 
+
 def seed_events(db: Session, count: int = 10):
     tags = db.query(models.Tag).all()
     fields = db.query(models.Field).all()
@@ -73,7 +129,7 @@ def seed_events(db: Session, count: int = 10):
     if not tags or not fields:
         print("⚠️ No tags or fields available. Please seed them first.")
         return
-    
+
     used_names = set()
 
     for _ in range(count):
@@ -102,6 +158,5 @@ def seed_events(db: Session, count: int = 10):
             db.add(models.EventField(event_id=event.id, field_id=field.id))
 
         db.commit()
-
 
     print(f"✅ Seeded {count} events with random tags and fields.")
