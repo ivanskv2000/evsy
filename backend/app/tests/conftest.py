@@ -7,13 +7,10 @@ from app.database.database import Base, get_db
 from app.main import app
 from app.settings import Settings
 
-# Загружаем настройки специально для тестов
 test_settings = Settings(_env_file=".env.test")
 
-# Создаем отдельный engine для тестов
 test_engine = create_engine(test_settings.database_url)
 
-# Создаем отдельный SessionLocal для тестов
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
 
 

@@ -1,39 +1,28 @@
-# Bytecode / cache
+# Python
 __pycache__/
 *.py[cod]
+*.pyo
 
-# Virtual environments (если вдруг внутри)
+# Virtual environments
 .venv/
 env/
 venv/
-.env.test
 .env
+.env.test
+
+# Alembic
+migrations/versions/
 
 # Poetry
 poetry.lock
 
-# Coverage & pytest
-.coverage
-htmlcov/
-.pytest_cache/
-.cache/
-
-# SQLite test DB
+# Database files
+*.sqlite3
+*.db
 test.db
 
-# Mypy / typing
-.mypy_cache/
-.dmypy.json
-
-# Logs
-*.log
-
-# Pre-commit leftovers
-.pre-commit-config.yaml~
-.pre-commit/
-
-# VSCode / IDE
-.vscode/
-.idea/
-
+# Local files
+.coverage
 .python-version
+coverage/
+htmlcov/

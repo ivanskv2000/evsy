@@ -28,7 +28,6 @@ class TimestampMixin:
     )
 
 
-# Модель для события
 class Event(Base, TimestampMixin):
     __tablename__ = "events"
 
@@ -37,7 +36,6 @@ class Event(Base, TimestampMixin):
     description = Column(String, nullable=True)
     links = Column(JSON, nullable=True)
 
-    # Связь с тегами
     tag_links = relationship(
         "EventTag", back_populates="event", cascade="all, delete-orphan"
     )
@@ -48,7 +46,6 @@ class Event(Base, TimestampMixin):
         viewonly=True,
     )
 
-    # Связь с полями
     field_links = relationship(
         "EventField", back_populates="event", cascade="all, delete-orphan"
     )
@@ -60,14 +57,12 @@ class Event(Base, TimestampMixin):
     )
 
 
-# Модель для тега
 class Tag(Base, TimestampMixin):
     __tablename__ = "tags"
 
     id = Column(String, primary_key=True, index=True)
     description = Column(String, nullable=True)
 
-    # Связь с событиями
     events = relationship(
         "Event", secondary="event_tags", back_populates="tags", viewonly=True
     )
@@ -76,19 +71,15 @@ class Tag(Base, TimestampMixin):
     )
 
 
-# Модель для связи многие ко многим между событиями и тегами
 class EventTag(Base, TimestampMixin):
     __tablename__ = "event_tags"
 
     event_id = Column(Integer, ForeignKey("events.id"), primary_key=True)
     tag_id = Column(String, ForeignKey("tags.id"), primary_key=True)
 
-    # Связи с Event и Tag
     event = relationship("Event", back_populates="tag_links")
     tag = relationship("Tag", back_populates="tag_links")
 
-
-# Модель для поля
 class Field(Base, TimestampMixin):
     __tablename__ = "fields"
 
@@ -106,7 +97,6 @@ class Field(Base, TimestampMixin):
     )
 
 
-# Модель для связи многие ко многим между событиями и полями
 class EventField(Base, TimestampMixin):
     __tablename__ = "event_fields"
 
@@ -117,6 +107,6 @@ class EventField(Base, TimestampMixin):
         Integer, ForeignKey("fields.id", ondelete="CASCADE"), primary_key=True
     )
 
-    # Связи с Event и Field
+
     event = relationship("Event", back_populates="field_links")
     field = relationship("Field", back_populates="field_links")
