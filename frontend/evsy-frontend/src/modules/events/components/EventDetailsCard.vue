@@ -12,7 +12,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/shared/ui/tooltip'
-import { useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
 import { Badge } from '@/shared/ui/badge'
 import { Icon } from '@iconify/vue'
@@ -32,7 +31,6 @@ const exampleValue = {
   },
 }
 
-const router = useRouter()
 const { showCopied, showCopyError } = useEnhancedToast()
 
 const props = defineProps<{

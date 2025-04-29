@@ -13,7 +13,7 @@ const props = defineProps<{
   data: TData[]
 }>()
 
-const { table, columnFilters } = useDataTable(
+const { table } = useDataTable(
   () => props.data,
   () => props.columns,
   [{ id: 'id', desc: true }]

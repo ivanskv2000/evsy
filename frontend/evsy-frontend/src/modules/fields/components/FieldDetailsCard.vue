@@ -2,35 +2,16 @@
 import { ref } from 'vue'
 import type { Field } from '@/modules/fields/types'
 import { Button } from '@/shared/ui/button'
-import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/shared/ui/card'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/shared/ui/tooltip'
-import { useRouter } from 'vue-router'
-import { useClipboard } from '@vueuse/core'
 import { Badge } from '@/shared/ui/badge'
 import { Icon } from '@iconify/vue'
 import JsonPreview from '@/shared/components/JsonPreview.vue'
 import DetailsCardLayout from '@/shared/components/layout/DetailsCardLayout.vue'
 import DetailsCardAttribute from '@/shared/components/layout/DetailsCardAttribute.vue'
 
-const router = useRouter()
-const { showCopied, showCopyError } = useEnhancedToast()
-
-const props = defineProps<{
+defineProps<{
   field: Field
   loading: {
     isSaving: boolean
@@ -54,27 +35,6 @@ const submitEdit = (values: FieldFormValues) => {
 const confirmDelete = () => {
   emit('delete')
   showDeleteModal.value = false
-}
-
-const { copy: copyId } = useClipboard({ source: props.field.id.toString() })
-const { copy: copyName } = useClipboard({ source: props.field.name })
-
-const handleCopyId = async () => {
-  try {
-    await copyId()
-    showCopied('ID')
-  } catch (err) {
-    showCopyError('ID')
-  }
-}
-
-const handleCopyName = async () => {
-  try {
-    await copyName()
-    showCopied('Name')
-  } catch (err) {
-    showCopyError('Name')
-  }
 }
 </script>
 

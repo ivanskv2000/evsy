@@ -59,7 +59,7 @@ const handleUpdate = (values: TagFormValues) => {
   )
 }
 
-const { run, isLoading } = useAsyncTask()
+const { run } = useAsyncTask()
 
 onMounted(() => {
   run(
