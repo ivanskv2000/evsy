@@ -1,37 +1,19 @@
-# Bytecode / cache
-__pycache__/
-*.py[cod]
+# MacOS
+.DS_Store
 
-# Virtual environments (если вдруг внутри)
-.venv/
-env/
+# Environment files
 .env
-venv/
-*/.env.test
+.env.test
 
-# Poetry
-poetry.lock
-
-# Coverage & pytest
-.coverage
-htmlcov/
-.pytest_cache/
-.cache/
-
-# SQLite test DB
-backend/test.db
-
-# Mypy / typing
-.mypy_cache/
-.dmypy.json
-
-# Logs
-*.log
-
-# Pre-commit leftovers
-.pre-commit-config.yaml~
-.pre-commit/
-
-# VSCode / IDE
-.vscode/
+# Editor configs
 .idea/
+.vscode/
+*.swp
+
+# Global Python / Node cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+node_modules/
+dist/

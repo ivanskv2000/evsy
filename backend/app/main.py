@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.v1.routers import events, fields, tags, generic
+from app.api.v1.routes import events, fields, generic, tags
+from app.database.database import engine
+from app.settings import Settings
 
 from . import models
-from .database import engine
-from app.settings import Settings
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -39,16 +39,21 @@ app.state.settings = settings
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3012", "http://localhost:5173", "http://localhost:5174"],  # 👈 тут укажи адрес фронта
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:3000",
+    ],
     allow_credentials=True,
-    allow_methods=["*"],  # Разрешить все методы (GET, POST, PUT, DELETE)
-    allow_headers=["*"],  # Разрешить все заголовки
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(events.router, prefix="/api/v1", tags=["events"])
 app.include_router(tags.router, prefix="/api/v1", tags=["tags"])
 app.include_router(fields.router, prefix="/api/v1", tags=["fields"])
 app.include_router(generic.router, prefix="/api/v1", tags=["generic"])
+
 
 @app.get("/")
 def read_root():
