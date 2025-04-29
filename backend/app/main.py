@@ -40,13 +40,12 @@ app.state.settings = settings
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3012",
         "http://localhost:5173",
         "http://localhost:5174",
-    ],  # 👈 тут укажи адрес фронта
+    ],
     allow_credentials=True,
-    allow_methods=["*"],  # Разрешить все методы (GET, POST, PUT, DELETE)
-    allow_headers=["*"],  # Разрешить все заголовки
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(events.router, prefix="/api/v1", tags=["events"])

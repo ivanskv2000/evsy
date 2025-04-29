@@ -4,8 +4,7 @@ import { useClipboard } from '@vueuse/core'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { Icon } from '@iconify/vue'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui/tooltip'
-
-type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
+import type { JsonValue } from '@/modules/fields/types'
 
 const props = defineProps<{
   value: JsonValue
