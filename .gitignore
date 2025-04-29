@@ -7,8 +7,7 @@ __pycache__/
 env/
 .env
 venv/
-.env.test
-.env
+*/.env.test
 
 # Poetry
 poetry.lock
