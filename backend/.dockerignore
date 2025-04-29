@@ -6,5 +6,4 @@ __pycache__/
 .env
 .env.*
 app/tests/
-migrations/versions/
 seeds/

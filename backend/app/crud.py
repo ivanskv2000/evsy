@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session, joinedload
 
 from . import models, schemas
 
+
 def create_event(db: Session, event: schemas.EventCreate):
     db_event = models.Event(name=event.name, description=event.description)
     db.add(db_event)
@@ -83,6 +84,7 @@ def create_tag(db: Session, tag: schemas.TagCreate):
     db.commit()
     db.refresh(db_tag)
     return db_tag
+
 
 def get_tags(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Tag).offset(skip).limit(limit).all()

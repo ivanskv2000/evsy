@@ -80,6 +80,7 @@ class EventTag(Base, TimestampMixin):
     event = relationship("Event", back_populates="tag_links")
     tag = relationship("Tag", back_populates="tag_links")
 
+
 class Field(Base, TimestampMixin):
     __tablename__ = "fields"
 
@@ -106,7 +107,6 @@ class EventField(Base, TimestampMixin):
     field_id = Column(
         Integer, ForeignKey("fields.id", ondelete="CASCADE"), primary_key=True
     )
-
 
     event = relationship("Event", back_populates="field_links")
     field = relationship("Field", back_populates="field_links")
