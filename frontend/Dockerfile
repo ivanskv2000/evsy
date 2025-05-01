@@ -12,6 +12,8 @@ COPY . .
 
 RUN npm run build
 
+EXPOSE 5173
+
 # ----------------------
 # Stage 2: Serve assets
 # ----------------------

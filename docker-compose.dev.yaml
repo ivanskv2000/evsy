@@ -2,6 +2,7 @@ services:
   backend:
     build:
       context: ./backend
+      target: dev
     volumes:
       - ./backend:/app
     ports:
@@ -18,6 +19,7 @@ services:
   frontend:
     build:
       context: ./frontend
+      target: builder 
     volumes:
       - ./frontend:/app
       - /app/node_modules
