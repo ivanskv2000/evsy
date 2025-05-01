@@ -9,8 +9,8 @@ services:
       POSTGRES_DB: evsy
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+#    ports:
+#      - "5432:5432"
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "evsy"]
       interval: 10s
@@ -23,7 +23,7 @@ services:
     container_name: evsy-backend
     restart: always
     env_file:
-      - .env.example
+      - .env
     ports:
       - "8000:8000"
     depends_on:
@@ -42,7 +42,7 @@ services:
     container_name: evsy-frontend
     restart: always
     env_file:
-      - .env.example
+      - .env
     ports:
       - "3000:80"
     depends_on:
