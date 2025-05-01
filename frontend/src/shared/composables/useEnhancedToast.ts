@@ -1,10 +1,10 @@
 import { useApiErrorToast, useSuccessToast, useInfoToast } from '@/shared/utils/toast'
 import type { AxiosError } from 'axios'
+import { isAxiosError } from 'axios'
 
-type ErrorResponse = {
-  detail?: string
-  message?: string
-}
+type ErrorResponse =
+  | { detail?: string | { msg: string }[]; message?: string }
+  | { [key: string]: any }
 
 export function useEnhancedToast() {
   const { showApiErrorToast } = useApiErrorToast()
@@ -26,16 +26,26 @@ export function useEnhancedToast() {
     showError: (error: unknown, fallbackMessage = 'Something went wrong') => {
       let message = fallbackMessage
 
-      if (error && typeof error === 'object' && 'isAxiosError' in error) {
-        const axiosError = error as AxiosError<ErrorResponse>
-        message =
-          axiosError.response?.data?.detail ||
-          axiosError.response?.data?.message ||
-          fallbackMessage
+      if (isAxiosError<ErrorResponse>(error)) {
+        const status = error.response?.status
+        const data = error.response?.data
+
+        if (typeof data?.detail === 'string') {
+          message = `${status ?? ''} ${data.detail}`
+        } else if (Array.isArray(data?.detail)) {
+          // Pydantic validation errors
+          const firstError = data.detail[0]
+          message = `${status ?? ''} ${firstError?.msg ?? fallbackMessage}`
+        } else if (data?.message) {
+          message = `${status ?? ''} ${data.message}`
+        }
       }
 
-      showApiErrorToast(error, message)
-      console.error('[API ERROR]', error)
+      showApiErrorToast(message)
+
+      if (import.meta.env.DEV) {
+        console.error('[API ERROR]', error)
+      }
     },
 
     // Common error messages

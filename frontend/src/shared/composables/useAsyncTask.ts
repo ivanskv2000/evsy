@@ -1,8 +1,9 @@
 import { ref } from 'vue'
-import { handleApiError } from '@/shared/utils/handleApiError'
+import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 
 export function useAsyncTask() {
   const isLoading = ref(false)
+  const { showError } = useEnhancedToast()
 
   async function run<T>(
     task: () => Promise<T>,
@@ -14,7 +15,7 @@ export function useAsyncTask() {
       onSuccess?.(result)
       return result
     } catch (error) {
-      handleApiError(error)
+      showError(error)
       return null
     } finally {
       isLoading.value = false
