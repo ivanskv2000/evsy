@@ -14,28 +14,29 @@ services:
       db:
         condition: service_healthy
     env_file:
-      - ./backend/.env
+      - .env
 
   frontend:
     build:
       context: ./frontend
-      target: builder 
+      dockerfile: Dockerfile.dev
     volumes:
       - ./frontend:/app
       - /app/node_modules
     ports:
-      - 5173:5173
-    command: npm run dev
+      - 3000:5173
+    env_file:
+      - .env
 
   db:
     image: postgres:15
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
-    ports:
-      - 5432:5432
+      POSTGRES_USER: evsy
+      POSTGRES_PASSWORD: evsy
+      POSTGRES_DB: evsy
+#    ports:
+#      - 5432:5432
     healthcheck:
-      test: ['CMD', 'pg_isready', '-U', 'postgres']
+      test: ['CMD', 'pg_isready', '-U', 'evsy']
       interval: 3s
       retries: 5
