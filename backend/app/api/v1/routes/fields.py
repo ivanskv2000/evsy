@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from app import crud, schemas
@@ -38,7 +38,7 @@ def get_fields(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 
 @router.get(
     "/{field_id}",
-    response_model=schemas.FieldOut,
+    response_model=schemas.FieldOut | schemas.FieldOutWithEventCount,
     summary="Get field by ID",
     description="Return a single field by its ID.",
     responses={
@@ -46,10 +46,17 @@ def get_fields(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
         404: {"description": "Field not found"},
     },
 )
-def get_event(field_id: int, db: Session = Depends(get_db)):
+def get_field(
+    field_id: int,
+    include_event_count: bool = Query(False),
+    db: Session = Depends(get_db),
+):
     db_field = crud.get_field(db=db, field_id=field_id)
     if db_field is None:
         raise HTTPException(status_code=404, detail="Field not found")
+    
+    if include_event_count:
+        count = crud.get_field_event_count(db=db, field_id=field_id)
     return db_field
 
 

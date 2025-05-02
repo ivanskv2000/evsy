@@ -66,6 +66,10 @@ class FieldOut(FieldBase):
     model_config = ConfigDict(from_attributes=True)
 
 
+class FieldOutWithEventCount(FieldOut):
+    event_count: int
+
+
 class EventBase(BaseModel):
     name: str
     description: Optional[str] = None
