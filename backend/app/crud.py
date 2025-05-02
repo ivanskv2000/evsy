@@ -1,5 +1,5 @@
 from fastapi import HTTPException, Response
-from sqlalchemy import func, select
+from sqlalchemy import func
 from sqlalchemy.orm import Session, joinedload
 
 from . import models, schemas

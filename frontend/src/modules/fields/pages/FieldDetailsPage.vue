@@ -13,7 +13,7 @@ const route = useRoute()
 const router = useRouter()
 const field = ref<Field | null>(null)
 
-const { run } = useAsyncTask()
+const { run, isLoading } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
 
@@ -54,7 +54,7 @@ onMounted(() => {
     <FieldDetailsCard
       v-if="field"
       :field="field"
-      :loading="{ isSaving, isDeleting }"
+      :loading="{ isLoading, isSaving, isDeleting }"
       @update="handleUpdate"
       @delete="handleDelete"
     />

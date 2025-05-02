@@ -10,10 +10,12 @@ import { Icon } from '@iconify/vue'
 import JsonPreview from '@/shared/components/JsonPreview.vue'
 import DetailsCardLayout from '@/shared/components/layout/DetailsCardLayout.vue'
 import DetailsCardAttribute from '@/shared/components/layout/DetailsCardAttribute.vue'
+import DetailsCardSkeleton from '@/shared/components/skeletons/DetailsCardSkeleton.vue'
 
 defineProps<{
   field: Field
   loading: {
+    isLoading: boolean
     isSaving: boolean
     isDeleting: boolean
   }
@@ -40,7 +42,8 @@ const confirmDelete = () => {
 
 <template>
   <div>
-    <DetailsCardLayout :title="field.name" :description="field.description ?? undefined">
+    <DetailsCardSkeleton v-if="loading.isLoading"/>
+    <DetailsCardLayout v-else :title="field.name" :description="field.description ?? undefined">
       <template #badge>
         <Badge variant="secondary" class="text-xs tracking-wide uppercase">
           {{ field.field_type }}
