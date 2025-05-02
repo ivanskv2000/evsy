@@ -61,7 +61,7 @@ const confirmDelete = () => {
         <DetailsCardAttribute icon="radix-icons:id-card" label="ID" :value="field.id.toString()" />
 
         <!-- Example -->
-        <DetailsCardAttribute icon="radix-icons:file-text" label="Example">
+        <DetailsCardAttribute v-if="field.example" icon="radix-icons:file-text" label="Example">
           <template #value>
             <JsonPreview :value="field.example" />
           </template>
@@ -70,7 +70,7 @@ const confirmDelete = () => {
         <!-- Used in -->
         <DetailsCardAttribute icon="radix-icons:bar-chart" label="Used in">
           <template #value>
-            `${field.event_count}` events
+            {{ `${field.event_count || 0} events` }}
           </template>
         </DetailsCardAttribute>
       </template>

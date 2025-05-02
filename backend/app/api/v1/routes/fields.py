@@ -48,16 +48,16 @@ def get_fields(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 )
 def get_field(
     field_id: int,
-    include_event_count: bool = Query(False),
+    with_event_count: bool = Query(False),
     db: Session = Depends(get_db),
 ):
     db_field = crud.get_field(db=db, field_id=field_id)
     if db_field is None:
         raise HTTPException(status_code=404, detail="Field not found")
 
-    if include_event_count:
+    if with_event_count:
         count = crud.get_field_event_count(db=db, field_id=field_id)
-        return schemas.FieldOutWithCount(**field.__dict__, event_count=count)
+        return schemas.FieldOutWithEventCount(**db_field.__dict__, event_count=count)
 
     return db_field
 

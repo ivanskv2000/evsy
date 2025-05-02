@@ -177,8 +177,8 @@ def delete_field(db: Session, field_id: int):
 
 def get_field_event_count(db: Session, field_id: int):
     return (
-        db.query(func.count(EventField.event_id))
-        .filter(EventField.field_id == field_id)
+        db.query(func.count(models.EventField.event_id))
+        .filter(models.EventField.field_id == field_id)
         .scalar()
     )
 
