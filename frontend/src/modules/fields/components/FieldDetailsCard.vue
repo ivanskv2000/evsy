@@ -68,7 +68,11 @@ const confirmDelete = () => {
         </DetailsCardAttribute>
 
         <!-- Used in -->
-        <DetailsCardAttribute icon="radix-icons:bar-chart" label="Used in" value="0 events" />
+        <DetailsCardAttribute icon="radix-icons:bar-chart" label="Used in">
+          <template #value>
+            `${field.event_count}` events
+          </template>
+        </DetailsCardAttribute>
       </template>
     </DetailsCardLayout>
 

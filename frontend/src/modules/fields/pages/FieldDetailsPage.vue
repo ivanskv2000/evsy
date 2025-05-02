@@ -40,7 +40,7 @@ const handleUpdate = (values: FieldFormValues) => {
 onMounted(() => {
   const id = Number(route.params.id)
   run(
-    () => fieldApi.getById(id),
+    () => fieldApi.getById(id, { with_event_count: true }),
     result => {
       if (result) field.value = result
     }

@@ -16,7 +16,13 @@ type FieldExampleMap = {
   [FieldType.OBJECT]: Record<string, unknown>
 }
 
-export type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonValue[]
+  | { [key: string]: JsonValue }
 
 export type Field = {
   id: number
@@ -26,6 +32,7 @@ export type Field = {
   example: JsonValue
   created_at: string
   updated_at: string
+  event_count?: number
 }
 
 export type FieldFormData = {

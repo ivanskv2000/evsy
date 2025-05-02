@@ -59,11 +59,16 @@ const handleCopyJson = async () => {
       <TooltipTrigger>
         <div class="font-mono">{{ shortPreview }}</div>
       </TooltipTrigger>
-      <TooltipContent v-if="!isShort" side="bottom" @click.stop class="max-h-64 overflow-y-auto text-left text-xs">
+      <TooltipContent
+        v-if="!isShort"
+        side="bottom"
+        @click.stop
+        class="max-h-64 overflow-y-auto text-left text-xs"
+      >
         <button
           v-if="isSupported"
           @click="handleCopyJson"
-          class="text-muted-foreground absolute top-2 right-2 text-[10px] cursor-pointer"
+          class="text-muted-foreground absolute top-2 right-2 cursor-pointer text-[10px]"
         >
           <Icon icon="radix-icons:copy" class="mr-1 inline h-3 w-3" />
         </button>
