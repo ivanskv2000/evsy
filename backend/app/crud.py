@@ -1,4 +1,5 @@
 from fastapi import HTTPException, Response
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
 
 from . import models, schemas
@@ -172,6 +173,14 @@ def delete_field(db: Session, field_id: int):
         db.commit()
         return db_field
     return None
+
+
+def get_field_event_count(db: Session, field_id: int):
+    return (
+        db.query(func.count(EventField.event_id))
+        .filter(EventField.field_id == field_id)
+        .scalar()
+    )
 
 
 def get_fields_by_ids(db: Session, field_ids: list[int]):
