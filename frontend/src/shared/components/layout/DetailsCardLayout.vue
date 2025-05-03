@@ -30,6 +30,7 @@ const handleCopyTitle = async () => {
 </script>
 
 <template>
+  <Transition name="fade" appear>
   <Card>
     <!-- Header -->
     <CardHeader>
@@ -84,4 +85,5 @@ const handleCopyTitle = async () => {
       <slot name="footer" />
     </CardFooter>
   </Card>
+</Transition>
 </template>

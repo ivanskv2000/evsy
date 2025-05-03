@@ -157,6 +157,26 @@
   transform: translateY(-10px);
 }
 
+/* Card transition */
+/* index.css */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
 /* Scrolling */
 .hide-scrollbar {
   scrollbar-width: none; /* Firefox */
