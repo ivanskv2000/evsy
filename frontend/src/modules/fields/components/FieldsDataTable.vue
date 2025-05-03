@@ -13,7 +13,8 @@ import DataTableLayout from '@/shared/components/data/DataTableLayout.vue'
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  data: TData[],
+  isLoading?: boolean
 }>()
 
 const { table, columnFilters } = useDataTable(
@@ -55,7 +56,7 @@ const isTypeFilterSet = computed(() =>
       </Button>
     </template>
     <template #table>
-      <DataTable :table="table" />
+      <DataTable :table="table" :isLoading="isLoading" />
     </template>
     <template #footer>
       <DataTablePagination :table="table" />

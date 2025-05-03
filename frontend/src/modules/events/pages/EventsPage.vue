@@ -11,7 +11,7 @@ import type { EventFormValues } from '@/modules/events/validation/eventSchema'
 import EventEditModal from '@/modules/events/components/EventEditModal.vue'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 
-const { run } = useAsyncTask()
+const { run, isLoading } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
 const { showUpdated, showDeleted } = useEnhancedToast()
@@ -40,10 +40,9 @@ const handleDelete = () => {
   runDeleteTask(async () => {
     await eventApi.delete(selectedEventId.value!)
     showDeleted('Event')
-    showDeleteModal.value = false
-
     deleteRow(selectedEventId.value!)
     selectedEventId.value = null
+    showDeleteModal.value = false
   })
 }
 
@@ -84,7 +83,7 @@ onMounted(() => {
   <div>
     <Header title="Events" />
     <div class="container mx-auto">
-      <EventsDataTable :columns="columns" :data="events" />
+      <EventsDataTable :columns="columns" :data="events" :isLoading="isLoading" />
     </div>
 
     <!-- Modals -->

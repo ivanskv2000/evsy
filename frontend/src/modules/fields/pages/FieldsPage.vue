@@ -11,7 +11,7 @@ import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 
-const { run } = useAsyncTask()
+const { run, isLoading } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
 const { showUpdated, showDeleted } = useEnhancedToast()
@@ -40,10 +40,9 @@ const handleDelete = () => {
   runDeleteTask(async () => {
     await fieldApi.delete(selectedFieldId.value!)
     showDeleted('Field')
-    showDeleteModal.value = false
-
     deleteRow(selectedFieldId.value!)
     selectedFieldId.value = null
+    showDeleteModal.value = false
   })
 }
 
@@ -53,8 +52,8 @@ const handleUpdate = (values: FieldFormValues) => {
     updated => {
       showUpdated('Field')
       updateRow(updated)
-      showEditModal.value = false
       editedField.value = null
+      showEditModal.value = false
     }
   )
 }
@@ -85,7 +84,7 @@ onMounted(() => {
   <div>
     <Header title="Fields" />
     <div class="container mx-auto">
-      <FieldsDataTable :columns="columns" :data="fields" />
+      <FieldsDataTable :columns="columns" :data="fields" :isLoading="isLoading" />
     </div>
 
     <!-- Modals -->

@@ -9,7 +9,6 @@ import EventFieldsTable from './EventFieldsTable.vue'
 import JsonPreview from '@/shared/components/JsonPreview.vue'
 import DetailsCardLayout from '@/shared/components/layout/DetailsCardLayout.vue'
 import DetailsCardAttribute from '@/shared/components/layout/DetailsCardAttribute.vue'
-import DetailsCardSkeleton from '@/shared/components/skeletons/DetailsCardSkeleton.vue'
 
 const eventExample = {
   user_id: 12,
@@ -47,8 +46,7 @@ const handleCopyId = async () => {
 
 <template>
   <div>
-    <DetailsCardSkeleton v-if="isLoading" />
-    <DetailsCardLayout v-else :title="event.name" :description="event.description ?? undefined">
+    <DetailsCardLayout :title="event.name" :description="event.description ?? undefined">
       <template #badge>
         <Badge variant="outline" class="cursor-pointer text-xs tracking-wide" @click="handleCopyId">
           ID: {{ event.id }}

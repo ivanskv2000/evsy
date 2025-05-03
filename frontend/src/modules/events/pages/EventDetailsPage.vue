@@ -10,6 +10,7 @@ import Header from '@/shared/components/layout/PageHeader.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { EventFormValues } from '@/modules/events/validation/eventSchema'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
+import DetailsCardSkeleton from '@/shared/components/skeletons/DetailsCardSkeleton.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -57,8 +58,11 @@ onMounted(() => {
 <template>
   <div>
     <Header title="Event details" backLink fallbackBackLink="/events" />
+
+    <DetailsCardSkeleton v-if="isLoading || (!event)" />
+
     <EventDetailsCard
-      v-if="event"
+      v-else
       :event="event"
       :isLoading="isLoading"
       @edit="showEditModal = true"
@@ -67,6 +71,7 @@ onMounted(() => {
 
     <!-- Modals -->
     <EventEditModal
+      v-if="event"
       :open="showEditModal"
       :event="event"
       :onClose="() => (showEditModal = false)"

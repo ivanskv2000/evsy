@@ -22,9 +22,9 @@ const { copy: copyTitle } = useClipboard({ source: props.title })
 const handleCopyTitle = async () => {
   try {
     await copyTitle()
-    showCopied('ID')
+    showCopied('Name')
   } catch {
-    showCopyError('ID')
+    showCopyError('Name')
   }
 }
 </script>

@@ -10,6 +10,7 @@ import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
 import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
+import DetailsCardSkeleton from '@/shared/components/skeletons/DetailsCardSkeleton.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -56,8 +57,11 @@ onMounted(() => {
 <template>
   <div>
     <Header title="Field details" backLink fallbackBackLink="/fields" />
+
+    <DetailsCardSkeleton v-if="isLoading || (!field)" />
+
     <FieldDetailsCard
-      v-if="field"
+      v-else
       :field="field"
       :isLoading="isLoading"
       @edit-clicked="showEditModal = true"
@@ -65,6 +69,7 @@ onMounted(() => {
     />
 
     <FieldEditModal
+      v-if="field"
       :open="showEditModal"
       :field="field"
       :onClose="() => (showEditModal = false)"

@@ -8,11 +8,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/shared/ui/table'
+import { Icon } from '@iconify/vue'
 
 import { FlexRender } from '@tanstack/vue-table'
 
 defineProps<{
-  table: Table<TData>
+  table: Table<TData>,
+  isLoading?: boolean
 }>()
 </script>
 <template>
@@ -41,6 +43,17 @@ defineProps<{
             </TableCell>
           </TableRow>
         </template>
+
+        <template v-else-if="isLoading">
+          <TableRow>
+            <TableCell :colspan="table.getVisibleFlatColumns().length" class="h-24 text-center">
+              <div>
+              <Icon icon="radix-icons:reload" class="inline animate-spin h-4 w-4 text-foreground" />
+            </div>
+            </TableCell>
+          </TableRow>
+        </template>
+
         <template v-else>
           <TableRow>
             <TableCell :colspan="table.getVisibleFlatColumns().length" class="h-24 text-center">
