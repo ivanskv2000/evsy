@@ -8,7 +8,7 @@ import DetailsCardLayout from '@/shared/components/layout/DetailsCardLayout.vue'
 import DetailsCardAttribute from '@/shared/components/layout/DetailsCardAttribute.vue'
 import DetailsCardSkeleton from '@/shared/components/skeletons/DetailsCardSkeleton.vue'
 
-const props = defineProps<{
+defineProps<{
   field: Field
   isLoading: boolean
 }>()

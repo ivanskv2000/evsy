@@ -42,10 +42,9 @@ const handleDelete = () => {
   runDeleteTask(async () => {
     await tagApi.delete(selectedTagId.value!)
     showDeleted('Tag')
-    showDeleteModal.value = false
-
     tags.value = tags.value.filter(tag => tag.id !== selectedTagId.value)
     selectedTagId.value = null
+    showDeleteModal.value = false
   })
 }
 

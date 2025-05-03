@@ -201,6 +201,8 @@ function removeTag(tagId: string) {
       </FormItem>
     </FormField>
 
-    <Button type="submit" :disabled="isLoading">{{ buttonText || 'Create Event' }}</Button>
+    <div class="flex justify-end">
+      <Button type="submit" :disabled="isLoading">{{ buttonText || 'Create Event' }}</Button>
+    </div>
   </form>
 </template>

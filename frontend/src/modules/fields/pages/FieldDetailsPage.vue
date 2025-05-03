@@ -59,7 +59,7 @@ onMounted(() => {
     <FieldDetailsCard
       v-if="field"
       :field="field"
-      :isLoading="isLoading" 
+      :isLoading="isLoading"
       @edit-clicked="showEditModal = true"
       @delete-clicked="showDeleteModal = true"
     />

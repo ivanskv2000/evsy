@@ -11,6 +11,17 @@ import DetailsCardLayout from '@/shared/components/layout/DetailsCardLayout.vue'
 import DetailsCardAttribute from '@/shared/components/layout/DetailsCardAttribute.vue'
 import DetailsCardSkeleton from '@/shared/components/skeletons/DetailsCardSkeleton.vue'
 
+const eventExample = {
+  user_id: 12,
+  event_date: '2024-01-01',
+  event_time: '2024-01-01T00:00:00Z',
+  device: 'mobile',
+  metadata: {
+    source: 'landing',
+    campaign: 'spring_sale',
+  },
+}
+
 const props = defineProps<{
   event: Event
   isLoading: boolean
@@ -37,17 +48,9 @@ const handleCopyId = async () => {
 <template>
   <div>
     <DetailsCardSkeleton v-if="isLoading" />
-    <DetailsCardLayout
-      v-else
-      :title="event.name"
-      :description="event.description ?? undefined"
-    >
+    <DetailsCardLayout v-else :title="event.name" :description="event.description ?? undefined">
       <template #badge>
-        <Badge
-          variant="outline"
-          class="cursor-pointer text-xs tracking-wide"
-          @click="handleCopyId"
-        >
+        <Badge variant="outline" class="cursor-pointer text-xs tracking-wide" @click="handleCopyId">
           ID: {{ event.id }}
         </Badge>
       </template>
@@ -79,7 +82,7 @@ const handleCopyId = async () => {
         <!-- Example -->
         <DetailsCardAttribute icon="radix-icons:file-text" label="Example">
           <template #value>
-            <JsonPreview :value="event.example" />
+            <JsonPreview :value="eventExample" />
           </template>
         </DetailsCardAttribute>
       </template>

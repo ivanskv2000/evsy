@@ -1,11 +1,5 @@
 <script setup lang="ts">
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardDescription,
-  CardFooter,
-} from '@/shared/ui/card'
+import { Card, CardContent, CardHeader, CardDescription, CardFooter } from '@/shared/ui/card'
 import { Skeleton } from '@/shared/ui/skeleton'
 </script>
 

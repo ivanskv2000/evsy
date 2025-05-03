@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 
-export function useAsyncTask(minDelay=400) {
+export function useAsyncTask(minDelay = 400) {
   const isLoading = ref(false)
   const { showError } = useEnhancedToast()
 
