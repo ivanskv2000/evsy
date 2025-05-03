@@ -8,10 +8,14 @@ import Header from '@/shared/components/layout/PageHeader.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
+import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
+import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 
 const route = useRoute()
 const router = useRouter()
 const field = ref<Field | null>(null)
+const showEditModal = ref(false)
+const showDeleteModal = ref(false)
 
 const { run, isLoading } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
@@ -33,6 +37,7 @@ const handleUpdate = (values: FieldFormValues) => {
     updated => {
       showUpdated('Field')
       field.value = updated
+      showEditModal.value = false
     }
   )
 }
@@ -54,9 +59,25 @@ onMounted(() => {
     <FieldDetailsCard
       v-if="field"
       :field="field"
-      :loading="{ isLoading, isSaving, isDeleting }"
-      @update="handleUpdate"
-      @delete="handleDelete"
+      :isLoading="isLoading" 
+      @edit-clicked="showEditModal = true"
+      @delete-clicked="showDeleteModal = true"
+    />
+
+    <FieldEditModal
+      :open="showEditModal"
+      :field="field"
+      :onClose="() => (showEditModal = false)"
+      :onSubmit="handleUpdate"
+      :isSaving="isSaving"
+    />
+
+    <DeleteModal
+      :open="showDeleteModal"
+      :onClose="() => (showDeleteModal = false)"
+      :onConfirm="handleDelete"
+      :isDeleting="isDeleting"
+      description="Once deleted, this field will be unlinked from any events it's part of."
     />
   </div>
 </template>

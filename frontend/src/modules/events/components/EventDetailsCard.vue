@@ -1,59 +1,27 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useClipboard } from '@vueuse/core'
+import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import type { Event } from '@/modules/events/types'
 import { Button } from '@/shared/ui/button'
-import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
-import type { EventFormValues } from '@/modules/events/validation/eventSchema'
-import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
-import EventEditModal from '@/modules/events/components/EventEditModal.vue'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui/tooltip'
-import { useClipboard } from '@vueuse/core'
 import { Badge } from '@/shared/ui/badge'
 import { Icon } from '@iconify/vue'
 import EventFieldsTable from './EventFieldsTable.vue'
 import JsonPreview from '@/shared/components/JsonPreview.vue'
 import DetailsCardLayout from '@/shared/components/layout/DetailsCardLayout.vue'
 import DetailsCardAttribute from '@/shared/components/layout/DetailsCardAttribute.vue'
-
-const exampleValue = {
-  user_id: 123,
-  event_date: '2021-01-01',
-  event_time: '2021-01-01T00:00:00Z',
-  device: 'mobile',
-  metadata: {
-    source: 'landing',
-    campaign: 'spring_sale',
-  },
-}
-
-const { showCopied, showCopyError } = useEnhancedToast()
+import DetailsCardSkeleton from '@/shared/components/skeletons/DetailsCardSkeleton.vue'
 
 const props = defineProps<{
   event: Event
-  loading: {
-    isSaving: boolean
-    isDeleting: boolean
-  }
+  isLoading: boolean
 }>()
 
 const emit = defineEmits<{
-  (e: 'update', values: EventFormValues): void
+  (e: 'edit'): void
   (e: 'delete'): void
 }>()
 
-const showEditModal = ref(false)
-const showDeleteModal = ref(false)
-
-const submitEdit = (values: EventFormValues) => {
-  emit('update', values)
-  showEditModal.value = false
-}
-
-const confirmDelete = () => {
-  emit('delete')
-  showDeleteModal.value = false
-}
-
+const { showCopied, showCopyError } = useEnhancedToast()
 const { copy: copyId } = useClipboard({ source: props.event.id.toString() })
 
 const handleCopyId = async () => {
@@ -68,31 +36,27 @@ const handleCopyId = async () => {
 
 <template>
   <div>
-    <DetailsCardLayout :title="event.name" :description="event.description ?? undefined">
+    <DetailsCardSkeleton v-if="isLoading" />
+    <DetailsCardLayout
+      v-else
+      :title="event.name"
+      :description="event.description ?? undefined"
+    >
       <template #badge>
-        <TooltipProvider :delay-duration="800">
-          <Tooltip>
-            <TooltipTrigger>
-              <Badge
-                variant="outline"
-                class="cursor-pointer text-xs tracking-wide"
-                @click="handleCopyId"
-              >
-                ID: {{ event.id }}
-              </Badge>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Click to copy</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <Badge
+          variant="outline"
+          class="cursor-pointer text-xs tracking-wide"
+          @click="handleCopyId"
+        >
+          ID: {{ event.id }}
+        </Badge>
       </template>
 
       <template #actions>
-        <Button size="icon" variant="ghost" @click="showEditModal = true">
+        <Button size="icon" variant="ghost" @click="emit('edit')">
           <Icon icon="radix-icons:pencil-2" class="h-4 w-4" />
         </Button>
-        <Button size="icon" variant="ghost" @click="showDeleteModal = true">
+        <Button size="icon" variant="ghost" @click="emit('delete')">
           <Icon icon="radix-icons:trash" class="text-destructive h-4 w-4" />
         </Button>
       </template>
@@ -115,7 +79,7 @@ const handleCopyId = async () => {
         <!-- Example -->
         <DetailsCardAttribute icon="radix-icons:file-text" label="Example">
           <template #value>
-            <JsonPreview :value="exampleValue" />
+            <JsonPreview :value="event.example" />
           </template>
         </DetailsCardAttribute>
       </template>
@@ -124,20 +88,5 @@ const handleCopyId = async () => {
         <EventFieldsTable :fields="event.fields" />
       </template>
     </DetailsCardLayout>
-
-    <!-- Modals -->
-    <EventEditModal
-      :open="showEditModal"
-      :event="event"
-      :onClose="() => (showEditModal = false)"
-      :onSubmit="submitEdit"
-      :isSaving="loading.isSaving"
-    />
-    <DeleteModal
-      :open="showDeleteModal"
-      :onClose="() => (showDeleteModal = false)"
-      :onConfirm="confirmDelete"
-      :isDeleting="loading.isDeleting"
-    />
   </div>
 </template>
