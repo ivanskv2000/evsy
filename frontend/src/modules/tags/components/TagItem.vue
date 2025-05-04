@@ -30,6 +30,7 @@ const handleCopyId = async () => {
 </script>
 
 <template>
+  <Transition name="fade" appear>
   <div
     class="flex items-start justify-between gap-4 rounded-lg border p-4 transition hover:shadow-sm"
   >
@@ -60,4 +61,5 @@ const handleCopyId = async () => {
       </Button>
     </div>
   </div>
+</Transition>
 </template>

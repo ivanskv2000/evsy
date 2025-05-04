@@ -33,6 +33,7 @@ import type { Tag } from '@/modules/tags/types'
 import { computed, ref, watchEffect } from 'vue'
 import { eventSchema, type EventFormValues } from '@/modules/events/validation/eventSchema'
 import { useFilter } from 'reka-ui'
+import Skeleton from '@/shared/ui/skeleton/Skeleton.vue'
 
 const props = defineProps<{
   event?: Event
@@ -121,7 +122,13 @@ function removeTag(tagId: string) {
       <FormItem>
         <FormLabel>Tags</FormLabel>
         <FormControl>
-          <Combobox v-model="componentField.modelValue" v-model:open="open" :ignore-filter="true">
+          <Skeleton v-if="isLoadingTags" class="h-10 w-full rounded-md" />
+          <Combobox
+            v-else 
+            v-model="componentField.modelValue"
+            v-model:open="open"
+            :ignore-filter="true"
+          >
             <ComboboxAnchor as-child>
               <TagsInput
                 v-model="componentField.modelValue"
@@ -184,7 +191,17 @@ function removeTag(tagId: string) {
         <FormLabel>Linked Fields</FormLabel>
         <FormDescription>Choose one or more fields this event uses.</FormDescription>
         <FormControl>
-          <div class="max-h-48 space-y-2 overflow-y-auto rounded-md border p-4">
+          <div v-if="isLoadingFields" class="space-y-2 p-4">
+            <Skeleton
+              v-for="i in 4"
+              :key="i"
+              class="h-5 w-[70%] rounded-md"
+            />
+          </div>
+          <div 
+            v-else
+            class="max-h-48 space-y-2 overflow-y-auto rounded-md border p-4"
+          >
             <div v-for="field in availableFields" :key="field.id" class="flex items-center gap-2">
               <input
                 type="checkbox"

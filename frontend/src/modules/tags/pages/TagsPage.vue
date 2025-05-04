@@ -12,11 +12,13 @@ import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
 import { Icon } from '@iconify/vue'
+import ItemSkeleton from '@/shared/components/skeletons/ItemSkeleton.vue'
 
 const { showUpdated, showDeleted } = useEnhancedToast()
 
 const tags = ref<Tag[]>([])
 const searchQuery = ref('')
+const { run, isLoading } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
 
@@ -59,8 +61,6 @@ const handleUpdate = (values: TagFormValues) => {
   )
 }
 
-const { run } = useAsyncTask()
-
 onMounted(() => {
   run(
     () => tagApi.getAll(),
@@ -90,7 +90,9 @@ onMounted(() => {
 
     <!-- Tags Grid -->
     <div class="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
+      <ItemSkeleton v-if="isLoading" v-for="n in 4" :key="n" />
       <TagItem
+        v-else
         v-for="tag in filteredTags"
         :key="tag.id"
         :tag="tag"

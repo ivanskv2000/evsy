@@ -36,7 +36,11 @@ export default {
       </SelectContent>
     </Select>
 
-    <Button :disabled="!showClearButton" variant="ghost" @click="column.setFilterValue('')">
+    <Button
+      :disabled="!showClearButton"
+      variant="ghost"
+      @click="column.setFilterValue('')"
+    >
       <Icon class="h-4 w-4" icon="radix-icons:cross-2" />
       <span class="sr-only">Clear type filter</span>
     </Button>

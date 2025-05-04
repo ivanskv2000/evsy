@@ -30,6 +30,6 @@ drop-db:
 	PYTHONPATH=./ poetry run python app/database/seeds/reset_db.py
 
 seed:
-	poetry run python -m app.seeds
+	poetry run python -m app.database.seeds
 
 reseed: drop-db seed

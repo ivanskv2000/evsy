@@ -43,6 +43,30 @@ export function getFieldColumns(
       },
     },
     {
+      accessorKey: 'description',
+      header: ({column}) =>
+        h(DataTableColumnHeader<Field, unknown>, {
+          column,
+          title: 'Description',
+        }),
+      cell: ({ row }) => {
+        const description = String(row.getValue('description'))
+
+        return h(
+          'div',
+          {
+            class: 'max-w-[300px] truncate whitespace-nowrap overflow-hidden text-muted-foreground',
+            title: description,
+            style: {
+              userSelect: 'text',
+              cursor: 'text',
+            },
+          },
+          description
+        )
+      }
+    },
+    {
       accessorKey: 'field_type',
       header: ({ column }) =>
         h(DataTableColumnHeader<Field, unknown>, {

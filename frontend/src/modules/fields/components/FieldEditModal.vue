@@ -1,10 +1,16 @@
 <script setup lang="ts">
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogHeader,
+  DialogDescription,
+} from '@/shared/ui/dialog'
 import type { Field } from '@/modules/fields/types'
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/shared/ui/dialog'
 import FieldForm from '@/modules/fields/components/FieldForm.vue'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 
-const props = defineProps<{
+defineProps<{
   description?: string
   field: Field
   open: boolean
@@ -15,16 +21,19 @@ const props = defineProps<{
 </script>
 
 <template>
-  <Dialog :open="props.open" @update:open="val => !val && props.onClose()">
+  <Dialog :open="open" @update:open="onClose">
     <DialogContent>
+      <DialogHeader>
       <DialogTitle>Edit Field</DialogTitle>
-      <DialogDescription>
+      <DialogDescription v-if="description">
         {{ description }}
       </DialogDescription>
+    </DialogHeader>
       <FieldForm
+        v-if="field"
         :field="field"
-        :onSubmit="props.onSubmit"
-        :isLoading="props.isSaving"
+        :onSubmit="onSubmit"
+        :isLoading="isSaving"
         button-text="Save"
       />
     </DialogContent>

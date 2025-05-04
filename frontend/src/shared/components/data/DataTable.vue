@@ -8,16 +8,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/shared/ui/table'
-import { Icon } from '@iconify/vue'
 
 import { FlexRender } from '@tanstack/vue-table'
 
 defineProps<{
-  table: Table<TData>,
-  isLoading?: boolean
+  table: Table<TData>
 }>()
 </script>
+
 <template>
+  <Transition name="fade" appear>
   <div class="rounded-md border">
     <TableComponent>
       <TableHeader>
@@ -44,16 +44,6 @@ defineProps<{
           </TableRow>
         </template>
 
-        <template v-else-if="isLoading">
-          <TableRow>
-            <TableCell :colspan="table.getVisibleFlatColumns().length" class="h-24 text-center">
-              <div>
-              <Icon icon="radix-icons:reload" class="inline animate-spin h-4 w-4 text-foreground" />
-            </div>
-            </TableCell>
-          </TableRow>
-        </template>
-
         <template v-else>
           <TableRow>
             <TableCell :colspan="table.getVisibleFlatColumns().length" class="h-24 text-center">
@@ -64,4 +54,5 @@ defineProps<{
       </TableBody>
     </TableComponent>
   </div>
+</Transition>
 </template>

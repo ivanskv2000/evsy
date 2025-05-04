@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/shared/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/shared/ui/dialog'
 import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts'
 import EventForm from './EventForm.vue'
 import type { Event } from '@/modules/events/types'
@@ -10,7 +10,7 @@ import type { Tag } from '@/modules/tags/types'
 import { tagApi } from '@/modules/tags/api'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 
-const props = defineProps<{
+defineProps<{
   description?: string
   event: Event
   open: boolean
@@ -35,20 +35,23 @@ onMounted(() => {
 </script>
 
 <template>
-  <Dialog :open="props.open" @update:open="val => !val && props.onClose()">
+  <Dialog :open="open" @update:open="onClose">
     <DialogContent>
+      <DialogHeader>
       <DialogTitle>Edit Event</DialogTitle>
-      <DialogDescription>
+      <DialogDescription v-if="description">
         {{ description }}
       </DialogDescription>
+    </DialogHeader>
       <EventForm
+        v-if="event"
         :event="event"
         :availableFields="fields"
         :availableTags="tags"
         :isLoadingFields="isLoadingFields"
         :isLoadingTags="isLoadingTags"
-        :onSubmit="props.onSubmit"
-        :isLoading="props.isSaving"
+        :onSubmit="onSubmit"
+        :isLoading="isSaving"
         button-text="Save"
       />
     </DialogContent>

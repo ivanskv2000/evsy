@@ -10,11 +10,12 @@ import { FieldType } from '@/modules/fields/types'
 import DataTable from '@/shared/components/data/DataTable.vue'
 import { useDataTable } from '@/shared/composables/useDataTable'
 import DataTableLayout from '@/shared/components/data/DataTableLayout.vue'
+import DataTableSkeleton from '@/shared/components/skeletons/DataTableSkeleton.vue'
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[],
-  isLoading?: boolean
+  isLoading: boolean
 }>()
 
 const { table, columnFilters } = useDataTable(
@@ -56,7 +57,8 @@ const isTypeFilterSet = computed(() =>
       </Button>
     </template>
     <template #table>
-      <DataTable :table="table" :isLoading="isLoading" />
+      <DataTableSkeleton v-if="isLoading" :columns="table.getVisibleFlatColumns().length" />
+      <DataTable v-else :table="table" />
     </template>
     <template #footer>
       <DataTablePagination :table="table" />
