@@ -9,6 +9,8 @@ import EventFieldsTable from './EventFieldsTable.vue'
 import JsonPreview from '@/shared/components/JsonPreview.vue'
 import DetailsCardLayout from '@/shared/components/layout/DetailsCardLayout.vue'
 import DetailsCardAttribute from '@/shared/components/layout/DetailsCardAttribute.vue'
+import { getEventFieldsColumns } from '@/modules/events/components/eventFieldsColumns'
+import TagScrollArea from '@/modules/tags/components/TagScrollArea.vue'
 
 const eventExample = {
   user_id: 12,
@@ -23,7 +25,6 @@ const eventExample = {
 
 const props = defineProps<{
   event: Event
-  isLoading: boolean
 }>()
 
 const emit = defineEmits<{
@@ -42,6 +43,8 @@ const handleCopyId = async () => {
     showCopyError('ID')
   }
 }
+
+const columns = getEventFieldsColumns()
 </script>
 
 <template>
@@ -66,7 +69,8 @@ const handleCopyId = async () => {
         <!-- Tags -->
         <DetailsCardAttribute v-if="event.tags.length > 0" icon="ph:tag" label="Tags">
           <template #value>
-            <Badge
+            <TagScrollArea class="max-w-lg">
+              <Badge
               v-for="tag in event.tags"
               :key="tag.id"
               variant="secondary"
@@ -74,6 +78,7 @@ const handleCopyId = async () => {
             >
               {{ tag.id }}
             </Badge>
+            </TagScrollArea>
           </template>
         </DetailsCardAttribute>
 
@@ -86,7 +91,14 @@ const handleCopyId = async () => {
       </template>
 
       <template #content>
-        <EventFieldsTable :fields="event.fields" />
+        <div class="container mx-auto mt-4">
+          <EventFieldsTable
+            title="Associated fields"
+            :columns="columns"
+            :data="event.fields"
+            :isLoading="false"
+          />
+        </div>
       </template>
     </DetailsCardLayout>
   </div>

@@ -1,8 +1,16 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineProps<{
+  title?: String
+}>()
+</script>
 
 <template>
   <div>
-    <div class="flex flex-wrap items-center justify-between gap-4 py-4">
+    <div v-if="title" class="text-muted-foreground -mb-2 font-semibold tracking-tight">
+      {{ title }}
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-4 pb-4">
       <div class="flex flex-nowrap items-center gap-4">
         <slot name="filters" />
       </div>
@@ -13,7 +21,7 @@
 
     <slot name="table" />
 
-    <div class="py-4">
+    <div class="pt-2">
       <slot name="footer" />
     </div>
   </div>

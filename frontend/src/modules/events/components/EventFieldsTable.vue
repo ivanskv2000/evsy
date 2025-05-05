@@ -1,40 +1,34 @@
-<script setup lang="ts">
-import type { Event } from '@/modules/events/types'
-import { RouterLink } from 'vue-router'
+<script setup lang="ts" generic="TData, TValue">
+import type { ColumnDef } from '@tanstack/vue-table'
+import CompactDataTablePagination from '@/shared/components/data/CompactDataTablePagination.vue'
+import DataTable from '@/shared/components/data/DataTable.vue'
+import { useDataTable } from '@/shared/composables/useDataTable'
+import DataTableLayout from '@/shared/components/data/DataTableLayout.vue'
+import DataTableSkeleton from '@/shared/components/skeletons/DataTableSkeleton.vue'
 
-defineProps<{
-  fields: Event['fields']
+const props = defineProps<{
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+  isLoading: boolean
 }>()
+
+const { table } = useDataTable(
+  () => props.data,
+  () => props.columns
+)
 </script>
 
 <template>
-  <div class="mt-4">
-    <h3 class="text-muted-foreground mb-2 text-sm font-semibold">Associated Fields</h3>
-    <div class="overflow-x-auto">
-      <table class="border-muted w-full rounded-md border text-left text-sm">
-        <thead class="bg-muted/50">
-          <tr>
-            <th class="px-3 py-2">Name</th>
-            <th class="px-3 py-2">Type</th>
-            <th class="px-3 py-2">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="field in fields"
-            :key="field.id"
-            class="border-muted hover:bg-muted/30 border-t"
-          >
-            <RouterLink :to="`/fields/${field.id}`" class="contents">
-              <td class="px-3 py-2 font-mono">{{ field.name }}</td>
-              <td class="px-3 py-2 capitalize">{{ field.field_type }}</td>
-              <td class="text-muted-foreground px-3 py-2">
-                {{ field.description || '—' }}
-              </td>
-            </RouterLink>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  <DataTableLayout>
+    <template #table>
+      <DataTableSkeleton v-if="isLoading" :columns="table.getVisibleFlatColumns().length" />
+      <DataTable v-else :table="table" />
+    </template>
+    <template #footer>
+      <CompactDataTablePagination
+        v-if="table.getFilteredRowModel().rows.length > table.getState().pagination.pageSize"
+        :table="table"
+      />
+    </template>
+  </DataTableLayout>
 </template>

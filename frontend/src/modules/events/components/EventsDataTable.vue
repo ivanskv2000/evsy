@@ -11,7 +11,7 @@ import DataTableSkeleton from '@/shared/components/skeletons/DataTableSkeleton.v
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
-  data: TData[],
+  data: TData[]
   isLoading: boolean
 }>()
 
@@ -42,7 +42,11 @@ const { table } = useDataTable(
     </template>
     <template #table>
       <DataTableSkeleton v-if="isLoading" :columns="table.getVisibleFlatColumns().length" />
-      <DataTable v-else :table="table" />
+      <DataTable v-else :table="table">
+        <template #row-placeholder>
+          <div class="relative"><div class='inline-flex items-center justify-center gap-2 h-8 w-8 p-0 size-4 px-4'>&nbsp;</div></div>
+        </template>
+      </DataTable>
     </template>
     <template #footer>
       <DataTablePagination :table="table" />

@@ -24,11 +24,11 @@ defineProps<{
   <Dialog :open="open" @update:open="onClose">
     <DialogContent>
       <DialogHeader>
-      <DialogTitle>Edit Field</DialogTitle>
-      <DialogDescription v-if="description">
-        {{ description }}
-      </DialogDescription>
-    </DialogHeader>
+        <DialogTitle>Edit Field</DialogTitle>
+        <DialogDescription v-if="description">
+          {{ description }}
+        </DialogDescription>
+      </DialogHeader>
       <FieldForm
         v-if="field"
         :field="field"

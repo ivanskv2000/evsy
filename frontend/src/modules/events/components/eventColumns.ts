@@ -5,6 +5,7 @@ import EventsDataTableDropdown from '@/modules/events/components/EventsDataTable
 import { RouterLink } from 'vue-router'
 import DataTableColumnHeader from '@/shared/components/data/DataTableColumnHeader.vue'
 import { Badge } from '@/shared/ui/badge'
+import TagScrollArea from '@/modules/tags/components/TagScrollArea.vue'
 
 export function getEventColumns(
   onEdit: (event: Event) => void,
@@ -56,13 +57,13 @@ export function getEventColumns(
         const event = row.original
         const tags = event.tags
         return h(
-          'div',
+          TagScrollArea,
           {
             class:
-              'flex flex-row gap-1 text-left font-medium max-w-40 overflow-auto hide-scrollbar scroll-x-bounce',
+              'max-w-40 -ml-4',
             ref: 'scrollContainer',
           },
-          tags.map(tag => h(Badge, { variant: 'outline' }, { default: () => tag.id }))
+          () => tags.map(tag => h(Badge, { variant: 'outline' }, { default: () => tag.id }))
         )
       },
     },

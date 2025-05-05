@@ -161,7 +161,9 @@
 /* index.css */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .fade-enter-from,
@@ -175,7 +177,6 @@
   opacity: 1;
   transform: translateY(0);
 }
-
 
 /* Scrolling */
 .hide-scrollbar {
@@ -200,6 +201,19 @@
 .scroll-x-bounce:focus {
   outline: none; /* remove weird outline if focused */
 }
+
+
+/* Tag scroll blur effect */
+.tag-scroll-wrapper {
+  position: relative;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 2rem, black calc(100% - 2rem), transparent);
+  mask-image: linear-gradient(to right, transparent, black 2rem, black calc(100% - 2rem), transparent);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
 
 /* Main */
 @layer base {

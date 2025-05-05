@@ -31,59 +31,59 @@ const handleCopyTitle = async () => {
 
 <template>
   <Transition name="fade" appear>
-  <Card>
-    <!-- Header -->
-    <CardHeader>
-      <div class="flex items-center justify-between">
-        <!-- Title & Badge -->
-        <div class="flex items-center space-x-2">
-          <!-- Title -->
-          <TooltipProvider :delay-duration="800">
-            <Tooltip>
-              <TooltipTrigger>
-                <CardTitle
-                  class="cursor-pointer font-mono text-xl leading-none tracking-wide"
-                  @click="handleCopyTitle"
-                >
-                  {{ title }}
-                </CardTitle>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Click to copy</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+    <Card>
+      <!-- Header -->
+      <CardHeader>
+        <div class="flex items-center justify-between">
+          <!-- Title & Badge -->
+          <div class="flex items-center space-x-2">
+            <!-- Title -->
+            <TooltipProvider :delay-duration="800">
+              <Tooltip>
+                <TooltipTrigger>
+                  <CardTitle
+                    class="cursor-pointer font-mono text-xl leading-none tracking-wide"
+                    @click="handleCopyTitle"
+                  >
+                    {{ title }}
+                  </CardTitle>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Click to copy</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
-          <!-- Badge -->
-          <slot name="badge" />
+            <!-- Badge -->
+            <slot name="badge" />
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex space-x-2">
+            <slot name="actions" />
+          </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="flex space-x-2">
-          <slot name="actions" />
+        <!-- Description -->
+        <CardDescription v-if="description">
+          {{ description }}
+        </CardDescription>
+
+        <!-- Attributes -->
+        <div class="text-muted-foreground mt-4 space-y-3 text-sm">
+          <slot name="attributes" />
         </div>
-      </div>
+      </CardHeader>
 
-      <!-- Description -->
-      <CardDescription v-if="description">
-        {{ description }}
-      </CardDescription>
+      <!-- Content -->
+      <CardContent>
+        <slot name="content" />
+      </CardContent>
 
-      <!-- Attributes -->
-      <div class="text-muted-foreground mt-4 space-y-3 text-sm">
-        <slot name="attributes" />
-      </div>
-    </CardHeader>
-
-    <!-- Content -->
-    <CardContent>
-      <slot name="content" />
-    </CardContent>
-
-    <!-- Footer -->
-    <CardFooter>
-      <slot name="footer" />
-    </CardFooter>
-  </Card>
-</Transition>
+      <!-- Footer -->
+      <CardFooter>
+        <slot name="footer" />
+      </CardFooter>
+    </Card>
+  </Transition>
 </template>

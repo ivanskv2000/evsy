@@ -58,7 +58,7 @@ onMounted(() => {
   <div>
     <Header title="Field details" backLink fallbackBackLink="/fields" />
 
-    <DetailsCardSkeleton v-if="isLoading || (!field)" />
+    <DetailsCardSkeleton v-if="isLoading || !field" />
 
     <FieldDetailsCard
       v-else

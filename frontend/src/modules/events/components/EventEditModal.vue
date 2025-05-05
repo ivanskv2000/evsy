@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/shared/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/shared/ui/dialog'
 import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts'
 import EventForm from './EventForm.vue'
 import type { Event } from '@/modules/events/types'
@@ -38,11 +44,11 @@ onMounted(() => {
   <Dialog :open="open" @update:open="onClose">
     <DialogContent>
       <DialogHeader>
-      <DialogTitle>Edit Event</DialogTitle>
-      <DialogDescription v-if="description">
-        {{ description }}
-      </DialogDescription>
-    </DialogHeader>
+        <DialogTitle>Edit Event</DialogTitle>
+        <DialogDescription v-if="description">
+          {{ description }}
+        </DialogDescription>
+      </DialogHeader>
       <EventForm
         v-if="event"
         :event="event"

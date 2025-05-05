@@ -1,23 +1,41 @@
 <script setup lang="ts" generic="TData">
 import { type Table } from '@tanstack/vue-table'
 import { Icon } from '@iconify/vue'
-
+import { computed } from 'vue'
 import { Button } from '@/shared/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select'
 
 interface DataTablePaginationProps {
   table: Table<TData>
+  pageSizeOptions?: number[]
 }
-defineProps<DataTablePaginationProps>()
+
+const props = defineProps<DataTablePaginationProps>()
+
+const defaultPageSizeOptions = [10, 20, 30, 40, 50]
+const currentPageSize = computed(() => props.table.getState().pagination.pageSize)
+const paginationOptions = computed(() => {
+  const base = props.pageSizeOptions ?? defaultPageSizeOptions
+  const set = new Set([...base, currentPageSize.value])
+  return [...set].sort((a, b) => a - b)
+})
+
+const rowsSelected = computed(() => props.table.getFilteredSelectedRowModel().rows.length > 0)
 </script>
 
 <template>
-  <div class="flex items-center justify-between px-2">
-    <div class="text-muted-foreground flex-1 text-sm">
+  <div
+    :class="{
+      'flex items-center px-2': true,
+      'justify-between': rowsSelected,
+      'justify-end': !rowsSelected,
+    }"
+  >
+    <div v-if="rowsSelected" class="text-muted-foreground flex-1 text-sm">
       {{ table.getFilteredSelectedRowModel().rows.length }} of
       {{ table.getFilteredRowModel().rows.length }} row(s) selected.
     </div>
-    <div class="flex items-center space-x-6 lg:space-x-8">
+    <div class="flex items-center space-x-4 lg:space-x-6">
       <div class="flex items-center space-x-2">
         <p class="text-sm font-medium">Rows per page</p>
         <Select
@@ -29,7 +47,7 @@ defineProps<DataTablePaginationProps>()
           </SelectTrigger>
           <SelectContent side="top">
             <SelectItem
-              v-for="pageSize in [10, 20, 30, 40, 50]"
+              v-for="pageSize in paginationOptions"
               :key="pageSize"
               :value="`${pageSize}`"
             >

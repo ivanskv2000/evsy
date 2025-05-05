@@ -4,6 +4,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
 import { Icon } from '@iconify/vue'
+import TagScrollArea from '@/modules/tags/components/TagScrollArea.vue'
 import {
   FormField,
   FormItem,
@@ -27,7 +28,7 @@ import {
   // ComboboxInput,
   ComboboxItem,
   ComboboxList,
-  ComboboxTrigger
+  ComboboxTrigger,
 } from '@/shared/ui/combobox'
 import { ComboboxInput } from 'reka-ui'
 import type { Event } from '@/modules/events/types'
@@ -125,59 +126,79 @@ function removeTag(tagId: string) {
     <FormField name="tags" v-slot="{ componentField }">
       <FormItem>
         <FormLabel>Tags</FormLabel>
+        <FormDescription
+          >Select from existing tags or create new ones by typing and pressing
+          Enter.</FormDescription
+        >
 
-        <Skeleton v-if="isLoadingTags" class="h-10 w-full rounded-md" />
+        <Skeleton v-if="isLoadingTags" class="h-9 w-full rounded-md" />
 
-        <Combobox v-else v-model="componentField.modelValue" v-model:open="open" multiple ignore-filter>
+        <Combobox
+          v-else
+          v-model="componentField.modelValue"
+          v-model:open="open"
+          multiple
+          ignore-filter
+        >
           <ComboboxAnchor as-child>
             <FormControl>
-              <TagsInput v-model="componentField.modelValue" class="flex gap-2 w-full">
-                <div class="flex flex-wrap items-center min-w-[200px] p-0 h-5">
+              <TagsInput
+                v-model="componentField.modelValue"
+                class="flex h-9 w-full justify-between gap-1"
+              >
+                <div class="h-5 min-w-[100px] p-0">
                   <ComboboxInput v-model="searchTerm" as-child>
                     <TagsInputInput
-                      class="p-0 border-none h-auto"
-                      placeholder="Tags..."
+                      class="h-auto border-none p-0"
+                      placeholder="Search tags..."
                       @keydown.enter.prevent="
-                      () => {
-                        const tag = searchTerm.trim()
-                        if (!tag || values.tags.includes(tag)) return
+                        () => {
+                          const tag = searchTerm.trim()
+                          if (!tag || values.tags.includes(tag)) return
 
-                        componentField.modelValue.push(tag)
-                        searchTerm = ''
-                      }
+                          componentField.modelValue.push(tag)
+                          searchTerm = ''
+                        }
                       "
                     />
                   </ComboboxInput>
                 </div>
 
-                <div class="flex flex-row gap-1 text-left max-w-40 overflow-auto hide-scrollbar scroll-x-bounce">
-                  <TagsInputItem v-for="item in componentField.modelValue" :key="item" :value="item">
-                    <TagsInputItemText />
-                    <TagsInputItemDelete @click.stop="removeTag(item)" />
-                  </TagsInputItem>
-                </div>
+                <TagScrollArea>
+                  <TagsInputItem
+                      v-for="item in componentField.modelValue"
+                      :key="item"
+                      :value="item"
+                    >
+                      <TagsInputItemText />
+                      <TagsInputItemDelete @click.stop="removeTag(item)" />
+                    </TagsInputItem>
+                </TagScrollArea>
               </TagsInput>
             </FormControl>
           </ComboboxAnchor>
 
           <ComboboxList class="w-[--reka-popper-anchor-width] min-w-[200px]">
-            <ComboboxEmpty>
-              No tags found.
-            </ComboboxEmpty>
+            <ComboboxEmpty> No tags found. </ComboboxEmpty>
 
             <ComboboxGroup>
-              <ComboboxItem v-for="tag in filteredTags" :key="tag.id" :value="tag.id" @select.prevent="
-                ev => {
-                  if (typeof ev.detail.value === 'string') {
-                    searchTerm = ''
-                    componentField.modelValue.push(ev.detail.value)
-                  }
+              <ComboboxItem
+                v-for="tag in filteredTags"
+                :key="tag.id"
+                :value="tag.id"
+                @select.prevent="
+                  ev => {
+                    if (typeof ev.detail.value === 'string') {
+                      searchTerm = ''
+                      componentField.modelValue.push(ev.detail.value)
+                    }
 
-                  if (filteredTags.length === 0) {
-                    open = false
+                    if (filteredTags.length === 0) {
+                      open = false
+                    }
                   }
-                }
-              ">
+                "
+              >
                 {{ tag.id }}
               </ComboboxItem>
             </ComboboxGroup>
@@ -185,7 +206,6 @@ function removeTag(tagId: string) {
         </Combobox>
 
         <FormMessage />
-
       </FormItem>
     </FormField>
 
@@ -195,13 +215,27 @@ function removeTag(tagId: string) {
         <FormLabel>Linked Fields</FormLabel>
         <FormDescription>Choose one or more fields this event uses.</FormDescription>
         <FormControl>
-          <div v-if="isLoadingFields" class="space-y-2 p-4">
-            <Skeleton v-for="i in 4" :key="i" class="h-5 w-[70%] rounded-md" />
-          </div>
-          <div v-else class="max-h-48 space-y-2 overflow-y-auto rounded-md border p-4">
-            <div v-for="field in availableFields" :key="field.id" class="flex items-center gap-2">
-              <input type="checkbox" :checked="values.fields?.includes(field.id)"
-                @change="() => toggleFieldSelection(field.id)" :id="`field-${field.id}`" class="form-checkbox" />
+          <div class="max-h-24 space-y-2 overflow-y-auto rounded-md border p-4">
+            <Skeleton
+              v-if="isLoadingFields"
+              v-for="i in 4"
+              :key="i"
+              class="h-5 w-[70%] rounded-md"
+            />
+
+            <div
+              v-else
+              v-for="field in availableFields"
+              :key="field.id"
+              class="flex items-center gap-2"
+            >
+              <input
+                type="checkbox"
+                :checked="values.fields?.includes(field.id)"
+                @change="() => toggleFieldSelection(field.id)"
+                :id="`field-${field.id}`"
+                class="form-checkbox"
+              />
               <label :for="`field-${field.id}`" class="text-sm">{{ field.name }}</label>
             </div>
           </div>

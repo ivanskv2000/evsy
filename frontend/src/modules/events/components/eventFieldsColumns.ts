@@ -1,14 +1,10 @@
 import { h } from 'vue'
 import type { Field } from '@/modules/fields/types.ts'
 import type { ColumnDef } from '@tanstack/vue-table'
-import FieldsDataTableDropdown from '@/modules/fields/components/FieldsDataTableDropdown.vue'
 import { RouterLink } from 'vue-router'
 import DataTableColumnHeader from '@/shared/components/data/DataTableColumnHeader.vue'
 
-export function getFieldColumns(
-  onEdit: (field: Field) => void,
-  onDelete: (field: Field) => void
-): ColumnDef<Field>[] {
+export function getEventFieldsColumns(): ColumnDef<Field>[] {
   return [
     {
       accessorKey: 'id',
@@ -58,6 +54,7 @@ export function getFieldColumns(
     },
     {
       accessorKey: 'description',
+      enableHiding: false,
       enableSorting: false,
       header: ({ column }) =>
         h(DataTableColumnHeader<Field, unknown>, {
@@ -78,24 +75,6 @@ export function getFieldColumns(
             },
           },
           description
-        )
-      },
-    },
-    {
-      id: 'actions',
-      enableHiding: false,
-      enableSorting: false,
-      cell: ({ row }) => {
-        const field = row.original
-
-        return h(
-          'div',
-          { class: 'relative' },
-          h(FieldsDataTableDropdown, {
-            field,
-            onEditMe: () => onEdit(field),
-            onDeleteMe: () => onDelete(field),
-          })
         )
       },
     },

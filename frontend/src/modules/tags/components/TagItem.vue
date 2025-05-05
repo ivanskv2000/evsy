@@ -31,35 +31,35 @@ const handleCopyId = async () => {
 
 <template>
   <Transition name="fade" appear>
-  <div
-    class="flex items-start justify-between gap-4 rounded-lg border p-4 transition hover:shadow-sm"
-  >
-    <div>
-      <TooltipProvider :delay-duration="800">
-        <Tooltip>
-          <TooltipTrigger>
-            <Badge variant="secondary" class="cursor-pointer" @click="handleCopyId">
-              <span class="font-mono">#{{ tag.id }}</span>
-            </Badge>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Click to copy</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-      <p v-if="tag.description" class="text-muted-foreground mt-1 text-sm">
-        {{ tag.description }}
-      </p>
-    </div>
+    <div
+      class="flex items-start justify-between gap-4 rounded-lg border p-4 transition hover:shadow-sm"
+    >
+      <div>
+        <TooltipProvider :delay-duration="800">
+          <Tooltip>
+            <TooltipTrigger>
+              <Badge variant="secondary" class="cursor-pointer" @click="handleCopyId">
+                <span class="font-mono">#{{ tag.id }}</span>
+              </Badge>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Click to copy</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <p v-if="tag.description" class="text-muted-foreground mt-1 text-sm">
+          {{ tag.description }}
+        </p>
+      </div>
 
-    <div class="flex gap-2">
-      <Button size="icon" variant="ghost" @click="emit('updateMe', tag.id)">
-        <Icon icon="radix-icons:pencil-2" class="h-4 w-4" />
-      </Button>
-      <Button size="icon" variant="ghost" @click="emit('deleteMe', tag.id)">
-        <Icon icon="radix-icons:trash" class="text-destructive h-4 w-4" />
-      </Button>
+      <div class="flex gap-2">
+        <Button size="icon" variant="ghost" @click="emit('updateMe', tag.id)">
+          <Icon icon="radix-icons:pencil-2" class="h-4 w-4" />
+        </Button>
+        <Button size="icon" variant="ghost" @click="emit('deleteMe', tag.id)">
+          <Icon icon="radix-icons:trash" class="text-destructive h-4 w-4" />
+        </Button>
+      </div>
     </div>
-  </div>
-</Transition>
+  </Transition>
 </template>

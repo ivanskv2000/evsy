@@ -59,12 +59,11 @@ onMounted(() => {
   <div>
     <Header title="Event details" backLink fallbackBackLink="/events" />
 
-    <DetailsCardSkeleton v-if="isLoading || (!event)" />
+    <DetailsCardSkeleton v-if="isLoading || !event" />
 
     <EventDetailsCard
       v-else
       :event="event"
-      :isLoading="isLoading"
       @edit="showEditModal = true"
       @delete="showDeleteModal = true"
     />

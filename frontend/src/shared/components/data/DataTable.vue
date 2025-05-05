@@ -18,41 +18,54 @@ defineProps<{
 
 <template>
   <Transition name="fade" appear>
-  <div class="rounded-md border">
-    <TableComponent>
-      <TableHeader>
-        <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
-          <TableHead v-for="header in headerGroup.headers" :key="header.id">
-            <FlexRender
-              v-if="!header.isPlaceholder"
-              :render="header.column.columnDef.header"
-              :props="header.getContext()"
-            />
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <template v-if="table.getRowModel().rows?.length">
-          <TableRow
-            v-for="row in table.getRowModel().rows"
-            :key="row.id"
-            :data-state="row.getIsSelected() ? 'selected' : undefined"
-          >
-            <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
-              <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
-            </TableCell>
+    <div class="rounded-md border">
+      <TableComponent>
+        <TableHeader>
+          <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
+            <TableHead v-for="header in headerGroup.headers" :key="header.id">
+              <FlexRender
+                v-if="!header.isPlaceholder"
+                :render="header.column.columnDef.header"
+                :props="header.getContext()"
+              />
+            </TableHead>
           </TableRow>
-        </template>
+        </TableHeader>
+        <TableBody>
+          <template v-if="table.getRowModel().rows?.length">
+            <TableRow
+              v-for="row in table.getRowModel().rows"
+              :key="row.id"
+              :data-state="row.getIsSelected() ? 'selected' : undefined"
+            >
+              <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+                <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
+              </TableCell>
+            </TableRow>
 
-        <template v-else>
-          <TableRow>
-            <TableCell :colspan="table.getVisibleFlatColumns().length" class="h-24 text-center">
-              No results.
-            </TableCell>
-          </TableRow>
-        </template>
-      </TableBody>
-    </TableComponent>
-  </div>
-</Transition>
+            <TableRow
+              v-for="n in table.getState().pagination.pageSize - table.getRowModel().rows.length"
+              :key="'placeholder-' + n"
+              class="pointer-events-none opacity-0 border-transparent"
+              aria-hidden="true"
+            >
+              <TableCell v-for="column in table.getVisibleFlatColumns()" :key="column.id">
+                <slot name="row-placeholder"> 
+                  &nbsp;
+                </slot>
+              </TableCell>
+            </TableRow>
+          </template>
+
+          <template v-else>
+            <TableRow>
+              <TableCell :colspan="table.getVisibleFlatColumns().length" class="h-24 text-center">
+                No results.
+              </TableCell>
+            </TableRow>
+          </template>
+        </TableBody>
+      </TableComponent>
+    </div>
+  </Transition>
 </template>

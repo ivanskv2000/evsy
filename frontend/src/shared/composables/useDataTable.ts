@@ -4,6 +4,7 @@ import type {
   SortingState,
   ColumnFiltersState,
   VisibilityState,
+  PaginationState,
 } from '@tanstack/vue-table'
 import {
   getCoreRowModel,
@@ -22,12 +23,17 @@ type SortingOption = {
 export function useDataTable<TData, TValue>(
   data: () => TData[],
   columns: () => ColumnDef<TData, TValue>[],
-  defaultSorting?: SortingOption[]
+  defaultSorting?: SortingOption[],
+  defaultPageSize = 10
 ) {
   const sorting = ref<SortingState>(defaultSorting ?? [])
   const columnFilters = ref<ColumnFiltersState>([])
   const columnVisibility = ref<VisibilityState>({})
   const rowSelection = ref({})
+  const pagination = ref<PaginationState>({
+    pageIndex: 0,
+    pageSize: defaultPageSize,
+  })
 
   const table = useVueTable({
     get data() {
@@ -44,6 +50,7 @@ export function useDataTable<TData, TValue>(
     onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
     onColumnVisibilityChange: updaterOrValue => valueUpdater(updaterOrValue, columnVisibility),
     onRowSelectionChange: updaterOrValue => valueUpdater(updaterOrValue, rowSelection),
+    onPaginationChange: updaterOrValue => valueUpdater(updaterOrValue, pagination),
     state: {
       get sorting() {
         return sorting.value
@@ -57,6 +64,9 @@ export function useDataTable<TData, TValue>(
       get rowSelection() {
         return rowSelection.value
       },
+      get pagination() {
+        return pagination.value
+      },
     },
   })
 
@@ -64,5 +74,6 @@ export function useDataTable<TData, TValue>(
     table,
     sorting,
     columnFilters,
+    pagination,
   }
 }
