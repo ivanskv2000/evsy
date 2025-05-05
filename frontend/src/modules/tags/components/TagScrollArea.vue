@@ -5,9 +5,7 @@ import type { ClassValue } from 'clsx'
 
 const attrs = useAttrs()
 
-const wrapperClass = computed(() =>
-  cn('tag-scroll-wrapper max-w-60', attrs.class as ClassValue)
-)
+const wrapperClass = computed(() => cn('tag-scroll-wrapper max-w-60', attrs.class as ClassValue))
 </script>
 
 <template>

@@ -3,7 +3,6 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
-import { Icon } from '@iconify/vue'
 import TagScrollArea from '@/modules/tags/components/TagScrollArea.vue'
 import {
   FormField,
@@ -28,7 +27,6 @@ import {
   // ComboboxInput,
   ComboboxItem,
   ComboboxList,
-  ComboboxTrigger,
 } from '@/shared/ui/combobox'
 import { ComboboxInput } from 'reka-ui'
 import type { Event } from '@/modules/events/types'
@@ -166,13 +164,13 @@ function removeTag(tagId: string) {
 
                 <TagScrollArea>
                   <TagsInputItem
-                      v-for="item in componentField.modelValue"
-                      :key="item"
-                      :value="item"
-                    >
-                      <TagsInputItemText />
-                      <TagsInputItemDelete @click.stop="removeTag(item)" />
-                    </TagsInputItem>
+                    v-for="item in componentField.modelValue"
+                    :key="item"
+                    :value="item"
+                  >
+                    <TagsInputItemText />
+                    <TagsInputItemDelete @click.stop="removeTag(item)" />
+                  </TagsInputItem>
                 </TagScrollArea>
               </TagsInput>
             </FormControl>
@@ -216,28 +214,22 @@ function removeTag(tagId: string) {
         <FormDescription>Choose one or more fields this event uses.</FormDescription>
         <FormControl>
           <div class="max-h-24 space-y-2 overflow-y-auto rounded-md border p-4">
-            <Skeleton
-              v-if="isLoadingFields"
-              v-for="i in 4"
-              :key="i"
-              class="h-5 w-[70%] rounded-md"
-            />
+            <template v-if="isLoadingFields">
+              <Skeleton v-for="i in 4" :key="i" class="h-5 w-[70%] rounded-md" />
+            </template>
 
-            <div
-              v-else
-              v-for="field in availableFields"
-              :key="field.id"
-              class="flex items-center gap-2"
-            >
-              <input
-                type="checkbox"
-                :checked="values.fields?.includes(field.id)"
-                @change="() => toggleFieldSelection(field.id)"
-                :id="`field-${field.id}`"
-                class="form-checkbox"
-              />
-              <label :for="`field-${field.id}`" class="text-sm">{{ field.name }}</label>
-            </div>
+            <template v-else>
+              <div v-for="field in availableFields" :key="field.id" class="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  :checked="values.fields?.includes(field.id)"
+                  @change="() => toggleFieldSelection(field.id)"
+                  :id="`field-${field.id}`"
+                  class="form-checkbox"
+                />
+                <label :for="`field-${field.id}`" class="text-sm">{{ field.name }}</label>
+              </div>
+            </template>
           </div>
         </FormControl>
         <FormMessage />

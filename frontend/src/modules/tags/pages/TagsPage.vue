@@ -90,25 +90,29 @@ onMounted(() => {
 
     <!-- Tags Grid -->
     <div class="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
-      <ItemSkeleton v-if="isLoading" v-for="n in 4" :key="n" />
-      <TagItem
-        v-else
-        v-for="tag in filteredTags"
-        :key="tag.id"
-        :tag="tag"
-        @updateMe="
-          () => {
-            showEditModal = true
-            editedTag = tag
-          }
-        "
-        @deleteMe="
-          id => {
-            showDeleteModal = true
-            selectedTagId = id
-          }
-        "
-      />
+      <template v-if="isLoading">
+        <ItemSkeleton v-for="n in 4" :key="n" />
+      </template>
+
+      <template v-else>
+        <TagItem
+          v-for="tag in filteredTags"
+          :key="tag.id"
+          :tag="tag"
+          @updateMe="
+            () => {
+              showEditModal = true
+              editedTag = tag
+            }
+          "
+          @deleteMe="
+            id => {
+              showDeleteModal = true
+              selectedTagId = id
+            }
+          "
+        />
+      </template>
     </div>
 
     <!-- Modals -->

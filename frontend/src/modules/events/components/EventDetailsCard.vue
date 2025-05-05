@@ -71,13 +71,13 @@ const columns = getEventFieldsColumns()
           <template #value>
             <TagScrollArea class="max-w-lg">
               <Badge
-              v-for="tag in event.tags"
-              :key="tag.id"
-              variant="secondary"
-              class="font-mono tracking-wide"
-            >
-              {{ tag.id }}
-            </Badge>
+                v-for="tag in event.tags"
+                :key="tag.id"
+                variant="secondary"
+                class="font-mono tracking-wide"
+              >
+                {{ tag.id }}
+              </Badge>
             </TagScrollArea>
           </template>
         </DetailsCardAttribute>

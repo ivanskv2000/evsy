@@ -59,8 +59,7 @@ export function getEventColumns(
         return h(
           TagScrollArea,
           {
-            class:
-              'max-w-40 -ml-4',
+            class: 'max-w-40 -ml-4',
             ref: 'scrollContainer',
           },
           () => tags.map(tag => h(Badge, { variant: 'outline' }, { default: () => tag.id }))
