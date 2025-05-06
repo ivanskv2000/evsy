@@ -28,7 +28,7 @@ jobs:
           --health-retries 5
 
     env:
-      DATABASE_URL: postgres://test_user:test_pass@localhost:5432/test_db
+      DATABASE_URL: postgresql+psycopg2://test_user:test_pass@localhost:5432/test_db
       ENVIRONMENT: test
 
     steps:
