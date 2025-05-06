@@ -44,19 +44,18 @@ defineProps<{
             </TableRow>
 
             <template v-if="table.getPageCount() > 1">
-            <TableRow
-              v-for="n in table.getState().pagination.pageSize - table.getRowModel().rows.length"
-              :key="'placeholder-' + n"
-              class="pointer-events-none border-transparent opacity-0"
-              aria-hidden="true"
-            >
-              <TableCell v-for="column in table.getVisibleFlatColumns()" :key="column.id">
-                <slot name="row-placeholder"> &nbsp; </slot>
-              </TableCell>
-            </TableRow>
+              <TableRow
+                v-for="n in table.getState().pagination.pageSize - table.getRowModel().rows.length"
+                :key="'placeholder-' + n"
+                class="pointer-events-none border-transparent opacity-0"
+                aria-hidden="true"
+              >
+                <TableCell v-for="column in table.getVisibleFlatColumns()" :key="column.id">
+                  <slot name="row-placeholder"> &nbsp; </slot>
+                </TableCell>
+              </TableRow>
             </template>
           </template>
-          
 
           <template v-else>
             <TableRow>

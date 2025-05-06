@@ -18,7 +18,7 @@ const props = defineProps<{
 const { table } = useDataTable({
   data: () => props.data,
   columns: () => props.columns,
-  defaultSorting: [{ id: 'id', desc: true }]
+  defaultSorting: [{ id: 'id', desc: true }],
 })
 </script>
 

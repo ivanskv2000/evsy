@@ -33,7 +33,7 @@ export function getEventFieldsColumns(): ColumnDef<Field>[] {
         const id = Number.parseInt(row.getValue('id'))
         return h(
           'div',
-          { 
+          {
             class: 'w-[18ch] truncate whitespace-nowrap overflow-hidden text-left font-medium',
             title: name,
             style: {

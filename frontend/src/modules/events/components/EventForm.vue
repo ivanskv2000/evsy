@@ -142,93 +142,93 @@ function removeTag(tagId: string) {
               multiple
               ignore-filter
             >
-          <ComboboxAnchor as-child>
-            <FormControl>
-              <TagsInput
-                v-model="componentField.modelValue"
-                class="flex h-9 w-full justify-between gap-1 shadow-xs"
-              >
-                <div class="h-5 w-[30%] p-0">
-                  <ComboboxInput v-model="searchTerm" as-child>
-                    <TagsInputInput
-                      class="h-auto border-none p-0"
-                      placeholder="Search tags..."
-                      @keydown.enter.prevent="
-                        () => {
-                          const tag = searchTerm.trim()
-                          if (!tag || values.tags.includes(tag)) return
-
-                          componentField.modelValue.push(tag)
-                          searchTerm = ''
-                        }
-                      "
-                    />
-                  </ComboboxInput>
-                </div>
-
-                <TagScrollArea>
-                  <TagsInputItem
-                    v-for="item in componentField.modelValue"
-                    :key="item"
-                    :value="item"
+              <ComboboxAnchor as-child>
+                <FormControl>
+                  <TagsInput
+                    v-model="componentField.modelValue"
+                    class="flex h-9 w-full justify-between gap-1 shadow-xs"
                   >
-                    <TagsInputItemText />
-                    <TagsInputItemDelete @click.stop="removeTag(item)" />
-                  </TagsInputItem>
-                </TagScrollArea>
-              </TagsInput>
-            </FormControl>
-          </ComboboxAnchor>
+                    <div class="h-5 w-[30%] p-0">
+                      <ComboboxInput v-model="searchTerm" as-child>
+                        <TagsInputInput
+                          class="h-auto border-none p-0"
+                          placeholder="Search tags..."
+                          @keydown.enter.prevent="
+                            () => {
+                              const tag = searchTerm.trim()
+                              if (!tag || values.tags.includes(tag)) return
 
-          <ComboboxList class="w-[--reka-popper-anchor-width] min-w-[200px]">
-            <ComboboxEmpty> No tags found. </ComboboxEmpty>
+                              componentField.modelValue.push(tag)
+                              searchTerm = ''
+                            }
+                          "
+                        />
+                      </ComboboxInput>
+                    </div>
 
-            <ComboboxGroup>
-              <ComboboxItem
-                v-for="tag in filteredTags"
-                :key="tag.id"
-                :value="tag.id"
-                @select.prevent="
-                  ev => {
-                    if (typeof ev.detail.value === 'string') {
-                      searchTerm = ''
-                      componentField.modelValue.push(ev.detail.value)
-                    }
+                    <TagScrollArea>
+                      <TagsInputItem
+                        v-for="item in componentField.modelValue"
+                        :key="item"
+                        :value="item"
+                      >
+                        <TagsInputItemText />
+                        <TagsInputItemDelete @click.stop="removeTag(item)" />
+                      </TagsInputItem>
+                    </TagScrollArea>
+                  </TagsInput>
+                </FormControl>
+              </ComboboxAnchor>
 
-                    if (filteredTags.length === 0) {
-                      open = false
-                    }
-                  }
-                "
-              >
-                {{ tag.id }}
-              </ComboboxItem>
-            </ComboboxGroup>
-          </ComboboxList>
-        </Combobox>
-      </div>
-    </Transition>
+              <ComboboxList class="w-[--reka-popper-anchor-width] min-w-[200px]">
+                <ComboboxEmpty> No tags found. </ComboboxEmpty>
+
+                <ComboboxGroup>
+                  <ComboboxItem
+                    v-for="tag in filteredTags"
+                    :key="tag.id"
+                    :value="tag.id"
+                    @select.prevent="
+                      ev => {
+                        if (typeof ev.detail.value === 'string') {
+                          searchTerm = ''
+                          componentField.modelValue.push(ev.detail.value)
+                        }
+
+                        if (filteredTags.length === 0) {
+                          open = false
+                        }
+                      }
+                    "
+                  >
+                    {{ tag.id }}
+                  </ComboboxItem>
+                </ComboboxGroup>
+              </ComboboxList>
+            </Combobox>
+          </div>
+        </Transition>
 
         <FormMessage />
       </FormItem>
     </FormField>
 
     <!-- Linked Fields -->
-<FormField name="fields">
-  <FormItem>
-    <FormLabel>Linked Fields</FormLabel>
-    <FormDescription>Choose one or more fields this event uses.</FormDescription>
-    <FormControl>
-      <LinkedFieldsSelector
-        :fields="availableFields"
-        :selected-ids="values.fields"
-        :is-loading="isLoadingFields"
-        @toggle="toggleFieldSelection"
-      />
-    </FormControl>
-    <FormMessage />
-  </FormItem>
-</FormField>
+    <FormField name="fields">
+      <FormItem>
+        <FormLabel>Linked Fields</FormLabel>
+        <FormDescription>Choose one or more fields this event uses.</FormDescription>
+        <FormControl>
+          <LinkedFieldsSelector
+            :fields="availableFields"
+            :selected-ids="values.fields"
+            :is-loading="isLoadingFields"
+            @toggle="toggleFieldSelection"
+          />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    </FormField>
 
     <div class="flex justify-end">
       <Button type="submit" :disabled="isLoading">

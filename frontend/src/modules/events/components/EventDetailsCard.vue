@@ -11,21 +11,13 @@ import DetailsCardLayout from '@/shared/components/layout/DetailsCardLayout.vue'
 import DetailsCardAttribute from '@/shared/components/layout/DetailsCardAttribute.vue'
 import { getEventFieldsColumns } from '@/modules/events/components/eventFieldsColumns'
 import TagScrollArea from '@/modules/tags/components/TagScrollArea.vue'
-
-const eventExample = {
-  user_id: 12,
-  event_date: '2024-01-01',
-  event_time: '2024-01-01T00:00:00Z',
-  device: 'mobile',
-  metadata: {
-    source: 'landing',
-    campaign: 'spring_sale',
-  },
-}
+import { useEventExample } from '@/modules/events/composables/useEventExample'
 
 const props = defineProps<{
   event: Event
 }>()
+
+const eventExample = useEventExample(props.event)
 
 const emit = defineEmits<{
   (e: 'edit'): void

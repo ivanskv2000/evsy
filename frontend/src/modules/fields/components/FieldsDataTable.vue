@@ -21,7 +21,7 @@ const props = defineProps<{
 const { table, columnFilters } = useDataTable({
   data: () => props.data,
   columns: () => props.columns,
-  defaultSorting: [{ id: 'id', desc: true }]
+  defaultSorting: [{ id: 'id', desc: true }],
 })
 
 const fieldTypes = Object.values(FieldType)

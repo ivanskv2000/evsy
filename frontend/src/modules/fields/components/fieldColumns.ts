@@ -5,7 +5,6 @@ import FieldsDataTableDropdown from '@/modules/fields/components/FieldsDataTable
 import { RouterLink } from 'vue-router'
 import DataTableColumnHeader from '@/shared/components/data/DataTableColumnHeader.vue'
 
-
 export function getFieldColumns(
   onEdit: (field: Field) => void,
   onDelete: (field: Field) => void
@@ -38,7 +37,7 @@ export function getFieldColumns(
         const id = Number.parseInt(row.getValue('id'))
         return h(
           'div',
-          { 
+          {
             class: 'w-[18ch] truncate whitespace-nowrap overflow-hidden text-left font-medium',
             title: name,
             style: {

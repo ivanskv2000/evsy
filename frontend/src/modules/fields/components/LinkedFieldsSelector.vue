@@ -14,28 +14,24 @@ const emit = defineEmits<{
 </script>
 
 <template>
-    <div class="max-h-24 space-y-2 overflow-y-auto rounded-md border p-4 shadow-xs">
-      <template v-if="isLoading">
-        <Skeleton v-for="i in 4" :key="i" class="h-5 w-[70%] rounded-md" />
-      </template>
-  
-      <Transition name="fade" appear>
-        <div v-if="!isLoading">
-          <div
-            v-for="field in fields"
-            :key="field.id"
-            class="flex items-center gap-2"
-          >
-            <input
-              type="checkbox"
-              :checked="selectedIds.includes(field.id)"
-              @change="() => emit('toggle', field.id)"
-              :id="`field-${field.id}`"
-              class="form-checkbox"
-            />
-            <label :for="`field-${field.id}`" class="text-sm">{{ field.name }}</label>
-          </div>
+  <div class="max-h-24 space-y-2 overflow-y-auto rounded-md border p-4 shadow-xs">
+    <template v-if="isLoading">
+      <Skeleton v-for="i in 4" :key="i" class="h-5 w-[70%] rounded-md" />
+    </template>
+
+    <Transition name="fade" appear>
+      <div v-if="!isLoading">
+        <div v-for="field in fields" :key="field.id" class="flex items-center gap-2">
+          <input
+            type="checkbox"
+            :checked="selectedIds.includes(field.id)"
+            @change="() => emit('toggle', field.id)"
+            :id="`field-${field.id}`"
+            class="form-checkbox"
+          />
+          <label :for="`field-${field.id}`" class="text-sm">{{ field.name }}</label>
         </div>
-      </Transition>
-    </div>
-  </template>
+      </div>
+    </Transition>
+  </div>
+</template>
