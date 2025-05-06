@@ -16,7 +16,7 @@ const emit = defineEmits<{
 <template>
   <div class="max-h-24 space-y-2 overflow-y-auto rounded-md border p-4 shadow-xs">
     <template v-if="isLoading">
-      <Skeleton v-for="i in 4" :key="i" class="h-5 w-[70%] rounded-md" />
+      <Skeleton v-for="i in 4" :key="i" class="h-5 w-[70%] rounded-md shadow-xs" />
     </template>
 
     <Transition name="fade" appear>

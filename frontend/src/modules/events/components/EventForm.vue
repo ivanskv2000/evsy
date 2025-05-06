@@ -129,9 +129,9 @@ function removeTag(tagId: string) {
           Select from existing tags or create new ones<br />by typing and pressing Enter.
         </FormDescription>
 
-        <template v-if="isLoadingTags">
-          <Skeleton class="h-9 w-full rounded-md" />
-        </template>
+        <div v-if="isLoadingTags">
+          <Skeleton class="h-9 w-full rounded-md shadow-xs" />
+        </div>
 
         <Transition name="fade" appear>
           <div v-if="!isLoadingTags">

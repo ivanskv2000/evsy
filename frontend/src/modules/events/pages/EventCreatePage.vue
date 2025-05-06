@@ -16,10 +16,10 @@ import { tagApi } from '@/modules/tags/api'
 const fields = ref<Field[]>([])
 const tags = ref<Tag[]>([])
 
+const { isLoading, run } = useAsyncTask()
 const { run: loadFields, isLoading: isLoadingFields } = useAsyncTask()
 const { run: loadTags, isLoading: isLoadingTags } = useAsyncTask()
 
-const { isLoading, run } = useAsyncTask()
 const { showCreated } = useEnhancedToast()
 const router = useRouter()
 
