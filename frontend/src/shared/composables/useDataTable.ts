@@ -20,12 +20,19 @@ type SortingOption = {
   desc: boolean
 }
 
-export function useDataTable<TData, TValue>(
-  data: () => TData[],
-  columns: () => ColumnDef<TData, TValue>[],
-  defaultSorting?: SortingOption[],
-  defaultPageSize = 10
-) {
+type UseDataTableOptions<TData, TValue> = {
+  data: () => TData[]
+  columns: () => ColumnDef<TData, TValue>[]
+  defaultSorting?: SortingOption[]
+  defaultPageSize?: number
+}
+
+export function useDataTable<TData, TValue>({
+  data,
+  columns,
+  defaultSorting = [],
+  defaultPageSize = 10,
+}: UseDataTableOptions<TData, TValue>) {
   const sorting = ref<SortingState>(defaultSorting ?? [])
   const columnFilters = ref<ColumnFiltersState>([])
   const columnVisibility = ref<VisibilityState>({})

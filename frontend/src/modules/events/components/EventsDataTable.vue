@@ -15,11 +15,11 @@ const props = defineProps<{
   isLoading: boolean
 }>()
 
-const { table } = useDataTable(
-  () => props.data,
-  () => props.columns,
-  [{ id: 'id', desc: true }]
-)
+const { table } = useDataTable({
+  data: () => props.data,
+  columns: () => props.columns,
+  defaultSorting: [{ id: 'id', desc: true }]
+})
 </script>
 
 <template>

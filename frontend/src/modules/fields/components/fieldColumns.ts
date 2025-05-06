@@ -5,6 +5,7 @@ import FieldsDataTableDropdown from '@/modules/fields/components/FieldsDataTable
 import { RouterLink } from 'vue-router'
 import DataTableColumnHeader from '@/shared/components/data/DataTableColumnHeader.vue'
 
+
 export function getFieldColumns(
   onEdit: (field: Field) => void,
   onDelete: (field: Field) => void
@@ -21,7 +22,7 @@ export function getFieldColumns(
         }),
       cell: ({ row }) => {
         const id = Number.parseInt(row.getValue('id'))
-        return h('div', { class: 'text-center font-medium' }, id)
+        return h('div', { class: 'w-[6ch] text-center font-medium' }, id)
       },
     },
     {
@@ -37,7 +38,14 @@ export function getFieldColumns(
         const id = Number.parseInt(row.getValue('id'))
         return h(
           'div',
-          { class: 'text-left font-medium' },
+          { 
+            class: 'w-[18ch] truncate whitespace-nowrap overflow-hidden text-left font-medium',
+            title: name,
+            style: {
+              userSelect: 'text',
+              cursor: 'text',
+            },
+          },
           h(RouterLink, { to: `/fields/${id}` }, { default: () => name })
         )
       },
@@ -52,7 +60,7 @@ export function getFieldColumns(
         }),
       cell: ({ row }) => {
         const field_type = String(row.getValue('field_type'))
-        return h('div', { class: 'text-left font-medium' }, field_type)
+        return h('div', { class: 'w-[10ch] text-left font-medium' }, field_type)
       },
       filterFn: 'equals',
     },
@@ -65,12 +73,12 @@ export function getFieldColumns(
           title: 'Description',
         }),
       cell: ({ row }) => {
-        const description = String(row.getValue('description'))
+        const description = String(row.getValue('description') ?? '-')
 
         return h(
           'div',
           {
-            class: 'max-w-[300px] truncate whitespace-nowrap overflow-hidden text-muted-foreground',
+            class: 'w-[30ch] truncate whitespace-nowrap overflow-hidden text-muted-foreground',
             title: description,
             style: {
               userSelect: 'text',

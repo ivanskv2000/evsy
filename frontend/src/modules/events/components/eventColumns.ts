@@ -23,7 +23,7 @@ export function getEventColumns(
         }),
       cell: ({ row }) => {
         const id = Number.parseInt(row.getValue('id'))
-        return h('div', { class: 'text-center font-medium' }, id)
+        return h('div', { class: 'w-[6ch] text-center font-medium' }, id)
       },
     },
     {
@@ -39,7 +39,14 @@ export function getEventColumns(
         const id = Number.parseInt(row.getValue('id'))
         return h(
           'div',
-          { class: 'text-left font-medium' },
+          { 
+            class: 'w-[18ch] truncate whitespace-nowrap overflow-hidden text-left font-medium',
+            title: name,
+            style: {
+              userSelect: 'text',
+              cursor: 'text',
+            },
+          },
           h(RouterLink, { to: `/events/${id}` }, { default: () => name })
         )
       },
@@ -59,7 +66,7 @@ export function getEventColumns(
         return h(
           TagScrollArea,
           {
-            class: 'max-w-40 -ml-4',
+            class: 'w-[20ch] -ml-4',
             ref: 'scrollContainer',
           },
           () => tags.map(tag => h(Badge, { variant: 'outline' }, { default: () => tag.id }))

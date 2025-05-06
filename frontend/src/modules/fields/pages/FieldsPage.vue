@@ -83,7 +83,7 @@ onMounted(() => {
 <template>
   <div>
     <Header title="Fields" />
-    <div class="container mx-auto">
+    <div class="container mx-auto overflow-x-auto">
       <FieldsDataTable :columns="columns" :data="fields" :isLoading="isLoading" />
     </div>
 

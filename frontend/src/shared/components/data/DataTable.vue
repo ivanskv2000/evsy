@@ -43,6 +43,7 @@ defineProps<{
               </TableCell>
             </TableRow>
 
+            <template v-if="table.getPageCount() > 1">
             <TableRow
               v-for="n in table.getState().pagination.pageSize - table.getRowModel().rows.length"
               :key="'placeholder-' + n"
@@ -53,7 +54,9 @@ defineProps<{
                 <slot name="row-placeholder"> &nbsp; </slot>
               </TableCell>
             </TableRow>
+            </template>
           </template>
+          
 
           <template v-else>
             <TableRow>

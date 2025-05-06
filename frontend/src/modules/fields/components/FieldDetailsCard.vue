@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { Field } from '@/modules/fields/types'
 import { Button } from '@/shared/ui/button'
-import { Badge } from '@/shared/ui/badge'
 import { Icon } from '@iconify/vue'
 import JsonPreview from '@/shared/components/JsonPreview.vue'
 import DetailsCardLayout from '@/shared/components/layout/DetailsCardLayout.vue'
 import DetailsCardAttribute from '@/shared/components/layout/DetailsCardAttribute.vue'
+import FieldTypeBadge from '@/modules/fields/components/FieldTypeBadge.vue'
 
 defineProps<{
   field: Field
@@ -19,9 +19,7 @@ const emit = defineEmits(['edit-clicked', 'delete-clicked'])
   <div>
     <DetailsCardLayout :title="field.name" :description="field.description ?? undefined">
       <template #badge>
-        <Badge variant="secondary" class="text-xs tracking-wide uppercase">
-          {{ field.field_type }}
-        </Badge>
+        <FieldTypeBadge :type="field.field_type" />
       </template>
 
       <template #actions>

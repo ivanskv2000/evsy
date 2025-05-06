@@ -18,11 +18,11 @@ const props = defineProps<{
   isLoading: boolean
 }>()
 
-const { table, columnFilters } = useDataTable(
-  () => props.data,
-  () => props.columns,
-  [{ id: 'id', desc: true }]
-)
+const { table, columnFilters } = useDataTable({
+  data: () => props.data,
+  columns: () => props.columns,
+  defaultSorting: [{ id: 'id', desc: true }]
+})
 
 const fieldTypes = Object.values(FieldType)
 const isTypeFilterSet = computed(() =>

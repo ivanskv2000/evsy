@@ -36,6 +36,7 @@ import { computed, ref, watchEffect } from 'vue'
 import { eventSchema, type EventFormValues } from '@/modules/events/validation/eventSchema'
 import { useFilter } from 'reka-ui'
 import Skeleton from '@/shared/ui/skeleton/Skeleton.vue'
+import LinkedFieldsSelector from '@/modules/fields/components/LinkedFieldsSelector.vue'
 
 const props = defineProps<{
   event?: Event
@@ -129,22 +130,25 @@ function removeTag(tagId: string) {
           Enter.</FormDescription
         >
 
-        <Skeleton v-if="isLoadingTags" class="h-9 w-full rounded-md" />
+        <template v-if="isLoadingTags">
+          <Skeleton class="h-9 w-full rounded-md" />
+        </template>
 
-        <Combobox
-          v-else
-          v-model="componentField.modelValue"
-          v-model:open="open"
-          multiple
-          ignore-filter
-        >
+        <Transition name="fade" appear>
+          <div v-if="!isLoadingTags">
+            <Combobox
+              v-model="componentField.modelValue"
+              v-model:open="open"
+              multiple
+              ignore-filter
+            >
           <ComboboxAnchor as-child>
             <FormControl>
               <TagsInput
                 v-model="componentField.modelValue"
-                class="flex h-9 w-full justify-between gap-1"
+                class="flex h-9 w-full justify-between gap-1 shadow-xs"
               >
-                <div class="h-5 min-w-[100px] p-0">
+                <div class="h-5 w-[30%] p-0">
                   <ComboboxInput v-model="searchTerm" as-child>
                     <TagsInputInput
                       class="h-auto border-none p-0"
@@ -202,39 +206,29 @@ function removeTag(tagId: string) {
             </ComboboxGroup>
           </ComboboxList>
         </Combobox>
+      </div>
+    </Transition>
 
         <FormMessage />
       </FormItem>
     </FormField>
 
     <!-- Linked Fields -->
-    <FormField name="fields">
-      <FormItem>
-        <FormLabel>Linked Fields</FormLabel>
-        <FormDescription>Choose one or more fields this event uses.</FormDescription>
-        <FormControl>
-          <div class="max-h-24 space-y-2 overflow-y-auto rounded-md border p-4">
-            <template v-if="isLoadingFields">
-              <Skeleton v-for="i in 4" :key="i" class="h-5 w-[70%] rounded-md" />
-            </template>
-
-            <template v-else>
-              <div v-for="field in availableFields" :key="field.id" class="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  :checked="values.fields?.includes(field.id)"
-                  @change="() => toggleFieldSelection(field.id)"
-                  :id="`field-${field.id}`"
-                  class="form-checkbox"
-                />
-                <label :for="`field-${field.id}`" class="text-sm">{{ field.name }}</label>
-              </div>
-            </template>
-          </div>
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    </FormField>
+<FormField name="fields">
+  <FormItem>
+    <FormLabel>Linked Fields</FormLabel>
+    <FormDescription>Choose one or more fields this event uses.</FormDescription>
+    <FormControl>
+      <LinkedFieldsSelector
+        :fields="availableFields"
+        :selected-ids="values.fields"
+        :is-loading="isLoadingFields"
+        @toggle="toggleFieldSelection"
+      />
+    </FormControl>
+    <FormMessage />
+  </FormItem>
+</FormField>
 
     <div class="flex justify-end">
       <Button type="submit" :disabled="isLoading">

@@ -12,10 +12,11 @@ const props = defineProps<{
   isLoading: boolean
 }>()
 
-const { table } = useDataTable(
-  () => props.data,
-  () => props.columns
-)
+const { table } = useDataTable({
+  data: () => props.data,
+  columns: () => props.columns,
+  defaultPageSize: 5,
+})
 </script>
 
 <template>

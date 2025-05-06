@@ -17,7 +17,7 @@ export function getEventFieldsColumns(): ColumnDef<Field>[] {
         }),
       cell: ({ row }) => {
         const id = Number.parseInt(row.getValue('id'))
-        return h('div', { class: 'text-center font-medium' }, id)
+        return h('div', { class: 'w-[6ch] text-center font-medium' }, id)
       },
     },
     {
@@ -33,7 +33,14 @@ export function getEventFieldsColumns(): ColumnDef<Field>[] {
         const id = Number.parseInt(row.getValue('id'))
         return h(
           'div',
-          { class: 'text-left font-medium' },
+          { 
+            class: 'w-[18ch] truncate whitespace-nowrap overflow-hidden text-left font-medium',
+            title: name,
+            style: {
+              userSelect: 'text',
+              cursor: 'text',
+            },
+          },
           h(RouterLink, { to: `/fields/${id}` }, { default: () => name })
         )
       },
@@ -48,7 +55,7 @@ export function getEventFieldsColumns(): ColumnDef<Field>[] {
         }),
       cell: ({ row }) => {
         const field_type = String(row.getValue('field_type'))
-        return h('div', { class: 'text-left font-medium' }, field_type)
+        return h('div', { class: 'w-[10ch] text-left font-medium' }, field_type)
       },
       filterFn: 'equals',
     },
@@ -62,12 +69,12 @@ export function getEventFieldsColumns(): ColumnDef<Field>[] {
           title: 'Description',
         }),
       cell: ({ row }) => {
-        const description = String(row.getValue('description'))
+        const description = String(row.getValue('description') ?? '-')
 
         return h(
           'div',
           {
-            class: 'max-w-[300px] truncate whitespace-nowrap overflow-hidden text-muted-foreground',
+            class: 'w-[30ch] truncate whitespace-nowrap overflow-hidden text-muted-foreground',
             title: description,
             style: {
               userSelect: 'text',
