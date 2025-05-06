@@ -125,10 +125,9 @@ function removeTag(tagId: string) {
     <FormField name="tags" v-slot="{ componentField }">
       <FormItem>
         <FormLabel>Tags</FormLabel>
-        <FormDescription
-          >Select from existing tags or create new ones by typing and pressing
-          Enter.</FormDescription
-        >
+        <FormDescription>
+          Select from existing tags or create new ones<br />by typing and pressing Enter.
+        </FormDescription>
 
         <template v-if="isLoadingTags">
           <Skeleton class="h-9 w-full rounded-md" />
@@ -180,7 +179,7 @@ function removeTag(tagId: string) {
                 </FormControl>
               </ComboboxAnchor>
 
-              <ComboboxList class="w-[--reka-popper-anchor-width] min-w-[200px]">
+              <ComboboxList align="start" class="w-[--reka-popper-anchor-width] min-w-[200px]">
                 <ComboboxEmpty> No tags found. </ComboboxEmpty>
 
                 <ComboboxGroup>
