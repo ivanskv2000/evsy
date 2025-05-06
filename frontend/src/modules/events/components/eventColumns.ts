@@ -15,6 +15,10 @@ export function getEventColumns(
     {
       accessorKey: 'id',
       enableHiding: false,
+      meta: {
+        class: 'w-[6ch] text-center',
+        headerClass: 'w-[6ch] text-center',
+      },
       header: ({ column }) =>
         h(DataTableColumnHeader<Event, unknown>, {
           column: column,
@@ -23,12 +27,16 @@ export function getEventColumns(
         }),
       cell: ({ row }) => {
         const id = Number.parseInt(row.getValue('id'))
-        return h('div', { class: 'w-[6ch] text-center font-medium' }, id)
+        return h('div', { class: 'text-center font-medium' }, id)
       },
     },
     {
       accessorKey: 'name',
       enableHiding: false,
+      meta: {
+        class: 'w-[18ch]',
+        headerClass: 'w-[18ch]',
+      },
       header: ({ column }) =>
         h(DataTableColumnHeader<Event, unknown>, {
           column: column,
@@ -40,7 +48,7 @@ export function getEventColumns(
         return h(
           'div',
           {
-            class: 'w-[18ch] truncate whitespace-nowrap overflow-hidden text-left font-medium',
+            class: 'truncate whitespace-nowrap overflow-hidden text-left font-medium',
             title: name,
             style: {
               userSelect: 'text',
@@ -52,9 +60,42 @@ export function getEventColumns(
       },
     },
     {
+      accessorKey: 'description',
+      enableSorting: false,
+      meta: {
+        class: 'w-[22ch]',
+        headerClass: 'w-[22ch]',
+      },
+      header: ({ column }) =>
+        h(DataTableColumnHeader<Event, unknown>, {
+          column,
+          title: 'Description',
+        }),
+      cell: ({ row }) => {
+        const description = String(row.getValue('description') ?? '-')
+
+        return h(
+          'div',
+          {
+            class: 'truncate whitespace-nowrap overflow-hidden text-muted-foreground',
+            title: description,
+            style: {
+              userSelect: 'text',
+              cursor: 'text',
+            },
+          },
+          description
+        )
+      },
+    },
+    {
       accessorKey: 'tags',
       enableHiding: false,
       enableSorting: false,
+      meta: {
+        class: 'w-[18ch]',
+        headerClass: 'w-[18ch]',
+      },
       header: ({ column }) =>
         h(DataTableColumnHeader<Event, unknown>, {
           column: column,
@@ -66,7 +107,7 @@ export function getEventColumns(
         return h(
           TagScrollArea,
           {
-            class: 'w-[20ch] -ml-4',
+            class: 'w-[18ch] -ml-4',
             ref: 'scrollContainer',
           },
           () => tags.map(tag => h(Badge, { variant: 'outline' }, { default: () => tag.id }))

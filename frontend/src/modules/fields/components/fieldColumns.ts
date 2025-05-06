@@ -13,6 +13,10 @@ export function getFieldColumns(
     {
       accessorKey: 'id',
       enableHiding: false,
+      meta: {
+        class: 'w-[6ch] text-center',
+        headerClass: 'w-[6ch] text-center',
+      },
       header: ({ column }) =>
         h(DataTableColumnHeader<Field, unknown>, {
           column,
@@ -21,12 +25,16 @@ export function getFieldColumns(
         }),
       cell: ({ row }) => {
         const id = Number.parseInt(row.getValue('id'))
-        return h('div', { class: 'w-[6ch] text-center font-medium' }, id)
+        return h('div', { class: 'text-center font-medium' }, id)
       },
     },
     {
       accessorKey: 'name',
       enableHiding: false,
+      meta: {
+        class: 'w-[18ch]',
+        headerClass: 'w-[18ch]',
+      },
       header: ({ column }) =>
         h(DataTableColumnHeader<Field, unknown>, {
           column,
@@ -38,7 +46,7 @@ export function getFieldColumns(
         return h(
           'div',
           {
-            class: 'w-[18ch] truncate whitespace-nowrap overflow-hidden text-left font-medium',
+            class: 'truncate whitespace-nowrap overflow-hidden text-left font-medium',
             title: name,
             style: {
               userSelect: 'text',
@@ -52,6 +60,10 @@ export function getFieldColumns(
     {
       accessorKey: 'field_type',
       enableHiding: false,
+      meta: {
+        class: 'w-[10ch]',
+        headerClass: 'w-[10ch]',
+      },
       header: ({ column }) =>
         h(DataTableColumnHeader<Field, unknown>, {
           column,
@@ -59,13 +71,17 @@ export function getFieldColumns(
         }),
       cell: ({ row }) => {
         const field_type = String(row.getValue('field_type'))
-        return h('div', { class: 'w-[10ch] text-left font-medium' }, field_type)
+        return h('div', { class: 'text-left font-medium' }, field_type)
       },
       filterFn: 'equals',
     },
     {
       accessorKey: 'description',
       enableSorting: false,
+      meta: {
+        class: 'w-[30ch]',
+        headerClass: 'w-[30ch]',
+      },
       header: ({ column }) =>
         h(DataTableColumnHeader<Field, unknown>, {
           column,
@@ -77,7 +93,7 @@ export function getFieldColumns(
         return h(
           'div',
           {
-            class: 'w-[30ch] truncate whitespace-nowrap overflow-hidden text-muted-foreground',
+            class: 'truncate whitespace-nowrap overflow-hidden text-muted-foreground',
             title: description,
             style: {
               userSelect: 'text',
