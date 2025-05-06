@@ -1,0 +1,65 @@
+name: Backend CI
+
+on:
+  pull_request:
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend.yml"
+  push:
+    branches: [main]
+
+jobs:
+  backend-ci:
+    name: Run backend tests and linters
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        ports: [5432:5432]
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_pass
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgres://test_user:test_pass@localhost:5432/test_db
+      ENVIRONMENT: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Poetry
+        run: |
+          pip install poetry
+          poetry config virtualenvs.create false
+
+      - name: Install dependencies
+        working-directory: ./backend
+        run: poetry install
+
+      - name: Run isort
+        working-directory: ./backend
+        run: poetry run isort . --check-only
+
+      - name: Run black
+        working-directory: ./backend
+        run: poetry run black . --check
+
+      - name: Run flake8
+        working-directory: ./backend
+        run: poetry run flake8 .
+
+      - name: Run tests
+        working-directory: ./backend
+        run: poetry run pytest
