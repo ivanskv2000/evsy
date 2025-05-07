@@ -19,5 +19,10 @@ jobs:
             style
             test
             ci
+          scopes: |
+            frontend
+            backend
+            common
+            deps
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
