@@ -50,11 +50,12 @@ Create an [issue](https://github.com/ivanskv2000/evsy/issues) or open a [discuss
 
 ### Frontend (Vue 3, Vite)
 
-1. Install Node dependencies:
+1. Install dependencies:
 
    ```bash
     cd ./frontend
     npm ci
+    cp .env.example .env
    ```
 
 2. Run the app:
