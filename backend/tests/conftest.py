@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from app.database.database import get_db, init_db, Base
+from app.database.database import Base, get_db, init_db
 from app.factory import create_app
 from app.settings import Settings
 
@@ -15,6 +15,7 @@ test_engine, TestingSessionLocal = init_db(test_settings)
 # Create the test app
 app = create_app(test_settings)
 
+
 # Override FastAPI's get_db dependency
 @pytest.fixture(scope="session")
 def override_get_db():
@@ -24,7 +25,9 @@ def override_get_db():
             yield db
         finally:
             db.close()
+
     return _override_get_db
+
 
 # Set up and tear down the database
 @pytest.fixture(scope="session", autouse=True)
@@ -33,6 +36,7 @@ def setup_database(override_get_db):
     app.dependency_overrides[get_db] = override_get_db
     yield
     Base.metadata.drop_all(bind=test_engine)
+
 
 # FastAPI test client
 @pytest.fixture(scope="module")
