@@ -22,18 +22,24 @@ It helps product teams, analysts, and developers structure and document all key 
 - SaaS hosting.
 
 ## ⚙️ Tech Stack
-- Backend: FastAPI + SQLAlchemy + Alembic
-- Frontend: Vue 3 + Vite + TailwindCSS
-- Database: PostgreSQL
-- Containerization: Docker, docker-compose
+- Backend: FastAPI + Pydantic + SQLAlchemy + Alembic
+- Frontend: Vue 3 + Vite + Shadcn
 
 ## 🚀 Quick Start
 
 ## 🛠 Development
 
+
 ## 🧩 Project Structure
 
 ## 🤝 Contributing
+We welcome all kinds of contributions — from code to ideas, design suggestions, and bug reports.
+[Read the contributing guide →](CONTRIBUTING.md)
+
+## Build Status
+[![Backend CI](https://github.com/ivanskv2000/evsy/actions/workflows/backend.yml/badge.svg)](https://github.com/ivanskv2000/evsy/actions/workflows/backend.yml)
+[![Frontend CI](https://github.com/ivanskv2000/evsy/actions/workflows/frontend.yml/badge.svg)](https://github.com/ivanskv2000/evsy/actions/workflows/frontend.yml)
+
 
 
 
