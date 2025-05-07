@@ -34,7 +34,7 @@ const baseClass = 'text-xs tracking-widest uppercase'
 const finalClass = cn(
   baseClass,
   props.monochrome ? 'bg-muted text-foreground' : colorClass[props.type],
-  attrs.class
+  attrs.class as string | undefined
 )
 </script>
 

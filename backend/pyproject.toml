@@ -1,6 +1,6 @@
 [project]
 name = "evsy-backend"
-version = "0.1.0"
+version = "0.0.0"
 description = "Evsy Backend is an API for managing and documenting product analytics events, properties, and tags. It provides an interface for storing event definitions and metadata in a structured way."
 authors = [
     {name = "Ivan Skvortsov", email = "ivanskv2000@gmail.com"}
@@ -39,7 +39,7 @@ faker = "^37.1.0"
 
 [tool.pytest.ini_options]
 addopts = "--cov=app --cov-report=term-missing"
-testpaths = ["app/tests"]
+testpaths = ["tests"]
 
 [tool.isort]
 profile = "black"

@@ -1,23 +1,26 @@
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
 
-from app.database.database import Base, get_db
-from app.main import app
+from app.database.database import Base, get_db, init_db
+from app.factory import create_app
 from app.settings import Settings
 
+# Load test settings from .env.test
 test_settings = Settings(_env_file=".env.test")
 
-test_engine = create_engine(test_settings.database_url)
+# Initialize DB objects for test (engine + SessionLocal)
+test_engine, TestingSessionLocal = init_db(test_settings)
 
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
+# Create the test app
+app = create_app(test_settings)
 
 
+# Override FastAPI's get_db dependency
 @pytest.fixture(scope="session")
 def override_get_db():
     def _override_get_db():
-        db = TestingSessionLocal()
+        db: Session = TestingSessionLocal()
         try:
             yield db
         finally:
@@ -26,6 +29,7 @@ def override_get_db():
     return _override_get_db
 
 
+# Set up and tear down the database
 @pytest.fixture(scope="session", autouse=True)
 def setup_database(override_get_db):
     Base.metadata.create_all(bind=test_engine)
@@ -34,6 +38,7 @@ def setup_database(override_get_db):
     Base.metadata.drop_all(bind=test_engine)
 
 
+# FastAPI test client
 @pytest.fixture(scope="module")
 def client():
     with TestClient(app) as c:

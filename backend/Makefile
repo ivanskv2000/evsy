@@ -21,10 +21,10 @@ lint:
 	poetry run flake8 .
 
 test:
-	poetry run pytest --cov=app --cov-report=term --cov-report=html app/tests
+	poetry run pytest --cov=app --cov-report=term --cov-report=html tests
 
 test-fast:
-	poetry run pytest app/tests
+	poetry run pytest tests
 
 drop-db:
 	PYTHONPATH=./ poetry run python app/database/seeds/reset_db.py

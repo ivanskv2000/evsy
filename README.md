@@ -16,24 +16,50 @@ It helps product teams, analysts, and developers structure and document all key 
 - Dark/light theme switcher.
 
 **Future roadmap includes:**
-- Teams and organizations support.
-- Audit log (history of changes).
-- Public/Private event visibility.
+- Field examples;
+- Audit log (history of changes);
+- Session and user management;
+- Teams and organizations support;
 - SaaS hosting.
 
 ## ⚙️ Tech Stack
-- Backend: FastAPI + SQLAlchemy + Alembic
-- Frontend: Vue 3 + Vite + TailwindCSS
-- Database: PostgreSQL
-- Containerization: Docker, docker-compose
-
-## 🚀 Quick Start
-
-## 🛠 Development
+- Backend: FastAPI + Pydantic + SQLAlchemy + Alembic
+- Frontend: Vue 3 + Vite + Shadcn
 
 ## 🧩 Project Structure
+Evsy is a project combining a Python backend and a modern JS frontend, developed and versioned together.
+
+```
+evsy/
+├── backend/              # FastAPI backend (Python, Poetry-managed)
+│   ├── app/              # Application code
+│   └── tests/            # Pytest test suite
+├── frontend/             # Vue 3 + Vite frontend (npm-managed)
+│   ├── src/              # Application code
+│   └── public/           # Static assets
+├── .github/workflows/    # CI workflows
+├── VERSION               # Current version of the project
+├── bump_version.py       # Version bumping script (manual semantic versioning)
+├── Makefile              # Developer commands (e.g. `make up`)
+├── docker-compose.yaml   # Docker compose configuration
+├── Makefile              # Developer commands (e.g. `make up`)
+└── README.md             # Project overview
+```
+
+## 🚀 Quick Start
+To run Evsy via Docker compose, do:
+1. `cp .env.example .env`
+2. `make up`
+
 
 ## 🤝 Contributing
+We welcome all kinds of contributions — from code to ideas, design suggestions, and bug reports.
+[Read the contributing guide →](CONTRIBUTING.md)
+
+## Build Status
+[![Backend CI](https://github.com/ivanskv2000/evsy/actions/workflows/backend.yml/badge.svg)](https://github.com/ivanskv2000/evsy/actions/workflows/backend.yml)
+[![Frontend CI](https://github.com/ivanskv2000/evsy/actions/workflows/frontend.yml/badge.svg)](https://github.com/ivanskv2000/evsy/actions/workflows/frontend.yml)
+
 
 
 
