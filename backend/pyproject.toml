@@ -39,7 +39,7 @@ faker = "^37.1.0"
 
 [tool.pytest.ini_options]
 addopts = "--cov=app --cov-report=term-missing"
-testpaths = ["app/tests"]
+testpaths = ["tests"]
 
 [tool.isort]
 profile = "black"
