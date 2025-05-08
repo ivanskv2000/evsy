@@ -20,6 +20,8 @@ const { isLoading, run } = useAsyncTask()
 const { run: loadFields, isLoading: isLoadingFields } = useAsyncTask()
 const { run: loadTags, isLoading: isLoadingTags } = useAsyncTask()
 
+const isInitialLoading = ref(true)
+
 const { showCreated } = useEnhancedToast()
 const router = useRouter()
 
@@ -40,6 +42,8 @@ onMounted(() => {
   loadTags(async () => {
     tags.value = await tagApi.getAll()
   })
+
+  isInitialLoading.value = false
 })
 </script>
 
@@ -52,8 +56,8 @@ onMounted(() => {
         <EventForm
           :availableFields="fields"
           :availableTags="tags"
-          :isLoadingFields="isLoadingFields"
-          :isLoadingTags="isLoadingTags"
+          :isLoadingFields="isInitialLoading || isLoadingFields"
+          :isLoadingTags="isInitialLoading || isLoadingTags"
           :onSubmit="onSubmit"
           :isLoading="isLoading"
           button-text="Create"
