@@ -1,9 +1,11 @@
 import axios from 'axios'
 
-const baseURL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api/v1'
+if (!import.meta.env.VITE_API_URL) {
+  throw new Error('VITE_API_URL is not defined in your environment variables')
+}
 
 export const api = axios.create({
-  baseURL,
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -11,7 +13,5 @@ export const api = axios.create({
 
 api.interceptors.response.use(
   response => response,
-  error => {
-    return Promise.reject(error)
-  }
+  error => Promise.reject(error)
 )
