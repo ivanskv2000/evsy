@@ -29,6 +29,7 @@ def create_app(settings: Settings) -> FastAPI:
             },
         ],
         debug=settings.is_dev,
+        root_path="/api",
     )
 
     app.state.settings = settings
@@ -53,10 +54,10 @@ def create_app(settings: Settings) -> FastAPI:
         allow_headers=["*"],
     )
 
-    app.include_router(events.router, prefix="/api/v1", tags=["events"])
-    app.include_router(tags.router, prefix="/api/v1", tags=["tags"])
-    app.include_router(fields.router, prefix="/api/v1", tags=["fields"])
-    app.include_router(generic.router, prefix="/api/v1", tags=["generic"])
+    app.include_router(events.router, prefix="/v1", tags=["events"])
+    app.include_router(tags.router, prefix="/v1", tags=["tags"])
+    app.include_router(fields.router, prefix="/v1", tags=["fields"])
+    app.include_router(generic.router, prefix="/v1", tags=["generic"])
 
     @app.get("/")
     def read_root():
