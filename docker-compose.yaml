@@ -39,6 +39,9 @@ services:
   frontend:
     build:
       context: ./frontend
+      args:
+          VITE_API_URL: ${VITE_API_URL}
+          VITE_ENV: ${VITE_ENV}
     container_name: evsy-frontend
     restart: always
     env_file:

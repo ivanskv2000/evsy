@@ -179,7 +179,7 @@ function removeTag(tagId: string) {
                 </FormControl>
               </ComboboxAnchor>
 
-              <ComboboxList align="start" class="w-[--reka-popper-anchor-width] min-w-[200px]">
+              <ComboboxList align="start" class="w-[state(reka-popper-anchor-width)] min-w-[200px]">
                 <ComboboxEmpty> No tags found. </ComboboxEmpty>
 
                 <ComboboxGroup>

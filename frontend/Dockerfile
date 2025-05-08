@@ -10,9 +10,12 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+ARG VITE_API_URL
+ARG VITE_ENV
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_ENV=$VITE_ENV
 
-EXPOSE 5173
+RUN npm run build
 
 # ----------------------
 # Stage 2: Serve assets
@@ -20,12 +23,8 @@ EXPOSE 5173
 FROM nginx:stable-alpine
 
 WORKDIR /usr/share/nginx/html
-
 RUN rm -rf ./*
-
 COPY --from=builder /app/dist .
-
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
-    
