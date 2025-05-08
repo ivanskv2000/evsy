@@ -28,22 +28,26 @@ def create_app(settings: Settings) -> FastAPI:
                 "description": "Define reusable attributes for describing events.",
             },
         ],
+        debug=settings.is_dev,
     )
 
     app.state.settings = settings
 
+    if settings.is_dev:
+        print("Running in development mode")
+    elif settings.is_demo:
+        print("Running in demo mode")
+
+    allowed_origins = ["http://localhost:5173", "http://localhost:3000"]
+    allowed_origins = (
+        allowed_origins + [settings.frontend_url]
+        if settings.is_dev
+        else [settings.frontend_url]
+    )
+
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=(
-            [
-                "http://localhost:5173",
-                "http://localhost:5174",
-                "http://localhost:3000",
-            ]
-            + [settings.frontend_url]
-            if settings.frontend_url
-            else []
-        ),
+        allow_origins=allowed_origins,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
