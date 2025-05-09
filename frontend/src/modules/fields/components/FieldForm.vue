@@ -48,7 +48,14 @@ const fieldTypeOptions = Object.entries(FieldType).map(([key, value]) => ({
       <FormItem>
         <FormLabel>Name</FormLabel>
         <FormControl>
-          <Input type="text" placeholder="user_id" v-bind="componentField" />
+          <Input
+            type="text"
+            placeholder="user_id"
+            autocapitalize="off"
+            autocomplete="off"
+            spellcheck="false"
+            v-bind="componentField"
+          />
         </FormControl>
         <FormMessage />
       </FormItem>
@@ -59,7 +66,12 @@ const fieldTypeOptions = Object.entries(FieldType).map(([key, value]) => ({
       <FormItem>
         <FormLabel>Description</FormLabel>
         <FormControl>
-          <Input type="text" placeholder="Optional description" v-bind="componentField" />
+          <Input
+            type="text"
+            placeholder="Optional description" 
+            autocomplete="off"
+            v-bind="componentField"
+          />
         </FormControl>
         <FormMessage />
       </FormItem>
@@ -71,7 +83,7 @@ const fieldTypeOptions = Object.entries(FieldType).map(([key, value]) => ({
         <FormLabel>Field Type</FormLabel>
         <FormControl>
           <Select v-bind="componentField">
-            <SelectTrigger class="min-w-[15ch]">
+            <SelectTrigger class="min-w-[20ch]">
               <SelectValue placeholder="Select type" />
             </SelectTrigger>
             <SelectContent>

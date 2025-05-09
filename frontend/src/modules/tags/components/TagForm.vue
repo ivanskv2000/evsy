@@ -53,6 +53,9 @@ const onSubmit = handleSubmit(values => {
             :disabled="disableIdField"
             type="text"
             placeholder="feature_login"
+            autocapitalize="off"
+            autocomplete="off"
+            spellcheck="false"
             v-bind="componentField"
           />
         </FormControl>
@@ -68,7 +71,12 @@ const onSubmit = handleSubmit(values => {
       <FormItem>
         <FormLabel>Description</FormLabel>
         <FormControl>
-          <Input type="text" placeholder="Optional description" v-bind="componentField" />
+          <Input
+            type="text"
+            placeholder="Optional description"
+            autocomplete="off"
+            v-bind="componentField"
+          />
         </FormControl>
         <FormMessage />
       </FormItem>

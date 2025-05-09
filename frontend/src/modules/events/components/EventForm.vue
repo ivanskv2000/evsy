@@ -104,7 +104,14 @@ function removeTag(tagId: string) {
       <FormItem>
         <FormLabel>Event Name</FormLabel>
         <FormControl>
-          <Input type="text" placeholder="page_view" v-bind="componentField" />
+          <Input
+            type="text"
+            placeholder="page_view"
+            autocapitalize="off"
+            autocomplete="off"
+            spellcheck="false"
+            v-bind="componentField"
+          />
         </FormControl>
         <FormMessage />
       </FormItem>
@@ -115,7 +122,12 @@ function removeTag(tagId: string) {
       <FormItem>
         <FormLabel>Description</FormLabel>
         <FormControl>
-          <Input type="text" placeholder="Optional description" v-bind="componentField" />
+          <Input
+            type="text"
+            placeholder="Optional description"
+            autocomplete="off"
+            v-bind="componentField"
+          />
         </FormControl>
         <FormMessage />
       </FormItem>
