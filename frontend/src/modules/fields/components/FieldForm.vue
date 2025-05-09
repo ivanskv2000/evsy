@@ -68,7 +68,7 @@ const fieldTypeOptions = Object.entries(FieldType).map(([key, value]) => ({
         <FormControl>
           <Input
             type="text"
-            placeholder="Optional description" 
+            placeholder="Optional description"
             autocomplete="off"
             v-bind="componentField"
           />
