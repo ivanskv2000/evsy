@@ -54,8 +54,21 @@ import ThemeProvider from '@/shared/components/providers/theme-provider.vue'
         <div class="flex flex-1 items-center justify-end space-x-2">
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
-              <Button variant="ghost" size="icon">
-                <Icon icon="radix-icons:hamburger-menu" class="h-4 w-4" />
+              <Button
+                variant="ghost"
+                size="icon"
+                class="group relative flex h-9 w-9 cursor-pointer items-center justify-center transition-none hover:bg-transparent hover:text-inherit dark:hover:bg-transparent dark:hover:text-inherit"
+              >
+                <span class="relative h-4 w-4">
+                  <Icon
+                    icon="radix-icons:hamburger-menu"
+                    class="transition-rotate absolute inset-0 scale-100 rotate-0 opacity-100 transition-opacity transition-transform duration-300 ease-in-out group-data-[state=open]:scale-0 group-data-[state=open]:-rotate-90 group-data-[state=open]:opacity-0"
+                  />
+                  <Icon
+                    icon="radix-icons:cross-1"
+                    class="transition-rotate absolute inset-0 scale-0 rotate-90 opacity-0 transition-opacity transition-transform duration-300 ease-in-out group-data-[state=open]:scale-100 group-data-[state=open]:rotate-0 group-data-[state=open]:opacity-100"
+                  />
+                </span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent class="w-auto" align="end">

@@ -32,7 +32,7 @@ const handleCopyId = async () => {
 <template>
   <Transition name="fade" appear>
     <div
-      class="flex items-start justify-between gap-4 rounded-lg border p-4 hover:shadow-sm transition-shadow"
+      class="flex items-start justify-between gap-4 rounded-lg border p-4 transition-shadow hover:shadow-sm"
     >
       <div>
         <TooltipProvider :delay-duration="800">
