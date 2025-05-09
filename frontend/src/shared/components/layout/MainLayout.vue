@@ -23,7 +23,7 @@ import ThemeProvider from '@/shared/components/providers/theme-provider.vue'
 <template>
   <div class="bg-background min-h-screen">
     <!-- Header -->
-    <header class="sticky top-0 w-full border-b">
+    <header class="sticky top-0 z-50 w-full border-b bg-background">
       <div class="container flex h-14 items-center">
         <div class="flex">
           <RouterLink to="/" class="mr-6">
@@ -53,39 +53,25 @@ import ThemeProvider from '@/shared/components/providers/theme-provider.vue'
           </NavigationMenu>
         </div>
         <div class="flex flex-1 items-center justify-end space-x-2">
-          <ThemeProvider v-slot="{ toggleTheme }">
-            <Button variant="ghost" size="icon" @click="toggleTheme">
-              <Icon
-                icon="radix-icons:moon"
-                class="h-4 w-4 scale-100 rotate-0 opacity-100 transition-all duration-300 ease-in-out dark:scale-0 dark:-rotate-90 dark:opacity-0"
-              />
-              <Icon
-                icon="radix-icons:sun"
-                class="absolute h-4 w-4 scale-0 rotate-90 opacity-0 transition-all duration-300 ease-in-out dark:scale-100 dark:rotate-0 dark:opacity-100"
-              />
-              <span class="sr-only">Toggle theme</span>
-            </Button>
-          </ThemeProvider>
-
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
-              <Button variant="outline" size="icon">
+              <Button variant="ghost" size="icon">
                 <Icon icon="radix-icons:hamburger-menu" class="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent class="w-56">
+            <DropdownMenuContent class="w-auto" align="end">
               <DropdownMenuGroup>
                 <ThemeProvider v-slot="{ toggleTheme }">
-                  <DropdownMenuItem @click="toggleTheme">
+                  <DropdownMenuItem @click="toggleTheme" @select="(e) => e.preventDefault()">
                     <Icon
                       icon="radix-icons:moon"
-                      class="h-4 w-4 scale-100 rotate-0 opacity-100 transition-all duration-300 ease-in-out dark:scale-0 dark:-rotate-90 dark:opacity-0"
+                      class="mr-2 h-4 w-4 scale-100 rotate-0 opacity-100 transition-all duration-300 ease-in-out dark:scale-0 dark:-rotate-90 dark:opacity-0"
                     />
                     <Icon
                       icon="radix-icons:sun"
-                      class="absolute h-4 w-4 scale-0 rotate-90 opacity-0 transition-all duration-300 ease-in-out dark:scale-100 dark:rotate-0 dark:opacity-100"
+                      class="absolute mr-2 h-4 w-4 scale-0 rotate-90 opacity-0 transition-all duration-300 ease-in-out dark:scale-100 dark:rotate-0 dark:opacity-100"
                     />
-                    <span class="sr-only">Toggle theme</span>
+                    <span>Toggle theme</span>
                   </DropdownMenuItem>
                 </ThemeProvider>
               </DropdownMenuGroup>
