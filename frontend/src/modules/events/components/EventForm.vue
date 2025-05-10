@@ -157,7 +157,7 @@ function removeTag(tagId: string) {
                 <FormControl>
                   <TagsInput
                     v-model="componentField.modelValue"
-                    class="flex h-9 w-full justify-between gap-1 shadow-xs"
+                    class="flex h-9 w-full justify-between gap-1 rounded-md border border-input bg-transparent shadow-xs transition-[box-shadow,color,border] focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px]"
                   >
                     <div class="h-5 w-[30%] p-0">
                       <ComboboxInput v-model="searchTerm" as-child>

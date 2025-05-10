@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Field } from '@/modules/fields/types'
 import Skeleton from '@/shared/ui/skeleton/Skeleton.vue'
+import Checkbox from '@/shared/ui/checkbox/Checkbox.vue'
 
 defineProps<{
   fields: Field[]
@@ -22,14 +23,17 @@ const emit = defineEmits<{
     <Transition name="fade" appear>
       <div v-if="!isLoading">
         <div v-for="field in fields" :key="field.id" class="flex items-center gap-2">
-          <input
-            type="checkbox"
-            :checked="selectedIds.includes(field.id)"
-            @change="() => emit('toggle', field.id)"
+          <Checkbox 
             :id="`field-${field.id}`"
-            class="form-checkbox"
+            :model-value="selectedIds.includes(field.id)"
+            @update:model-value="() => emit('toggle', field.id)"
           />
-          <label :for="`field-${field.id}`" class="text-sm">{{ field.name }}</label>
+          <label
+            :for="`field-${field.id}`"
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            {{ field.name }}
+          </label>
         </div>
       </div>
     </Transition>
