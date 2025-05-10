@@ -30,9 +30,9 @@ export default {
         <SelectValue class="min-w-[12ch]" placeholder="Select a type..." />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem v-for="option in options" :key="option" :value="option">{{
-          option
-        }}</SelectItem>
+        <SelectItem v-for="option in options" :key="option" :value="option">
+          {{ option }}
+        </SelectItem>
       </SelectContent>
     </Select>
 

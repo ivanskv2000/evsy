@@ -73,7 +73,9 @@ export function getFieldColumns(
         const field_type = String(row.getValue('field_type'))
         return h('div', { class: 'text-left font-medium' }, field_type)
       },
-      filterFn: 'equals',
+      filterFn: (row, id, value) => {
+        return value.includes(row.getValue(id))
+      },
     },
     {
       accessorKey: 'description',

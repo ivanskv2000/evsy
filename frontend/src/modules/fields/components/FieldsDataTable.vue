@@ -1,9 +1,7 @@
 <script setup lang="ts" generic="TData, TValue">
 import type { ColumnDef } from '@tanstack/vue-table'
 import DataTableInputFilter from '@/shared/components/data/DataTableInputFilter.vue'
-import DataTableSingleSelectFilter from '@/shared/components/data/DataTableSingleSelectFilter.vue'
 import { Icon } from '@iconify/vue'
-import { computed } from 'vue'
 import { Button } from '@/shared/ui/button'
 import DataTablePagination from '@/shared/components/data/DataTablePagination.vue'
 import { FieldType } from '@/modules/fields/types'
@@ -11,6 +9,7 @@ import DataTable from '@/shared/components/data/DataTable.vue'
 import { useDataTable } from '@/shared/composables/useDataTable'
 import DataTableLayout from '@/shared/components/data/DataTableLayout.vue'
 import DataTableSkeleton from '@/shared/components/skeletons/DataTableSkeleton.vue'
+import DataTableMultiSelectFilter from '@/shared/components/data/DataTableMultiSelectFilter.vue'
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
@@ -18,16 +17,13 @@ const props = defineProps<{
   isLoading: boolean
 }>()
 
-const { table, columnFilters } = useDataTable({
+const { table } = useDataTable({
   data: () => props.data,
   columns: () => props.columns,
   defaultSorting: [{ id: 'id', desc: true }],
 })
 
 const fieldTypes = Object.values(FieldType)
-const isTypeFilterSet = computed(() =>
-  columnFilters.value.some(f => f.id === 'field_type' && !!f.value)
-)
 </script>
 
 <template>
@@ -41,11 +37,10 @@ const isTypeFilterSet = computed(() =>
       />
 
       <!-- Type Filter -->
-      <DataTableSingleSelectFilter
-        :column="table.getColumn('field_type')!"
-        placeholder="Select a type..."
+      <DataTableMultiSelectFilter
+        :column="table.getColumn('field_type')"
+        title="Type"
         :options="fieldTypes"
-        :show-clear-button="isTypeFilterSet"
       />
     </template>
     <template #buttons>
