@@ -7,7 +7,7 @@ const theme = useColorMode({
   selector: 'html',
   emitAuto: false,
   storageKey: 'theme',
-  disableTransition: false,
+  disableTransition: true,
 })
 
 const toggleTheme = () => {

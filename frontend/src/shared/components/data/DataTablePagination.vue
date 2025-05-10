@@ -63,7 +63,7 @@ const rowsSelected = computed(() => props.table.getFilteredSelectedRowModel().ro
       <div class="flex items-center space-x-2">
         <Button
           variant="outline"
-          class="hidden h-8 w-8 p-0 transition-none lg:flex"
+          class="hidden h-8 w-8 p-0 lg:flex"
           :disabled="!table.getCanPreviousPage()"
           @click="table.setPageIndex(0)"
         >
@@ -72,7 +72,7 @@ const rowsSelected = computed(() => props.table.getFilteredSelectedRowModel().ro
         </Button>
         <Button
           variant="outline"
-          class="h-8 w-8 p-0 transition-none"
+          class="h-8 w-8 p-0"
           :disabled="!table.getCanPreviousPage()"
           @click="table.previousPage()"
         >
@@ -81,7 +81,7 @@ const rowsSelected = computed(() => props.table.getFilteredSelectedRowModel().ro
         </Button>
         <Button
           variant="outline"
-          class="h-8 w-8 p-0 transition-none"
+          class="h-8 w-8 p-0"
           :disabled="!table.getCanNextPage()"
           @click="table.nextPage()"
         >
@@ -90,7 +90,7 @@ const rowsSelected = computed(() => props.table.getFilteredSelectedRowModel().ro
         </Button>
         <Button
           variant="outline"
-          class="hidden h-8 w-8 p-0 transition-none lg:flex"
+          class="hidden h-8 w-8 p-0 lg:flex"
           :disabled="!table.getCanNextPage()"
           @click="table.setPageIndex(table.getPageCount() - 1)"
         >

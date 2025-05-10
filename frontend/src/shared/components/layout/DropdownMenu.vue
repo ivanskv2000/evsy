@@ -17,6 +17,7 @@ const isDropdownOpen = ref(false)
 </script>
 
 <template>
+  <ThemeProvider v-slot="{ toggleTheme }">
   <DropdownMenu v-model:open="isDropdownOpen">
     <DropdownMenuTrigger as-child>
       <Button
@@ -38,7 +39,6 @@ const isDropdownOpen = ref(false)
     </DropdownMenuTrigger>
     <DropdownMenuContent class="w-auto" align="end">
       <DropdownMenuGroup>
-        <ThemeProvider v-slot="{ toggleTheme }">
           <DropdownMenuItem
             @click="
               () => {
@@ -51,16 +51,15 @@ const isDropdownOpen = ref(false)
             <span class="relative mr-2 h-4 w-4">
               <Icon
                 icon="radix-icons:moon"
-                class="absolute inset-0 scale-100 rotate-0 transform opacity-100 transition duration-300 ease-in-out dark:scale-0 dark:-rotate-90 dark:opacity-0"
+                class="absolute inset-0 scale-100 opacity-100 dark:scale-0 dark:opacity-0"
               />
               <Icon
                 icon="radix-icons:sun"
-                class="absolute inset-0 scale-0 rotate-90 transform opacity-0 transition duration-300 ease-in-out dark:scale-100 dark:rotate-0 dark:opacity-100"
+                class="absolute inset-0 scale-0 opacity-0 dark:scale-100 dark:opacity-100"
               />
             </span>
             <span>Toggle theme</span>
           </DropdownMenuItem>
-        </ThemeProvider>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
       <DropdownMenuGroup>
@@ -89,4 +88,5 @@ const isDropdownOpen = ref(false)
       </DropdownMenuGroup>
     </DropdownMenuContent>
   </DropdownMenu>
+</ThemeProvider>
 </template>
