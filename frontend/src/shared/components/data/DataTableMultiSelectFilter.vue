@@ -77,7 +77,6 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
               v-for="option in options"
               :key="option"
               :value="option"
-              class="px-2 py-1.5 text-sm h-8 items-center"
               @select="(e) => {
                 console.log(e.detail.value)
                 const isSelected = selectedValues.has(option)
