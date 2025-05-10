@@ -31,8 +31,8 @@ def create_field(field: schemas.FieldCreate, db: Session = Depends(get_db)):
         200: {"description": "List of fields returned"},
     },
 )
-def get_fields(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    fields = crud.get_fields(db=db, skip=skip, limit=limit)
+def get_fields(db: Session = Depends(get_db)):
+    fields = crud.get_fields(db=db)
     return fields
 
 

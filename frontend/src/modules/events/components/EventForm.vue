@@ -179,7 +179,7 @@ function removeTag(tagId: string) {
 
                     <TagScrollArea>
                       <TagsInputItem
-                        v-for="item in componentField.modelValue"
+                        v-for="item in [...componentField.modelValue].reverse()"
                         :key="item"
                         :value="item"
                       >

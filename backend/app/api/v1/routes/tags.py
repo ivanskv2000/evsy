@@ -31,8 +31,8 @@ def create_tag(tag: schemas.TagCreate, db: Session = Depends(get_db)):
         200: {"description": "List of tags returned"},
     },
 )
-def get_tags(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    tags = crud.get_tags(db=db, skip=skip, limit=limit)
+def get_tags(db: Session = Depends(get_db)):
+    tags = crud.get_tags(db=db)
     return tags
 
 

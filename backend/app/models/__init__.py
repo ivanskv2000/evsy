@@ -44,6 +44,7 @@ class Event(Base, TimestampMixin):
         secondary="event_tags",
         back_populates="events",
         viewonly=True,
+        order_by="Tag.id.asc()"
     )
 
     field_links = relationship(
@@ -54,6 +55,7 @@ class Event(Base, TimestampMixin):
         secondary="event_fields",
         back_populates="events",
         viewonly=True,
+        order_by="Field.id.asc()"
     )
 
 

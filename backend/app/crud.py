@@ -26,15 +26,14 @@ def get_event(db: Session, event_id: int):
     return db.query(models.Event).filter(models.Event.id == event_id).first()
 
 
-def get_events(db: Session, skip: int = 0, limit: int = 100):
+def get_events(db: Session):
     return (
         db.query(models.Event)
         .options(
             joinedload(models.Event.tags),
             joinedload(models.Event.fields),
         )
-        .offset(skip)
-        .limit(limit)
+        .order_by(models.Event.id)
         .all()
     )
 
@@ -87,8 +86,8 @@ def create_tag(db: Session, tag: schemas.TagCreate):
     return db_tag
 
 
-def get_tags(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Tag).offset(skip).limit(limit).all()
+def get_tags(db: Session):
+    return db.query(models.Tag).order_by(models.Tag.created_at.desc(), models.Tag.id).all()
 
 
 def get_tag(db: Session, tag_id: str):
@@ -143,8 +142,8 @@ def create_field(db: Session, field: schemas.FieldCreate):
     return db_field
 
 
-def get_fields(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Field).offset(skip).limit(limit).all()
+def get_fields(db: Session):
+    return db.query(models.Field).order_by(models.Field.id).all()
 
 
 def get_field(db: Session, field_id: int):

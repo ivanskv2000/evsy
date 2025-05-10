@@ -58,8 +58,8 @@ def get_event(event_id: int, db: Session = Depends(get_db)):
     description="Return a paginated list of all events with their tags and fields.",
     responses={200: {"description": "List of events returned"}},
 )
-def get_events(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    events = crud.get_events(db=db, skip=skip, limit=limit)
+def get_events(db: Session = Depends(get_db)):
+    events = crud.get_events(db=db)
     return events
 
 
