@@ -5,12 +5,18 @@ import type { ClassValue } from 'clsx'
 
 const attrs = useAttrs()
 
-const wrapperClass = computed(() => cn('tag-scroll-wrapper max-w-60', attrs.class as ClassValue))
+const wrapperClass = computed(() => cn('tag-scroll-wrapper max-w-60 h-full', attrs.class as ClassValue))
 </script>
 
 <template>
-  <div :class="wrapperClass" v-bind="{ ...attrs, class: undefined }">
-    <div class="hide-scrollbar scroll-x-bounce flex flex-row gap-1 overflow-x-auto px-4">
+  <div
+    :class="wrapperClass"
+    v-bind="{ ...attrs, class: undefined }"
+    tabindex="-1"
+  >
+    <div
+      class="hide-scrollbar scroll-x-bounce flex flex-row gap-1 overflow-x-auto px-4 h-full"
+    >
       <slot />
     </div>
   </div>
