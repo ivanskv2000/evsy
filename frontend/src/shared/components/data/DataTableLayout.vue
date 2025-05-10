@@ -10,7 +10,7 @@ defineProps<{
       {{ title }}
     </div>
 
-    <div class="flex flex-wrap items-center justify-between gap-4 pb-4 pt-1">
+    <div class="flex flex-wrap items-center justify-between gap-4 pt-1 pb-4">
       <div class="flex flex-nowrap items-center gap-4">
         <slot name="filters" />
       </div>

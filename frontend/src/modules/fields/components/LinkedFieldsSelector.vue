@@ -23,14 +23,14 @@ const emit = defineEmits<{
     <Transition name="fade" appear>
       <div v-if="!isLoading">
         <div v-for="field in fields" :key="field.id" class="flex items-center gap-2">
-          <Checkbox 
+          <Checkbox
             :id="`field-${field.id}`"
             :model-value="selectedIds.includes(field.id)"
             @update:model-value="() => emit('toggle', field.id)"
           />
           <label
             :for="`field-${field.id}`"
-            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             {{ field.name }}
           </label>

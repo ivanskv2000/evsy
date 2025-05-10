@@ -87,7 +87,9 @@ def create_tag(db: Session, tag: schemas.TagCreate):
 
 
 def get_tags(db: Session):
-    return db.query(models.Tag).order_by(models.Tag.created_at.desc(), models.Tag.id).all()
+    return (
+        db.query(models.Tag).order_by(models.Tag.created_at.desc(), models.Tag.id).all()
+    )
 
 
 def get_tag(db: Session, tag_id: str):
