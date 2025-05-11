@@ -77,8 +77,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
               v-for="option in options"
               :key="option"
               :value="option"
-              @select="(e) => {
-                console.log(e.detail.value)
+              @select="() => {
                 const isSelected = selectedValues.has(option)
                 if (isSelected) {
                   selectedValues.delete(option)
@@ -100,12 +99,15 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
                     : 'opacity-50 [&_svg]:invisible',
                 )"
               >
-                <Icon icon="radix-icons:check" :class="cn('h-4 w-4')" />
+                <Icon icon="radix-icons:check" :class="cn('h-4 w-4 text-background')" />
 
               </div>
               <span class="truncate">{{ option }}</span>
               <span v-if="facets?.get(option)" class="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
                 {{ facets.get(option) }}
+              </span>
+              <span v-else class="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
+                0
               </span>
             </CommandItem>
           </CommandGroup>

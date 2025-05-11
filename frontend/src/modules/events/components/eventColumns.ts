@@ -1,5 +1,6 @@
 import { h } from 'vue'
 import type { Event } from '@/modules/events/types.ts'
+import type { Tag } from '@/modules/tags/types.ts'
 import type { ColumnDef } from '@tanstack/vue-table'
 import EventsDataTableDropdown from '@/modules/events/components/EventsDataTableDropdown.vue'
 import { RouterLink } from 'vue-router'
@@ -112,6 +113,10 @@ export function getEventColumns(
           },
           () => tags.map(tag => h(Badge, { variant: 'outline' }, { default: () => tag.id }))
         )
+      },
+      filterFn: (row, id, value) => {
+        const tags = row.getValue(id) as Tag[]
+        return tags.some(tag => tag.id === value)
       },
     },
     {

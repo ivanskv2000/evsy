@@ -8,6 +8,8 @@ import DataTable from '@/shared/components/data/DataTable.vue'
 import { useDataTable } from '@/shared/composables/useDataTable'
 import DataTableLayout from '@/shared/components/data/DataTableLayout.vue'
 import DataTableSkeleton from '@/shared/components/skeletons/DataTableSkeleton.vue'
+import DataTableSingleSelectFilter from '@/shared/components/data/DataTableSingleSelectFilter.vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
@@ -15,11 +17,15 @@ const props = defineProps<{
   isLoading: boolean
 }>()
 
-const { table } = useDataTable({
+const { table, columnFilters } = useDataTable({
   data: () => props.data,
   columns: () => props.columns,
   defaultSorting: [{ id: 'id', desc: true }],
 })
+
+const isTagFilterSet = computed(() =>
+  columnFilters.value.some(f => f.id === 'tags' && !!f.value)
+)
 </script>
 
 <template>
@@ -30,6 +36,14 @@ const { table } = useDataTable({
         class="max-w-3xs"
         :column="table.getColumn('name')!"
         placeholder="Filter by name..."
+      />
+
+      <!-- Tag Filter -->
+      <DataTableSingleSelectFilter
+        :column="table.getColumn('tags')!"
+        placeholder="Select a tag..."
+        :options="['one', 'two', 'three']"
+        :show-clear-button="isTagFilterSet"
       />
     </template>
     <template #buttons>
