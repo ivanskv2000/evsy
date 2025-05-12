@@ -15,7 +15,7 @@ const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   tags: Tag[]
-  isLoading: boolean,
+  isLoading: boolean
   isLoadingTags: boolean
 }>()
 
@@ -24,7 +24,6 @@ const { table } = useDataTable({
   columns: () => props.columns,
   defaultSorting: [{ id: 'id', desc: true }],
 })
-
 </script>
 
 <template>

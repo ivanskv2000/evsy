@@ -3,7 +3,7 @@ import type { Column } from '@tanstack/vue-table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select'
 import { Button } from '@/shared/ui/button'
 import { Icon } from '@iconify/vue'
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 interface DataTableInputFilterProps {
   column?: Column<TData, TValue>
@@ -32,10 +32,7 @@ export default {
       :disabled="disabled"
     >
       <SelectTrigger>
-        <SelectValue
-          class="min-w-[12ch]"
-          :placeholder="placeholder"
-        >
+        <SelectValue class="min-w-[12ch]" :placeholder="placeholder">
           <template v-if="selectedValue">
             <span v-if="selectedValue">{{ selectedValue }}</span>
           </template>
