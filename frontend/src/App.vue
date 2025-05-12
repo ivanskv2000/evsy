@@ -6,6 +6,7 @@ import { Toaster } from '@/shared/ui/sonner'
 
 <template>
   <Toaster richColors />
+  
   <MainLayout>
     <RouterView v-slot="{ Component }">
       <Transition name="page" mode="out-in" appear>
