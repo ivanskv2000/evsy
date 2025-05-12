@@ -3,15 +3,19 @@ import type { Column } from '@tanstack/vue-table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select'
 import { Button } from '@/shared/ui/button'
 import { Icon } from '@iconify/vue'
+import { computed } from 'vue';
 
 interface DataTableInputFilterProps {
-  column: Column<TData, TValue>
+  column?: Column<TData, TValue>
+  title?: string
   placeholder: string
   options: string[]
-  showClearButton: boolean
+  disabled?: boolean
 }
 
-defineProps<DataTableInputFilterProps>()
+const props = defineProps<DataTableInputFilterProps>()
+
+const selectedValue = computed(() => props.column?.getFilterValue() as string)
 </script>
 
 <script lang="ts">
@@ -23,20 +27,28 @@ export default {
 <template>
   <div class="flex items-center gap-1">
     <Select
-      :model-value="column.getFilterValue() as string"
-      @update:model-value="column.setFilterValue($event)"
+      :model-value="selectedValue"
+      @update:model-value="column?.setFilterValue($event)"
+      :disabled="disabled"
     >
       <SelectTrigger>
-        <SelectValue class="min-w-[12ch]" placeholder="Select a type..." />
+        <SelectValue
+          class="min-w-[12ch]"
+          :placeholder="placeholder"
+        >
+          <template v-if="selectedValue">
+            <span v-if="selectedValue">{{ selectedValue }}</span>
+          </template>
+        </SelectValue>
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent class="max-h-[400px]">
         <SelectItem v-for="option in options" :key="option" :value="option">
           {{ option }}
         </SelectItem>
       </SelectContent>
     </Select>
 
-    <Button :disabled="!showClearButton" variant="ghost" @click="column.setFilterValue('')">
+    <Button :disabled="!selectedValue" variant="ghost" @click="column?.setFilterValue('')">
       <Icon class="h-4 w-4" icon="radix-icons:cross-2" />
       <span class="sr-only">Clear type filter</span>
     </Button>

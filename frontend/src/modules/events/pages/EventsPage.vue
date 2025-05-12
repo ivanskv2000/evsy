@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { eventApi } from '@/modules/events/api'
+import { tagApi } from '@/modules/tags/api'
 import type { Event } from '@/modules/events/types'
+import type { Tag } from '@/modules/tags/types'
 import EventsDataTable from '../components/EventsDataTable.vue'
 import Header from '@/shared/components/layout/PageHeader.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
@@ -14,9 +16,11 @@ import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 const { run, isLoading } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
+const { run: loadTags, isLoading: isLoadingTags } = useAsyncTask()
 const { showUpdated, showDeleted } = useEnhancedToast()
 
 const events = ref<Event[]>([])
+const tags = ref<Tag[]>([])
 
 const selectedEventId = ref<number | null>(null)
 const editedEvent = ref<Event | null>(null)
@@ -76,6 +80,9 @@ onMounted(() => {
       events.value = data
     }
   )
+  loadTags(async () => {
+    tags.value = await tagApi.getAll()
+  })
 })
 </script>
 
@@ -83,7 +90,13 @@ onMounted(() => {
   <div>
     <Header title="Events" />
     <div class="container mx-auto">
-      <EventsDataTable :columns="columns" :data="events" :isLoading="isLoading" />
+      <EventsDataTable
+        :columns="columns"
+        :data="events"
+        :tags="tags"
+        :isLoading="isLoading"
+        :isLoadingTags="isLoadingTags"
+      />
     </div>
 
     <!-- Modals -->
