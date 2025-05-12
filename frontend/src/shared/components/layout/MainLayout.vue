@@ -6,9 +6,9 @@ import LoveFooter from './LoveFooter.vue'
 </script>
 
 <template>
-  <div class="flex min-h-screen flex-col bg-background">
+  <div class="bg-background flex min-h-screen flex-col">
     <!-- Header -->
-    <header class="bg-background sticky top-0 z-50 w-full border-b drop-shadow-accent">
+    <header class="bg-background drop-shadow-accent sticky top-0 z-50 w-full border-b">
       <div class="container flex h-14 items-center">
         <div class="flex">
           <MainLogo />
@@ -21,7 +21,7 @@ import LoveFooter from './LoveFooter.vue'
     </header>
 
     <!-- Main Content -->
-    <main class="container py-6 flex-1">
+    <main class="container flex-1 py-6">
       <slot />
     </main>
 
