@@ -66,10 +66,6 @@ function filterItems() {
   filterState.filtered.count = itemCount
 }
 
-function handleSelect() {
-  filterState.search = ''
-}
-
 watch(
   () => filterState.search,
   () => {
