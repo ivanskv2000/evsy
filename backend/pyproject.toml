@@ -1,6 +1,6 @@
 [project]
 name = "evsy-backend"
-version = "0.1.0"
+version = "0.2.0"
 description = "Evsy Backend is an API for managing and documenting product analytics events, properties, and tags. It provides an interface for storing event definitions and metadata in a structured way."
 authors = [
     {name = "Ivan Skvortsov", email = "ivanskv2000@gmail.com"}
