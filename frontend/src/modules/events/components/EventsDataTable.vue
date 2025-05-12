@@ -39,7 +39,9 @@ const { table } = useDataTable({
       <!-- Tag Filter -->
       <DataTableSingleSelectFilter
         :column="table.getColumn('tags')"
-        placeholder="Select a tag..."
+        title="Tag"
+        placeholder="Search tags..."
+        icon="ph:tag"
         :options="tags.map(tag => tag.id)"
         :disabled="isLoadingTags"
       />

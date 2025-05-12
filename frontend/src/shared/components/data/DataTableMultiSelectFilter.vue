@@ -121,7 +121,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
             <CommandGroup>
               <CommandItem
                 :value="{ label: 'Clear filters' }"
-                class="justify-center text-center"
+                class="text-destructive justify-center text-center"
                 @select="column?.setFilterValue(undefined)"
               >
                 Clear filters

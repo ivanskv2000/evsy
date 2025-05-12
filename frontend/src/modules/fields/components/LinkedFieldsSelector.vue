@@ -21,7 +21,7 @@ const emit = defineEmits<{
     </template>
 
     <Transition name="fade" appear>
-      <div v-if="!isLoading">
+      <div v-if="!isLoading" class="space-y-2">
         <div v-for="field in fields" :key="field.id" class="flex items-center gap-2">
           <Checkbox
             :id="`field-${field.id}`"
