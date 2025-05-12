@@ -3,7 +3,9 @@ import { Icon } from '@iconify/vue'
 </script>
 
 <template>
-  <footer class="bg-background drop-shadow-accent text-muted-foreground border-t py-3 text-center text-xs">
+  <footer
+    class="bg-background drop-shadow-accent text-muted-foreground border-t py-3 text-center text-xs"
+  >
     Made with <Icon icon="radix-icons:heart-filled" class="h-lh w-lh inline" /> by
     <a
       href="https://github.com/ivanskv2000"
