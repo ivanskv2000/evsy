@@ -22,6 +22,7 @@ import { Icon } from '@iconify/vue'
 interface DataTableFacetedFilter {
   column?: Column<TData, TValue>
   title?: string
+  icon?: string
   options: string[]
 }
 
@@ -35,7 +36,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
   <Popover>
     <PopoverTrigger as-child>
       <Button variant="outline" class="border-dashed">
-        <Icon icon="radix-icons:plus-circled" :class="cn('mr-2 h-4 w-4')" />
+        <Icon :icon="icon || 'radix-icons:plus-circled'" :class="cn('mr-2 h-4 w-4')" />
         {{ title }}
         <template v-if="selectedValues.size > 0">
           <Separator orientation="vertical" class="mx-2 h-4" />

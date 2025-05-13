@@ -40,6 +40,7 @@ const fieldTypes = Object.values(FieldType)
       <DataTableMultiSelectFilter
         :column="table.getColumn('field_type')"
         title="Type"
+        icon="radix-icons:code"
         :options="fieldTypes"
       />
     </template>
