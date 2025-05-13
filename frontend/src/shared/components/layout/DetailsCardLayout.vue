@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core'
+import { cn } from '@/shared/utils/general'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import {
   Card,
@@ -42,7 +43,10 @@ const handleCopyTitle = async () => {
               <Tooltip>
                 <TooltipTrigger>
                   <CardTitle
-                    class="cursor-pointer font-mono text-xl leading-none tracking-wide"
+                    :class="cn(
+                      'cursor-pointer font-mono text-xl leading-tight tracking-wide',
+                      'truncate overflow-hidden whitespace-nowrap max-w-[12ch] sm:max-w-[36ch]'
+                      )"
                     @click="handleCopyTitle"
                   >
                     {{ title }}
