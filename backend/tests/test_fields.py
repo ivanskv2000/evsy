@@ -1,6 +1,6 @@
 import pytest
 
-from app.schemas import FieldCreate
+from app.modules.fields.schemas import FieldCreate
 
 
 @pytest.fixture

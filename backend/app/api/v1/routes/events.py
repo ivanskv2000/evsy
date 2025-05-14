@@ -1,15 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from app import crud, schemas
-from app.database.database import get_db
+from app.core.database import get_db
+from app.modules.events import crud as event_crud
+from app.modules.events.schemas import EventCreate, EventOut
+from app.modules.fields.crud import get_fields_by_ids
+from app.modules.tags.crud import get_or_create_tags
 
 router = APIRouter(prefix="/events", tags=["events"])
 
 
 @router.post(
     "/",
-    response_model=schemas.EventOut,
+    response_model=EventOut,
     status_code=status.HTTP_201_CREATED,
     summary="Create a new event",
     description=(
@@ -22,20 +25,20 @@ router = APIRouter(prefix="/events", tags=["events"])
         400: {"description": "One or more fields do not exist"},
     },
 )
-def create_event(event: schemas.EventCreate, db: Session = Depends(get_db)):
-    db_fields = crud.get_fields_by_ids(db, event.fields)
+def create_event_route(event: EventCreate, db: Session = Depends(get_db)):
+    db_fields = get_fields_by_ids(db, event.fields)
 
     if len(db_fields) != len(event.fields):
         raise HTTPException(status_code=400, detail="One or more fields do not exist.")
 
-    _ = crud.get_or_create_tags(db, event.tags)
-    db_event = crud.create_event(db=db, event=event)
+    get_or_create_tags(db, event.tags)
+    db_event = event_crud.create_event(db=db, event=event)
     return db_event
 
 
 @router.get(
     "/{event_id}",
-    response_model=schemas.EventOut,
+    response_model=EventOut,
     summary="Get event by ID",
     description="Return a single event by its ID. Includes tags and fields.",
     responses={
@@ -43,8 +46,8 @@ def create_event(event: schemas.EventCreate, db: Session = Depends(get_db)):
         404: {"description": "Event not found"},
     },
 )
-def get_event(event_id: int, db: Session = Depends(get_db)):
-    db_event = crud.get_event(db=db, event_id=event_id)
+def get_event_route(event_id: int, db: Session = Depends(get_db)):
+    db_event = event_crud.get_event(db=db, event_id=event_id)
     if db_event is None:
         raise HTTPException(status_code=404, detail="Event not found")
     return db_event
@@ -52,20 +55,19 @@ def get_event(event_id: int, db: Session = Depends(get_db)):
 
 @router.get(
     "/",
-    response_model=list[schemas.EventOut],
+    response_model=list[EventOut],
     response_model_by_alias=False,
     summary="List all events",
     description="Return a paginated list of all events with their tags and fields.",
     responses={200: {"description": "List of events returned"}},
 )
-def get_events(db: Session = Depends(get_db)):
-    events = crud.get_events(db=db)
-    return events
+def list_events_route(db: Session = Depends(get_db)):
+    return event_crud.get_events(db=db)
 
 
 @router.put(
     "/{event_id}",
-    response_model=schemas.EventOut,
+    response_model=EventOut,
     summary="Update an existing event",
     description=(
         "Update an existing analytics event. "
@@ -78,16 +80,16 @@ def get_events(db: Session = Depends(get_db)):
         404: {"description": "Event not found"},
     },
 )
-def update_event(
-    event_id: int, event: schemas.EventCreate, db: Session = Depends(get_db)
+def update_event_route(
+    event_id: int, event: EventCreate, db: Session = Depends(get_db)
 ):
-    db_fields = crud.get_fields_by_ids(db, event.fields)
+    db_fields = get_fields_by_ids(db, event.fields)
 
     if len(db_fields) != len(event.fields):
         raise HTTPException(status_code=400, detail="One or more fields do not exist.")
 
-    _ = crud.get_or_create_tags(db, event.tags)
-    db_event = crud.update_event(db=db, event_id=event_id, event=event)
+    get_or_create_tags(db, event.tags)
+    db_event = event_crud.update_event(db=db, event_id=event_id, event=event)
     if db_event is None:
         raise HTTPException(status_code=404, detail="Event not found")
     return db_event
@@ -95,7 +97,7 @@ def update_event(
 
 @router.delete(
     "/{event_id}",
-    response_model=schemas.EventOut,
+    response_model=EventOut,
     summary="Delete an event",
     description="Delete an analytics event by ID.",
     responses={
@@ -103,8 +105,8 @@ def update_event(
         404: {"description": "Event not found"},
     },
 )
-def delete_event(event_id: int, db: Session = Depends(get_db)):
-    db_event = crud.delete_event(db=db, event_id=event_id)
+def delete_event_route(event_id: int, db: Session = Depends(get_db)):
+    db_event = event_crud.delete_event(db=db, event_id=event_id)
     if db_event is None:
         raise HTTPException(status_code=404, detail="Event not found")
     return db_event

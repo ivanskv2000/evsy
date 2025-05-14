@@ -4,7 +4,7 @@ from faker import Faker
 from sqlalchemy.orm import Session
 
 from app import models
-from app.schemas import LinkType
+from app.modules.events.schemas import LinkType
 
 faker = Faker()
 
