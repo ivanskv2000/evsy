@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.v1.routes import events, fields, generic, tags
+from app.api.v1.routes import admin, events, fields, generic, tags
 from app.settings import Settings
 
 
@@ -58,6 +58,7 @@ def create_app(settings: Settings) -> FastAPI:
     app.include_router(tags.router, prefix="/v1", tags=["tags"])
     app.include_router(fields.router, prefix="/v1", tags=["fields"])
     app.include_router(generic.router, prefix="/v1", tags=["generic"])
+    app.include_router(admin.router, prefix="/v1", tags=["admin"])
 
     @app.get("/")
     def read_root():
