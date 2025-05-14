@@ -43,10 +43,12 @@ const handleCopyTitle = async () => {
               <Tooltip>
                 <TooltipTrigger>
                   <CardTitle
-                    :class="cn(
-                      'cursor-pointer font-mono text-xl leading-tight tracking-wide',
-                      'truncate overflow-hidden whitespace-nowrap max-w-[12ch] sm:max-w-[36ch]'
-                      )"
+                    :class="
+                      cn(
+                        'cursor-pointer font-mono text-xl leading-tight tracking-wide',
+                        'max-w-[12ch] truncate overflow-hidden whitespace-nowrap sm:max-w-[36ch]'
+                      )
+                    "
                     @click="handleCopyTitle"
                   >
                     {{ title }}

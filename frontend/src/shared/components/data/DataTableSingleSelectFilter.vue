@@ -36,18 +36,15 @@ const selectedValue = computed(() => props.column?.getFilterValue() as string | 
           :disabled="disabled"
           variant="outline"
           :class="{
-            'justify-between border-dashed' : true,
-            'w-[18ch]' : selectedValue,
+            'justify-between border-dashed': true,
+            'w-[18ch]': selectedValue,
           }"
           :title="selectedValue"
         >
           <div class="flex items-center truncate">
             <Icon :icon="icon || 'radix-icons:plus-circled'" :class="cn('mr-2 h-4 w-4')" />
             {{ title }}
-            <div
-              v-if="selectedValue"
-              class="text-muted-foreground ml-2 truncate"
-            >
+            <div v-if="selectedValue" class="text-muted-foreground ml-2 truncate">
               / {{ selectedValue }}
             </div>
           </div>
