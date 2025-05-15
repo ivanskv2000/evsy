@@ -15,13 +15,18 @@ import ExportPanel from '../components/ExportPanel.vue'
   <div>
     <Header title="Switchboard" />
     <div class="container mx-auto">
-      <blockquote
+      <figure
         class="border-border text-foreground mb-12 max-w-prose border-l-2 pl-6 text-sm leading-relaxed italic sm:text-base"
       >
-        “We do not succeed in changing things in accordance with our desires, but gradually our desires change.”
-        <footer class="text-muted-foreground mt-2 text-xs not-italic">— Marcel Proust, <span class="italic">In Search of Lost Time</span></footer>
-      </blockquote>
-      <div class="space-y-6 mb-24">
+        <blockquote>
+          “We do not succeed in changing things in accordance with our desires, but gradually our
+          desires change.”
+        </blockquote>
+        <footer class="text-muted-foreground mt-3 text-xs not-italic">
+          — Marcel Proust, <span class="italic">In Search of Lost Time</span>
+        </footer>
+      </figure>
+      <div class="mb-24 space-y-12">
         <ResetPanel />
         <SeedPanel />
         <ExportPanel />

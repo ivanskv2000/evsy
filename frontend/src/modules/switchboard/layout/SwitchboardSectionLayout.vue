@@ -10,7 +10,7 @@ defineProps<{
 <template>
   <section class="space-y-3">
     <!-- Optional separator -->
-    <Separator v-if="withSeparator" class="mb-6 mt-12 opacity-50" />
+    <Separator v-if="withSeparator" class="mt-12 mb-6 opacity-50" />
 
     <!-- Header -->
     <div class="mb-6 flex items-center justify-between">

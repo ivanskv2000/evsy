@@ -6,6 +6,8 @@ import { Button } from '@/shared/ui/button'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { ResetPreview } from '../types'
+import { Badge } from '@/shared/ui/badge'
+import { Icon } from '@iconify/vue'
 
 const preview = ref<{ events: number; fields: number; tags: number } | null>(null)
 
@@ -41,22 +43,35 @@ onMounted(fetchPreview)
     :with-separator="true"
   >
     <template #default>
-      <div class="space-y-4">
-        <div v-if="preview" class="space-y-1 text-sm">
-          <p class="font-medium">Would delete:</p>
-          <ul class="ml-4 list-disc">
-            <li>{{ preview.events }} events</li>
-            <li>{{ preview.fields }} fields</li>
-            <li>{{ preview.tags }} tags</li>
-          </ul>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-4">
-          <Button variant="destructive" :disabled="isResetting" @click="handleReset">
-            Reset
-          </Button>
-          <Button variant="secondary" :disabled="isFetching" @click="fetchPreview">
-            Refresh preview
+      <div class="flex flex-wrap items-center gap-4">
+        <Button variant="destructive" :disabled="isResetting" @click="handleReset"> Reset </Button>
+        <div
+          v-if="preview"
+          class="text-muted-foreground flex flex-wrap items-center gap-2 text-xs transition-opacity duration-300"
+        >
+          <Badge variant="outline" class="font-mono text-center min-w-[14ch]">
+            <Transition name="fade-slide" mode="out-in">
+              <span :key="preview.events">{{ preview.events }} events</span>
+            </Transition>
+          </Badge>
+          <Badge variant="outline" class="font-mono text-center min-w-[14ch]">
+            <Transition name="fade-slide" mode="out-in">
+              <span :key="preview.fields">{{ preview.fields }} fields</span>
+            </Transition>
+          </Badge>
+          <Badge variant="outline" class="font-mono text-center min-w-[14ch]">
+            <Transition name="fade-slide" mode="out-in">
+              <span :key="preview.tags">{{ preview.tags }} tags</span>
+            </Transition>
+          </Badge>
+          <Button
+            variant="ghost"
+            size="icon"
+            :disabled="isFetching"
+            @click="fetchPreview"
+            title="Refresh counts"
+          >
+            <Icon icon="radix-icons:reload" class="h-4 w-4" />
           </Button>
         </div>
       </div>
