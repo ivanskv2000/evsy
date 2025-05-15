@@ -15,6 +15,7 @@ router = APIRouter(prefix="/seed", tags=["seed"])
     description="Run module-specific seeding functions to populate the database with test/demo data.",
     responses={
         201: {"description": "Seeding completed successfully"},
+        405: {"description": "Seeding not allowed on non-empty database"},
     },
 )
 def seed_data(db: Session = Depends(get_db)):

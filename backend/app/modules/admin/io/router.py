@@ -16,7 +16,7 @@ router = APIRouter(prefix="/io", tags=["io"])
     summary="Export all data",
     description=(
         "Export all tags, fields, and events as a single bundle. "
-        "Supports JSON (default), with future support for CSV, Markdown and zip."
+        "Supports JSON (default), with future support for CSV and Markdown."
     ),
     responses={
         200: {"description": "Export completed successfully"},

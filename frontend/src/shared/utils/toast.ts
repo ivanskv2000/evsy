@@ -11,10 +11,7 @@ export function useApiErrorToast() {
   return { showApiErrorToast }
 }
 
-export function useSuccessToast(
-  defaultTitle = 'Success',
-  defaultDescription = 'Saved successfully'
-) {
+export function useSuccessToast(defaultTitle = 'Success', defaultDescription = '') {
   function showSuccessToast(title?: string, description?: string) {
     toast.success(title || defaultTitle, {
       description: description || defaultDescription,

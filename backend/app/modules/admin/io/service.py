@@ -5,9 +5,11 @@ from sqlalchemy.orm import Session
 
 from app.modules.events.models import Event
 from app.modules.fields.models import Field
-from app.modules.tags.crud import get_or_create_tags
 from app.modules.tags.models import Tag
+from app.modules.tags.crud import get_or_create_tags
 from app.shared.models import EventField, EventTag
+
+from app.shared.service import assert_db_empty
 
 from .schemas import ExportBundle, ExportEvent, ExportField, ExportTag, ImportBundle
 
@@ -21,7 +23,6 @@ class ExportTarget(str, Enum):
     json = "json"
     csv = "csv"
     markdown = "markdown"
-    zip = "zip"
 
 
 def export_bundle(db: Session) -> ExportBundle:
@@ -65,18 +66,9 @@ def export_to(target: ExportTarget, db: Session) -> ExportBundle | str:
             status_code=501, detail="Markdown export is not implemented yet"
         )
 
-    elif target == ExportTarget.zip:
-        raise HTTPException(status_code=501, detail="ZIP export is not implemented yet")
-
     else:
         raise HTTPException(status_code=400, detail=f"Unknown export source: {target}")
 
-
-def assert_db_empty(db: Session):
-    if db.query(Event).first() or db.query(Field).first() or db.query(Tag).first():
-        raise HTTPException(
-            status_code=405, detail="Import is only allowed on empty database"
-        )
 
 
 def import_bundle(bundle: ImportBundle, db: Session):

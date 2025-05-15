@@ -8,7 +8,7 @@ export function useEnhancedToast() {
 
   return {
     // Success messages
-    showSuccess: (message: string) => showSuccessToast(message),
+    showSuccess: (message: string) => showSuccessToast(message, ''),
     showCreated: (entity: string) => showSuccessToast(`${entity} created successfully!`),
     showUpdated: (entity: string) => showSuccessToast(`${entity} updated successfully!`),
     showDeleted: (entity: string) => showSuccessToast(`${entity} deleted successfully!`),
