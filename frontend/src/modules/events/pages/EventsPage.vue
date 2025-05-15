@@ -113,7 +113,7 @@ onMounted(() => {
       :onClose="() => (showDeleteModal = false)"
       :onConfirm="handleDelete"
       :isDeleting="isDeleting"
-      description="Once deleted, this event will be unlinked from any events it's part of."
+      description="Once deleted, this event will be removed permanently."
     />
   </div>
 </template>
