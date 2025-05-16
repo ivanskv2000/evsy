@@ -22,6 +22,14 @@ It helps product teams, analysts, and developers structure and document all key 
 - Teams and organizations support;
 - SaaS hosting.
 
+## 🚀 Quick Start
+To run Evsy via Docker compose, do:
+1. `cp .env.example .env`
+2. `make up`
+
+### Alternative: deploy to Render
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ivanskv2000/evsy)
+
 ## ⚙️ Tech Stack
 - Backend: FastAPI + Pydantic + SQLAlchemy + Alembic
 - Frontend: Vue 3 + Vite + Shadcn
@@ -45,12 +53,6 @@ evsy/
 ├── Makefile              # Developer commands (e.g. `make up`)
 └── README.md             # Project overview
 ```
-
-## 🚀 Quick Start
-To run Evsy via Docker compose, do:
-1. `cp .env.example .env`
-2. `make up`
-
 
 ## 🤝 Contributing
 We welcome all kinds of contributions — from code to ideas, design suggestions, and bug reports.
