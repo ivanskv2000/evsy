@@ -5,10 +5,9 @@ from sqlalchemy.orm import Session
 
 from app.modules.events.models import Event
 from app.modules.fields.models import Field
-from app.modules.tags.models import Tag
 from app.modules.tags.crud import get_or_create_tags
+from app.modules.tags.models import Tag
 from app.shared.models import EventField, EventTag
-
 from app.shared.service import assert_db_empty
 
 from .schemas import ExportBundle, ExportEvent, ExportField, ExportTag, ImportBundle
@@ -68,7 +67,6 @@ def export_to(target: ExportTarget, db: Session) -> ExportBundle | str:
 
     else:
         raise HTTPException(status_code=400, detail=f"Unknown export source: {target}")
-
 
 
 def import_bundle(bundle: ImportBundle, db: Session):

@@ -7,7 +7,6 @@ import ExportPanel from '../components/ExportPanel.vue'
 import { useAppConfig } from '@/shared/composables/useAppConfig'
 
 const { isProd, isDev } = useAppConfig()
-
 </script>
 
 <template>
@@ -29,8 +28,8 @@ const { isProd, isDev } = useAppConfig()
       <div class="mb-24 space-y-12">
         <ResetPanel v-if="isDev || isProd" />
         <SeedPanel v-if="isDev" />
-        <ExportPanel/>
-        <ImportPanel v-if="isDev || isProd"/>
+        <ExportPanel />
+        <ImportPanel v-if="isDev || isProd" />
       </div>
     </div>
   </div>
