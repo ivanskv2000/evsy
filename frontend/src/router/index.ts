@@ -8,6 +8,11 @@ export const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', redirect: '/events' },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: () => import('@/shared/pages/NotFoundPage.vue'),
+    },
     ...eventsRoutes,
     ...fieldsRoutes,
     ...tagsRoutes,
