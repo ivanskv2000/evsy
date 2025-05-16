@@ -4,11 +4,10 @@ import ResetPanel from '../components/ResetPanel.vue'
 import SeedPanel from '../components/SeedPanel.vue'
 import ImportPanel from '../components/ImportPanel.vue'
 import ExportPanel from '../components/ExportPanel.vue'
+import { useAppConfig } from '@/shared/composables/useAppConfig'
 
-//   import { useAppConfig } from '@/shared/composables/useAppConfig'
+const { isProd, isDev } = useAppConfig()
 
-//   const { environment } = useAppConfig()
-//   const isDevOrDemo = ['development', 'demo'].includes(environment)
 </script>
 
 <template>
@@ -26,11 +25,12 @@ import ExportPanel from '../components/ExportPanel.vue'
           — Marcel Proust, <span class="italic">In Search of Lost Time</span>
         </footer>
       </figure>
+
       <div class="mb-24 space-y-12">
-        <ResetPanel />
-        <SeedPanel />
-        <ExportPanel />
-        <ImportPanel />
+        <ResetPanel v-if="isDev || isProd" />
+        <SeedPanel v-if="isDev" />
+        <ExportPanel/>
+        <ImportPanel v-if="isDev || isProd"/>
       </div>
     </div>
   </div>

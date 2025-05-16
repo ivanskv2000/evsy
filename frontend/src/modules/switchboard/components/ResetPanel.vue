@@ -49,17 +49,17 @@ onMounted(fetchPreview)
           v-if="preview"
           class="text-muted-foreground flex flex-wrap items-center gap-2 text-xs transition-opacity duration-300"
         >
-          <Badge variant="outline" class="font-mono text-center min-w-[14ch]">
+          <Badge variant="outline" class="min-w-[14ch] text-center font-mono">
             <Transition name="fade-slide" mode="out-in">
               <span :key="preview.events">{{ preview.events }} events</span>
             </Transition>
           </Badge>
-          <Badge variant="outline" class="font-mono text-center min-w-[14ch]">
+          <Badge variant="outline" class="min-w-[14ch] text-center font-mono">
             <Transition name="fade-slide" mode="out-in">
               <span :key="preview.fields">{{ preview.fields }} fields</span>
             </Transition>
           </Badge>
-          <Badge variant="outline" class="font-mono text-center min-w-[14ch]">
+          <Badge variant="outline" class="min-w-[14ch] text-center font-mono">
             <Transition name="fade-slide" mode="out-in">
               <span :key="preview.tags">{{ preview.tags }} tags</span>
             </Transition>

@@ -36,8 +36,10 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
   <Popover>
     <PopoverTrigger as-child>
       <Button variant="outline" class="border-dashed">
-        <Icon :icon="icon || 'radix-icons:plus-circled'" :class="cn('mr-2 h-4 w-4')" />
-        {{ title }}
+        <div class="flex items-center truncate">
+          <Icon :icon="icon || 'radix-icons:plus-circled'" :class="cn('mr-2 h-4 w-4')" />
+          {{ title }}
+        </div>
         <template v-if="selectedValues.size > 0">
           <Separator orientation="vertical" class="mx-2 h-4" />
           <Badge variant="secondary" class="rounded-sm px-1 font-normal lg:hidden">
