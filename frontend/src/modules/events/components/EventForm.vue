@@ -28,13 +28,12 @@ import {
   ComboboxItem,
   ComboboxList,
 } from '@/shared/ui/combobox'
-import { ComboboxInput } from 'reka-ui'
+import { ComboboxInput, useFilter } from 'reka-ui'
 import type { Event } from '@/modules/events/types'
 import type { Field } from '@/modules/fields/types'
 import type { Tag } from '@/modules/tags/types'
 import { computed, ref, watchEffect } from 'vue'
 import { eventSchema, type EventFormValues } from '@/modules/events/validation/eventSchema'
-import { useFilter } from 'reka-ui'
 import Skeleton from '@/shared/ui/skeleton/Skeleton.vue'
 import LinkedFieldsSelector from '@/modules/fields/components/LinkedFieldsSelector.vue'
 

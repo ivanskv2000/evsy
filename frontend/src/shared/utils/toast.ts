@@ -13,8 +13,8 @@ export function useApiErrorToast() {
 
 export function useSuccessToast(defaultTitle = 'Success', defaultDescription = '') {
   function showSuccessToast(title?: string, description?: string) {
-    toast.success(title || defaultTitle, {
-      description: description || defaultDescription,
+    toast.success(title ?? defaultTitle, {
+      description: description ?? defaultDescription,
       duration: 3000,
     })
   }

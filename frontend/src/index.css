@@ -250,10 +250,6 @@
     @apply bg-background text-foreground flex min-h-screen justify-center;
   }
 
-  /* main {
-    @apply text-center
-  } */
-
   #app {
     @apply mx-auto w-full max-w-screen-md flex-1 px-4;
   }
