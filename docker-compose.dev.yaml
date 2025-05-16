@@ -20,6 +20,9 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
+      args:
+          VITE_API_URL: ${VITE_API_URL}
+          VITE_ENV: ${VITE_ENV}
     volumes:
       - ./frontend:/app
       - /app/node_modules

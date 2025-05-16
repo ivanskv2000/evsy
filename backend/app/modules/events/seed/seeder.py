@@ -3,8 +3,10 @@ import random
 from faker import Faker
 from sqlalchemy.orm import Session
 
-from app import models
-from app.schemas import LinkType
+from app.modules.events.models import Event, EventField, EventTag
+from app.modules.events.schemas import LinkType
+from app.modules.fields.models import Field
+from app.modules.tags.models import Tag
 
 faker = Faker()
 
@@ -122,9 +124,9 @@ def generate_event_link():
     }
 
 
-def seed_events(db: Session, count: int = 10):
-    tags = db.query(models.Tag).all()
-    fields = db.query(models.Field).all()
+def seed(db: Session, count: int = 10):
+    tags = db.query(Tag).all()
+    fields = db.query(Field).all()
 
     if not tags or not fields:
         print("⚠️ No tags or fields available. Please seed them first.")
@@ -140,7 +142,7 @@ def seed_events(db: Session, count: int = 10):
 
         links = [generate_event_link() for _ in range(random.randint(0, 4))]
 
-        event = models.Event(
+        event = Event(
             name=name,
             description=generate_event_description(),
             links=links,
@@ -151,11 +153,11 @@ def seed_events(db: Session, count: int = 10):
 
         # Attach 0–2 random tags
         for tag in random.sample(tags, k=random.randint(0, min(2, len(tags)))):
-            db.add(models.EventTag(event_id=event.id, tag_id=tag.id))
+            db.add(EventTag(event_id=event.id, tag_id=tag.id))
 
         # Attach 1–6 random fields
         for field in random.sample(fields, k=random.randint(1, min(6, len(fields)))):
-            db.add(models.EventField(event_id=event.id, field_id=field.id))
+            db.add(EventField(event_id=event.id, field_id=field.id))
 
         db.commit()
 

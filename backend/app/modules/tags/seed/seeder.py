@@ -3,7 +3,7 @@ import random
 from faker import Faker
 from sqlalchemy.orm import Session
 
-from app import models
+from app.modules.tags.models import Tag
 
 fake = Faker()
 
@@ -90,14 +90,14 @@ def generate_tag_description():
     )
 
 
-def seed_tags(db: Session, count: int = 10):
+def seed(db: Session, count: int = 10):
     existing_names = set()
 
     for _ in range(count):
         name = generate_tag_name(existing_names)
         existing_names.add(name)
 
-        db_tag = models.Tag(
+        db_tag = Tag(
             id=name,
             description=generate_tag_description(),
         )

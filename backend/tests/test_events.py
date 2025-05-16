@@ -1,6 +1,6 @@
 import pytest
 
-from app.schemas import EventCreate
+from app.modules.events.schemas import EventCreate
 
 
 @pytest.fixture

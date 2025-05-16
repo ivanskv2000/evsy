@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, Response
 
 from app.api.deps import get_settings
-from app.schemas import FieldType, LinkType
+from app.modules.events.schemas import LinkType
+from app.modules.fields.schemas import FieldType
 from app.settings import Settings
 
 router = APIRouter()

@@ -2,7 +2,7 @@ import sys
 
 from pydantic import ValidationError
 
-from app.database.database import init_db
+from app.core.database import init_db
 from app.factory import create_app
 from app.settings import Settings
 

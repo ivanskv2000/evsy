@@ -64,6 +64,15 @@ const isDropdownOpen = ref(false)
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem as-child>
+            <RouterLink to="/switchboard" class="flex items-center">
+              <Icon icon="radix-icons:mixer-horizontal" class="mr-2 h-4 w-4" />
+              <span>Switchboard</span>
+            </RouterLink>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem as-child>
             <a
               href="https://github.com/ivanskv2000/evsy"
               target="_blank"

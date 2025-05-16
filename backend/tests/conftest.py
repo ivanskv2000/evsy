@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from app.database.database import Base, get_db, init_db
+from app.core.database import Base, get_db, init_db
 from app.factory import create_app
 from app.settings import Settings
 

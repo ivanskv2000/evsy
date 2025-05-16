@@ -1,6 +1,6 @@
 import pytest
 
-from app.schemas import TagCreate
+from app.modules.tags.schemas import TagCreate
 
 
 @pytest.fixture
