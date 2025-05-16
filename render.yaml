@@ -20,10 +20,7 @@ services:
           name: evsy-db
           property: connectionString
       - key: FRONTEND_URL
-        fromService:
-          type: web
-          name: evsy
-          property: serviceUrl
+        value: ""
 
   # FRONTEND
   - name: evsy
@@ -37,14 +34,8 @@ services:
       - key: VITE_ENV
         value: demo
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: evsy-backend
-          property: serviceUrl
+        value: ""
       - key: __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS
-        fromService:
-          type: web
-          name: evsy
-          property: serviceUrl
+        value: ""
       - key: VITE_LOG_LEVEL
         value: error
