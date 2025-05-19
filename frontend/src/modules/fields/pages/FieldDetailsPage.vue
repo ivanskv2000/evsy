@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { defineAsyncComponent, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { Field } from '@/modules/fields/types'
 import FieldDetailsCard from '@/modules/fields/components/FieldDetailsCard.vue'
@@ -8,9 +8,12 @@ import Header from '@/shared/components/layout/PageHeader.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
-import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
-import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import DetailsCardSkeleton from '@/shared/components/skeletons/DetailsCardSkeleton.vue'
+
+const DeleteModal = defineAsyncComponent(() => import('@/shared/components/modals/DeleteModal.vue'))
+const FieldEditModal = defineAsyncComponent(
+  () => import('@/modules/fields/components/FieldEditModal.vue')
+)
 
 const route = useRoute()
 const router = useRouter()
