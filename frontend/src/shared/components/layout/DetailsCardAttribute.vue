@@ -13,8 +13,11 @@ const attrs = useAttrs()
 </script>
 
 <template>
-  <div :class="cn('flex flex-wrap items-center gap-1', attrs.class as string | undefined)" v-bind="attrs">
-    <div class="flex items-center gap-1">
+  <div
+    :class="cn('flex flex-wrap items-center gap-1', attrs.class as string | undefined)"
+    v-bind="attrs"
+  >
+    <div class="mr-2 flex items-center gap-1">
       <Icon :icon="props.icon" class="h-4 w-4" />
       <span>{{ props.label }}:</span>
     </div>

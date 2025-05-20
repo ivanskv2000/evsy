@@ -24,6 +24,8 @@ class EventLink(BaseModel):
     url: str
     label: Optional[str] = None
 
+    model_config = ConfigDict(exclude_none=False)
+
 
 class EventBase(BaseModel):
     name: str

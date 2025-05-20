@@ -39,9 +39,7 @@ def update_field(db: Session, field_id: int, field: schemas.FieldCreate):
 def delete_field(db: Session, field_id: int):
     db_field = db.query(models.Field).filter(models.Field.id == field_id).first()
     if db_field:
-        db.query(models.EventField).filter(
-            EventField.field_id == field_id
-        ).delete()
+        db.query(EventField).filter(EventField.field_id == field_id).delete()
         db.delete(db_field)
         db.commit()
         return db_field
