@@ -18,7 +18,7 @@ const { isDemo, isDev } = useAppConfig()
           <NavigationMenu />
         </div>
         <div class="flex flex-1 items-center justify-end space-x-2">
-          <div v-if="isDev || isDemo" class="font-mono text-sm font-semibold text-muted-foreground">
+          <div v-if="isDev || isDemo" class="text-muted-foreground font-mono text-sm font-semibold">
             {{ isDev ? 'DEV' : 'DEMO' }}
           </div>
           <DropdownMenu />
