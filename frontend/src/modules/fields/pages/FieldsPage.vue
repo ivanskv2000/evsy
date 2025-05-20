@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineAsyncComponent } from 'vue'
 import { fieldApi } from '@/modules/fields/api'
 import type { Field } from '@/modules/fields/types'
 import FieldsDataTable from '@/modules/fields/components/FieldsDataTable.vue'
@@ -8,8 +8,11 @@ import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { getFieldColumns } from '@/modules/fields/components/fieldColumns'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
-import FieldEditModal from '@/modules/fields/components/FieldEditModal.vue'
-import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
+
+const DeleteModal = defineAsyncComponent(() => import('@/shared/components/modals/DeleteModal.vue'))
+const FieldEditModal = defineAsyncComponent(
+  () => import('@/modules/fields/components/FieldEditModal.vue')
+)
 
 const { run, isLoading } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()

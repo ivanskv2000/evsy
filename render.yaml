@@ -1,0 +1,41 @@
+databases:
+  - name: evsy-db
+    plan: free
+    region: frankfurt
+
+services:
+  # BACKEND
+  - name: evsy-backend
+    type: web
+    env: docker
+    rootDir: backend
+    plan: free
+    autoDeploy: true
+    region: frankfurt
+    envVars:
+      - key: ENV
+        value: prod
+      - key: DATABASE_URL
+        fromDatabase:
+          name: evsy-db
+          property: connectionString
+      - key: FRONTEND_URL
+        value: ""
+
+  # FRONTEND
+  - name: evsy
+    type: web
+    env: docker
+    rootDir: frontend
+    plan: free
+    autoDeploy: true
+    region: frankfurt
+    envVars:
+      - key: VITE_ENV
+        value: demo
+      - key: VITE_API_URL
+        value: ""
+      - key: __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS
+        value: ""
+      - key: VITE_LOG_LEVEL
+        value: error

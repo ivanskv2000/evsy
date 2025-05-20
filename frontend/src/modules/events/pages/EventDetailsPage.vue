@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { defineAsyncComponent, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { Event } from '@/modules/events/types'
 import EventDetailsCard from '@/modules/events/components/EventDetailsCard.vue'
-import EventEditModal from '@/modules/events/components/EventEditModal.vue'
-import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
 import { eventApi } from '@/modules/events/api'
 import Header from '@/shared/components/layout/PageHeader.vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { EventFormValues } from '@/modules/events/validation/eventSchema'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import DetailsCardSkeleton from '@/shared/components/skeletons/DetailsCardSkeleton.vue'
+
+const DeleteModal = defineAsyncComponent(() => import('@/shared/components/modals/DeleteModal.vue'))
+const EventEditModal = defineAsyncComponent(
+  () => import('@/modules/events/components/EventEditModal.vue')
+)
 
 const route = useRoute()
 const router = useRouter()

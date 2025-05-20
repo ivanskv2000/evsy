@@ -3,6 +3,9 @@ import MainLogo from '@/shared/components/layout/MainLogo.vue'
 import NavigationMenu from '@/shared/components/layout/NavigationMenu.vue'
 import DropdownMenu from '@/shared/components/layout/DropdownMenu.vue'
 import LoveFooter from './LoveFooter.vue'
+import { useAppConfig } from '@/shared/composables/useAppConfig'
+
+const { isDemo, isDev } = useAppConfig()
 </script>
 
 <template>
@@ -15,6 +18,9 @@ import LoveFooter from './LoveFooter.vue'
           <NavigationMenu />
         </div>
         <div class="flex flex-1 items-center justify-end space-x-2">
+          <div v-if="isDev || isDemo" class="text-muted-foreground font-mono text-sm font-semibold">
+            {{ isDev ? 'DEV' : 'DEMO' }}
+          </div>
           <DropdownMenu />
         </div>
       </div>

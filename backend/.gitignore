@@ -12,9 +12,6 @@ venv/
 # Alembic
 migrations/versions/
 
-# Poetry
-poetry.lock
-
 # Database files
 *.sqlite3
 *.db

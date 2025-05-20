@@ -2,10 +2,8 @@
 import TagItem from '../components/TagItem.vue'
 import { tagApi } from '@/modules/tags/api'
 import type { Tag } from '@/modules/tags/types'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, defineAsyncComponent } from 'vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
-import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
-import TagEditModal from '@/modules/tags/components/TagEditModal.vue'
 import type { TagFormValues } from '@/modules/tags/validation/tagSchema'
 import Header from '@/shared/components/layout/PageHeader.vue'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
@@ -13,6 +11,11 @@ import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
 import { Icon } from '@iconify/vue'
 import ItemSkeleton from '@/shared/components/skeletons/ItemSkeleton.vue'
+
+const DeleteModal = defineAsyncComponent(() => import('@/shared/components/modals/DeleteModal.vue'))
+const TagEditModal = defineAsyncComponent(
+  () => import('@/modules/tags/components/TagEditModal.vue')
+)
 
 const { showUpdated, showDeleted } = useEnhancedToast()
 

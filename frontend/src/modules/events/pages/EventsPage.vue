@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineAsyncComponent } from 'vue'
 import { eventApi } from '@/modules/events/api'
 import { tagApi } from '@/modules/tags/api'
 import type { Event } from '@/modules/events/types'
@@ -10,8 +10,11 @@ import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { getEventColumns } from '@/modules/events/components/eventColumns'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import type { EventFormValues } from '@/modules/events/validation/eventSchema'
-import EventEditModal from '@/modules/events/components/EventEditModal.vue'
-import DeleteModal from '@/shared/components/modals/DeleteModal.vue'
+
+const DeleteModal = defineAsyncComponent(() => import('@/shared/components/modals/DeleteModal.vue'))
+const EventEditModal = defineAsyncComponent(
+  () => import('@/modules/events/components/EventEditModal.vue')
+)
 
 const { run, isLoading } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
