@@ -1,6 +1,8 @@
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
+from app.shared.models import EventField
+
 from . import models, schemas
 
 
@@ -38,7 +40,7 @@ def delete_field(db: Session, field_id: int):
     db_field = db.query(models.Field).filter(models.Field.id == field_id).first()
     if db_field:
         db.query(models.EventField).filter(
-            models.EventField.field_id == field_id
+            EventField.field_id == field_id
         ).delete()
         db.delete(db_field)
         db.commit()
@@ -48,8 +50,8 @@ def delete_field(db: Session, field_id: int):
 
 def get_field_event_count(db: Session, field_id: int):
     return (
-        db.query(func.count(models.EventField.event_id))
-        .filter(models.EventField.field_id == field_id)
+        db.query(func.count(EventField.event_id))
+        .filter(EventField.field_id == field_id)
         .scalar()
     )
 

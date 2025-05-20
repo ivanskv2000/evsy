@@ -7,7 +7,7 @@ const fallbackExamples: Record<FieldType, JsonValue> = {
   [FieldType.STRING]: '',
   [FieldType.INTEGER]: 0,
   [FieldType.NUMBER]: 0.0,
-  [FieldType.BOOLEAN]: false,
+  [FieldType.BOOLEAN]: true,
   [FieldType.ARRAY]: [],
   [FieldType.OBJECT]: {},
 }

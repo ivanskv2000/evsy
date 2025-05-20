@@ -13,6 +13,7 @@ const props = defineProps<{
 
 function getJsonPreview(value: JsonValue, maxKeys = 2): string {
   if (value === null) return 'null'
+  if (typeof value === 'number') return JSON.stringify(value.toFixed(1))
   if (typeof value !== 'object') return JSON.stringify(value)
   if (Array.isArray(value)) {
     const preview = value

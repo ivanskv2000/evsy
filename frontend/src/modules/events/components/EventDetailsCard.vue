@@ -75,7 +75,7 @@ const columns = getEventFieldsColumns()
         </DetailsCardAttribute>
 
         <!-- Example -->
-        <DetailsCardAttribute icon="radix-icons:file-text" label="Example">
+        <DetailsCardAttribute class="hidden sm:inline-flex" icon="radix-icons:file-text" label="Example">
           <template #value>
             <JsonPreview :value="eventExample" />
           </template>
