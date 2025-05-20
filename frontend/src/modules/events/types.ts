@@ -5,6 +5,7 @@ export enum EventLinkType {
   Figma = 'figma',
   Miro = 'miro',
   Confluence = 'confluence',
+  Jira = 'jira',
   Notion = 'notion',
   Loom = 'loom',
   Slack = 'slack',

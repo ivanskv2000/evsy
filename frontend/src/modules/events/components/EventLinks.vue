@@ -10,10 +10,11 @@ const iconMap: Record<string, string> = {
   figma: 'simple-icons:figma',
   miro: 'simple-icons:miro',
   confluence: 'simple-icons:confluence',
+  jira: 'simple-icons:jira',
   notion: 'simple-icons:notion',
   loom: 'simple-icons:loom',
   slack: 'simple-icons:slack',
-  google: 'simple-icons:google',
+  google: 'simple-icons:googledrive',
   other: 'radix-icons:external-link',
 }
 

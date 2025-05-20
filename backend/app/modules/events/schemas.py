@@ -12,6 +12,7 @@ class LinkType(str, Enum):
     figma = "figma"
     miro = "miro"
     confluence = "confluence"
+    jira = "jira"
     notion = "notion"
     loom = "loom"
     slack = "slack"
