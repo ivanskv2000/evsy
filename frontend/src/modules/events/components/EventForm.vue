@@ -36,6 +36,7 @@ import { computed, ref, watchEffect } from 'vue'
 import { eventSchema, type EventFormValues } from '@/modules/events/validation/eventSchema'
 import Skeleton from '@/shared/ui/skeleton/Skeleton.vue'
 import LinkedFieldsSelector from '@/modules/fields/components/LinkedFieldsSelector.vue'
+import EventLinksFormField from '@/modules/events/components/EventLinksFormField.vue'
 
 const props = defineProps<{
   event?: Event
@@ -71,6 +72,11 @@ watchEffect(() => {
       description: props.event.description ?? '',
       fields: props.event.fields?.map(f => f.id) ?? [],
       tags: props.event.tags?.map(t => t.id) ?? [],
+      links:
+        props.event.links?.map(link => ({
+          ...link,
+          label: link.label ?? '',
+        })) ?? [],
     })
   }
 })
@@ -234,6 +240,20 @@ function removeTag(tagId: string) {
             :selected-ids="values.fields"
             :is-loading="isLoadingFields"
             @toggle="toggleFieldSelection"
+          />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    </FormField>
+
+    <!-- Links -->
+    <FormField name="links" v-slot="{ componentField }">
+      <FormItem>
+        <FormLabel>External Links</FormLabel>
+        <FormControl>
+          <EventLinksFormField
+            :model-value="componentField.modelValue"
+            @update:model-value="componentField.onChange"
           />
         </FormControl>
         <FormMessage />

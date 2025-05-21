@@ -12,12 +12,13 @@ import DetailsCardAttribute from '@/shared/components/layout/DetailsCardAttribut
 import { getEventFieldsColumns } from '@/modules/events/components/eventFieldsColumns'
 import TagScrollArea from '@/modules/tags/components/TagScrollArea.vue'
 import { useEventExample } from '@/modules/events/composables/useEventExample'
+import EventLinks from '@/modules/events/components/EventLinks.vue'
 
 const props = defineProps<{
   event: Event
 }>()
 
-const eventExample = useEventExample(props.event)
+const eventExample = useEventExample(props.event.fields)
 
 const emit = defineEmits<{
   (e: 'edit'): void
@@ -61,7 +62,7 @@ const columns = getEventFieldsColumns()
         <!-- Tags -->
         <DetailsCardAttribute v-if="event.tags.length > 0" icon="ph:tag" label="Tags">
           <template #value>
-            <TagScrollArea class="max-w-lg">
+            <TagScrollArea class="-ml-2 max-w-lg">
               <Badge
                 v-for="tag in event.tags"
                 :key="tag.id"
@@ -75,9 +76,21 @@ const columns = getEventFieldsColumns()
         </DetailsCardAttribute>
 
         <!-- Example -->
-        <DetailsCardAttribute icon="radix-icons:file-text" label="Example">
+        <DetailsCardAttribute class="hidden sm:flex" icon="radix-icons:file-text" label="Example">
           <template #value>
             <JsonPreview :value="eventExample" />
+          </template>
+        </DetailsCardAttribute>
+
+        <!-- Links -->
+        <DetailsCardAttribute
+          v-if="event.links && event.links.length > 0"
+          class="hidden sm:flex"
+          icon="radix-icons:link-2"
+          label="Links"
+        >
+          <template #value>
+            <EventLinks :links="event.links" />
           </template>
         </DetailsCardAttribute>
       </template>

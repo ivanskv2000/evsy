@@ -9,11 +9,21 @@ import type { JsonValue } from '@/modules/fields/types'
 const props = defineProps<{
   value: JsonValue
   maxKeys?: number
+  maxChars?: number
 }>()
+
+const maxChars = computed(() => props.maxChars ?? 60)
 
 function getJsonPreview(value: JsonValue, maxKeys = 2): string {
   if (value === null) return 'null'
+
+  if (typeof value === 'number') {
+    const rounded = Number.isInteger(value) ? value : Math.round(value * 10) / 10
+    return JSON.stringify(rounded)
+  }
+
   if (typeof value !== 'object') return JSON.stringify(value)
+
   if (Array.isArray(value)) {
     const preview = value
       .slice(0, maxKeys)
@@ -37,6 +47,11 @@ function getJsonPreview(value: JsonValue, maxKeys = 2): string {
 }
 
 const shortPreview = computed(() => getJsonPreview(props.value, props.maxKeys))
+const truncatedPreview = computed(() => {
+  const raw = shortPreview.value
+  return raw.length > maxChars.value ? raw.slice(0, maxChars.value - 1) + '...' : raw
+})
+
 const prettyJson = computed(() => JSON.stringify(props.value, null, 2))
 const isShort = computed(() => shortPreview.value === prettyJson.value)
 
@@ -57,7 +72,7 @@ const handleCopyJson = async () => {
   <TooltipProvider :delay-duration="200">
     <Tooltip>
       <TooltipTrigger>
-        <div class="font-mono">{{ shortPreview }}</div>
+        <div class="font-mono">{{ truncatedPreview }}</div>
       </TooltipTrigger>
       <TooltipContent
         v-if="!isShort"

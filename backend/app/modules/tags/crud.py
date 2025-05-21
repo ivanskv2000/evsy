@@ -1,5 +1,7 @@
 from sqlalchemy.orm import Session
 
+from app.shared.models import EventTag
+
 from . import models, schemas
 
 
@@ -34,7 +36,7 @@ def update_tag(db: Session, tag_id: str, tag: schemas.TagCreate):
 def delete_tag(db: Session, tag_id: str):
     db_tag = db.query(models.Tag).filter(models.Tag.id == tag_id).first()
     if db_tag:
-        db.query(models.EventTag).filter(models.EventTag.tag_id == tag_id).delete()
+        db.query(EventTag).filter(EventTag.tag_id == tag_id).delete()
         db.delete(db_tag)
         db.commit()
         return db_tag

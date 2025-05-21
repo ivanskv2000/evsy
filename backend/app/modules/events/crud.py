@@ -5,7 +5,11 @@ from . import models, schemas
 
 
 def create_event(db: Session, event: schemas.EventCreate):
-    db_event = models.Event(name=event.name, description=event.description)
+    db_event = models.Event(
+        name=event.name,
+        description=event.description,
+        links=[link.model_dump() for link in event.links] if event.links else [],
+    )
     db.add(db_event)
     db.commit()
     db.refresh(db_event)
@@ -44,6 +48,7 @@ def update_event(db: Session, event_id: int, event: schemas.EventCreate):
 
     db_event.name = event.name
     db_event.description = event.description
+    db_event.links = [link.model_dump() for link in event.links] if event.links else []
 
     if event.tags is not None:
         db.query(models.EventTag).filter(

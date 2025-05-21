@@ -39,6 +39,7 @@ def create_event_route(event: EventCreate, db: Session = Depends(get_db)):
 @router.get(
     "/{event_id}",
     response_model=EventOut,
+    response_model_exclude_none=True,
     summary="Get event by ID",
     description="Return a single event by its ID. Includes tags and fields.",
     responses={

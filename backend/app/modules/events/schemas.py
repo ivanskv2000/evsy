@@ -12,6 +12,7 @@ class LinkType(str, Enum):
     figma = "figma"
     miro = "miro"
     confluence = "confluence"
+    jira = "jira"
     notion = "notion"
     loom = "loom"
     slack = "slack"
@@ -23,6 +24,8 @@ class EventLink(BaseModel):
     type: LinkType
     url: str
     label: Optional[str] = None
+
+    model_config = ConfigDict(exclude_none=False)
 
 
 class EventBase(BaseModel):

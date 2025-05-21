@@ -1,4 +1,11 @@
 import { z } from 'zod'
+import { EventLinkType } from '../types'
+
+const linkSchema = z.object({
+  type: z.nativeEnum(EventLinkType),
+  url: z.string(),
+  label: z.string().optional().nullable(),
+})
 
 export const eventSchema = z.object({
   name: z
@@ -15,6 +22,30 @@ export const eventSchema = z.object({
   fields: z.array(z.number()).optional().default([]),
 
   tags: z.array(z.string()).optional().default([]),
+
+  links: z
+    .array(linkSchema)
+    .transform(links => links.filter(link => link.url.trim() !== ''))
+    .superRefine((links, ctx) => {
+      links.forEach((link, index) => {
+        if (!link.url || link.url.trim() === '') {
+          // skip: allow temporarily empty on creation
+          return
+        }
+
+        try {
+          new URL(link.url)
+        } catch {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Must be a valid URL',
+            path: [index, 'url'],
+          })
+        }
+      })
+    })
+    .optional()
+    .default([]),
 })
 
 export type EventFormValues = z.infer<typeof eventSchema>
