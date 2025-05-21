@@ -50,6 +50,9 @@ const columns = getEventFieldsColumns()
       </template>
 
       <template #actions>
+        <Button size="icon" variant="ghost">
+          <Icon icon="radix-icons:share-1" class="h-4 w-4" />
+        </Button>
         <Button size="icon" variant="ghost" @click="emit('edit')">
           <Icon icon="radix-icons:pencil-2" class="h-4 w-4" />
         </Button>
