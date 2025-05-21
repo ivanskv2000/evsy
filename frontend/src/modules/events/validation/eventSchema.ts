@@ -1,6 +1,12 @@
 import { z } from 'zod'
 import { EventLinkType } from '../types'
 
+const linkSchema = z.object({
+  type: z.nativeEnum(EventLinkType),
+  url: z.string(),
+  label: z.string().optional().nullable(),
+})
+
 export const eventSchema = z.object({
   name: z
     .string()
@@ -18,12 +24,9 @@ export const eventSchema = z.object({
   tags: z.array(z.string()).optional().default([]),
 
   links: z
-    .array(
-      z.object({
-        type: z.nativeEnum(EventLinkType),
-        url: z.string(),
-        label: z.string().optional().nullable(),
-      })
+    .array(linkSchema)
+    .transform(links =>
+      links.filter(link => link.url.trim() !== '') // 👈 remove empty links
     )
     .superRefine((links, ctx) => {
       links.forEach((link, index) => {

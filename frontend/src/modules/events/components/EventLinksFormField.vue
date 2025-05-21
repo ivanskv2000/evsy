@@ -72,6 +72,7 @@ function removeLink(index: number) {
 
       <!-- Remove -->
       <Button
+        type="button"
         variant="ghost"
         size="icon"
         class="text-muted-foreground hover:text-destructive h-8 w-8 shrink-0"

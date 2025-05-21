@@ -42,7 +42,7 @@ onMounted(() => {
 
 <template>
   <Dialog :open="open" @update:open="onClose">
-    <DialogContent>
+    <DialogContent class="max-h-[80vh] overflow-y-auto">
       <DialogHeader>
         <DialogTitle>Edit Event</DialogTitle>
         <DialogDescription v-if="description">
