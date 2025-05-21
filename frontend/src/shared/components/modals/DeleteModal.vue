@@ -23,7 +23,7 @@ defineProps<{
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Are you sure?</DialogTitle>
-        <DialogDescription v-if="description">
+        <DialogDescription>
           {{ description }}
         </DialogDescription>
       </DialogHeader>

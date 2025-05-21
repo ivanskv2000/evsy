@@ -45,7 +45,7 @@ onMounted(() => {
     <DialogContent class="max-h-[80vh] overflow-y-auto">
       <DialogHeader>
         <DialogTitle>Edit Event</DialogTitle>
-        <DialogDescription v-if="description">
+        <DialogDescription>
           {{ description }}
         </DialogDescription>
       </DialogHeader>

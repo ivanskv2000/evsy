@@ -25,7 +25,7 @@ defineProps<{
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Edit Field</DialogTitle>
-        <DialogDescription v-if="description">
+        <DialogDescription>
           {{ description }}
         </DialogDescription>
       </DialogHeader>
