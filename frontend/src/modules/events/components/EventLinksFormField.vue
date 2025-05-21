@@ -38,7 +38,7 @@ function removeLink(index: number) {
     <div
       v-for="(link, i) in modelValue"
       :key="i"
-      class="grid grid-cols-[auto_1fr_1fr_auto] items-center gap-2"
+      class="grid grid-cols-[auto_2fr_1fr_auto] items-center gap-2"
     >
       <!-- Link Type -->
       <Select
@@ -65,7 +65,7 @@ function removeLink(index: number) {
 
       <!-- Label -->
       <Input
-        placeholder="Label (optional)"
+        placeholder="Label"
         :model-value="link.label"
         @update:model-value="val => update(i, { label: String(val) })"
       />
