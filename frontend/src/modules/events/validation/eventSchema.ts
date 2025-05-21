@@ -25,8 +25,8 @@ export const eventSchema = z.object({
 
   links: z
     .array(linkSchema)
-    .transform(links =>
-      links.filter(link => link.url.trim() !== '') // 👈 remove empty links
+    .transform(
+      links => links.filter(link => link.url.trim() !== '') // 👈 remove empty links
     )
     .superRefine((links, ctx) => {
       links.forEach((link, index) => {
