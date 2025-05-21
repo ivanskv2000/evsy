@@ -84,13 +84,13 @@ const columns = getEventFieldsColumns()
 
         <!-- Links -->
         <DetailsCardAttribute
-          v-if="event.links"
+          v-if="event.links && event.links.length > 0"
           class="hidden sm:flex"
           icon="radix-icons:link-2"
           label="Links"
         >
           <template #value>
-            <EventLinks v-if="event.links" :links="event.links" />
+            <EventLinks :links="event.links" />
           </template>
         </DetailsCardAttribute>
       </template>
