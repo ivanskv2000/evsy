@@ -1,9 +1,19 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+import yaml
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Query,
+    Response,
+    status,
+)
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.modules.events import crud as event_crud
 from app.modules.events.schemas import EventCreate, EventOut
+from app.modules.events.service import generate_json_schema_for_event
 from app.modules.fields.crud import get_fields_by_ids
 from app.modules.tags.crud import get_or_create_tags
 
@@ -111,3 +121,48 @@ def delete_event_route(event_id: int, db: Session = Depends(get_db)):
     if db_event is None:
         raise HTTPException(status_code=404, detail="Event not found")
     return db_event
+
+
+@router.get("/events/{event_id}/schema.json", response_class=JSONResponse)
+def get_event_json_schema(
+    event_id: int,
+    include_descriptions: bool = Query(True),
+    include_examples: bool = Query(True),
+    additional_properties: bool = Query(True),
+    db: Session = Depends(get_db),
+):
+    db_event = event_crud.get_event(db=db, event_id=event_id)
+    if not db_event:
+        raise HTTPException(status_code=404, detail="Event not found")
+
+    event = EventOut.model_validate(db_event)
+    schema = generate_json_schema_for_event(
+        event,
+        include_descriptions=include_descriptions,
+        include_examples=include_examples,
+        additional_properties=additional_properties,
+    )
+    return schema
+
+
+@router.get("/events/{event_id}/schema.yaml")
+def get_event_yaml_schema(
+    event_id: int,
+    include_descriptions: bool = Query(True),
+    include_examples: bool = Query(True),
+    additional_properties: bool = Query(True),
+    db: Session = Depends(get_db),
+):
+    db_event = event_crud.get_event(db=db, event_id=event_id)
+    if not db_event:
+        raise HTTPException(status_code=404, detail="Event not found")
+
+    event = EventOut.model_validate(db_event)
+    schema = generate_json_schema_for_event(
+        event,
+        include_descriptions=include_descriptions,
+        include_examples=include_examples,
+        additional_properties=additional_properties,
+    )
+    yaml_data = yaml.dump(schema, sort_keys=False)
+    return Response(content=yaml_data, media_type="application/x-yaml")
