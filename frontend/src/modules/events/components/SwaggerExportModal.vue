@@ -141,7 +141,7 @@ watch(
           <div
             side="bottom"
             @click.stop
-            class="relative border-muted-foreground bg-foreground text-background h-[400px] overflow-y-auto rounded-md border p-4 text-left shadow-sm"
+            class="border-muted-foreground bg-foreground text-background relative h-[400px] overflow-y-auto rounded-md border p-4 text-left shadow-sm"
           >
             <button
               v-if="isSupported"
