@@ -123,7 +123,7 @@ def delete_event_route(event_id: int, db: Session = Depends(get_db)):
     return db_event
 
 
-@router.get("/events/{event_id}/schema.json", response_class=JSONResponse)
+@router.get("/{event_id}/schema.json", response_class=JSONResponse)
 def get_event_json_schema(
     event_id: int,
     include_descriptions: bool = Query(True),
@@ -145,7 +145,7 @@ def get_event_json_schema(
     return schema
 
 
-@router.get("/events/{event_id}/schema.yaml")
+@router.get("/{event_id}/schema.yaml")
 def get_event_yaml_schema(
     event_id: int,
     include_descriptions: bool = Query(True),

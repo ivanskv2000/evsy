@@ -23,6 +23,7 @@ const eventExample = useEventExample(props.event.fields)
 const emit = defineEmits<{
   (e: 'edit'): void
   (e: 'delete'): void
+  (e: 'export'): void
 }>()
 
 const { showCopied, showCopyError } = useEnhancedToast()
@@ -50,7 +51,7 @@ const columns = getEventFieldsColumns()
       </template>
 
       <template #actions>
-        <Button size="icon" variant="ghost">
+        <Button size="icon" variant="ghost" @click="emit('export')">
           <Icon icon="radix-icons:share-1" class="h-4 w-4" />
         </Button>
         <Button size="icon" variant="ghost" @click="emit('edit')">

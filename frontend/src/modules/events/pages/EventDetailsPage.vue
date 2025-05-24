@@ -9,6 +9,7 @@ import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { EventFormValues } from '@/modules/events/validation/eventSchema'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import DetailsCardSkeleton from '@/shared/components/skeletons/DetailsCardSkeleton.vue'
+import SwaggerExportModal from '../components/SwaggerExportModal.vue'
 
 const DeleteModal = defineAsyncComponent(() => import('@/shared/components/modals/DeleteModal.vue'))
 const EventEditModal = defineAsyncComponent(
@@ -21,6 +22,7 @@ const event = ref<Event | null>(null)
 
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
+const showSwaggerExportModal = ref(false)
 
 const { run, isLoading } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
@@ -69,6 +71,7 @@ onMounted(() => {
       :event="event"
       @edit="showEditModal = true"
       @delete="showDeleteModal = true"
+      @export="showSwaggerExportModal = true"
     />
 
     <!-- Modals -->
@@ -86,6 +89,12 @@ onMounted(() => {
       :onConfirm="handleDelete"
       :isDeleting="isDeleting"
       description="Once deleted, this event will be removed permanently."
+    />
+    <SwaggerExportModal
+      v-if="event"
+      :open="showSwaggerExportModal"
+      :onClose="() => (showSwaggerExportModal = false)"
+      :eventId="event.id"
     />
   </div>
 </template>
