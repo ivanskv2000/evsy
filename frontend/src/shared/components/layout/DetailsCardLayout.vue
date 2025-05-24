@@ -87,7 +87,7 @@ const handleCopyTitle = async () => {
       </CardContent>
 
       <!-- Footer -->
-      <CardFooter>
+      <CardFooter v-if="$slots.footer">
         <slot name="footer" />
       </CardFooter>
     </Card>
