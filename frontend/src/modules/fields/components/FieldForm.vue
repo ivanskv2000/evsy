@@ -61,22 +61,6 @@ const fieldTypeOptions = Object.entries(FieldType).map(([key, value]) => ({
       </FormItem>
     </FormField>
 
-    <!-- Description -->
-    <FormField name="description" v-slot="{ componentField }">
-      <FormItem>
-        <FormLabel>Description</FormLabel>
-        <FormControl>
-          <Input
-            type="text"
-            placeholder="Optional description"
-            autocomplete="off"
-            v-bind="componentField"
-          />
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    </FormField>
-
     <!-- Field Type -->
     <FormField name="field_type" v-slot="{ componentField }">
       <FormItem>
@@ -96,6 +80,22 @@ const fieldTypeOptions = Object.entries(FieldType).map(([key, value]) => ({
               </SelectItem>
             </SelectContent>
           </Select>
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    </FormField>
+
+    <!-- Description -->
+    <FormField name="description" v-slot="{ componentField }">
+      <FormItem>
+        <FormLabel>Description</FormLabel>
+        <FormControl>
+          <Input
+            type="text"
+            placeholder="Optional description"
+            autocomplete="off"
+            v-bind="componentField"
+          />
         </FormControl>
         <FormMessage />
       </FormItem>
