@@ -4,6 +4,8 @@ import NavigationMenu from '@/shared/components/layout/NavigationMenu.vue'
 import DropdownMenu from '@/shared/components/layout/DropdownMenu.vue'
 import LoveFooter from './LoveFooter.vue'
 import { useAppConfig } from '@/shared/composables/useAppConfig'
+import LogoutButton from '@/modules/auth/components/LogoutButton.vue'
+import LoginButton from '@/modules/auth/components/LoginButton.vue'
 
 const { isDemo, isDev } = useAppConfig()
 </script>
@@ -21,6 +23,10 @@ const { isDemo, isDev } = useAppConfig()
           <div v-if="isDev || isDemo" class="text-muted-foreground font-mono text-sm font-semibold">
             {{ isDev ? 'DEV' : 'DEMO' }}
           </div>
+          <!-- Auth Buttons -->
+          <LogoutButton />
+          <LoginButton />
+          <!-- Dropdown Menu -->
           <DropdownMenu />
         </div>
       </div>
