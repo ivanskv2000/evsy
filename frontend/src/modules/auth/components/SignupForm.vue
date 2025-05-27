@@ -1,54 +1,88 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import { signupSchema, type SignupFormValues } from '@/modules/auth/validation/signupSchema'
 import { useAuthStore } from '@/modules/auth/stores/useAuthStore'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
-import { Button } from '@/shared/ui/button'
+
 import { Input } from '@/shared/ui/input'
-import { Label } from '@/shared/ui/label'
+import { Button } from '@/shared/ui/button'
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/shared/ui/form'
 import OauthButton from '@/modules/auth/oauth/OauthButton.vue'
 
-const email = ref('')
-const password = ref('')
 const auth = useAuthStore()
 const router = useRouter()
-
-const { run: runSignup, isLoading } = useAsyncTask()
 const { showSuccess } = useEnhancedToast()
+const { run: runSignup, isLoading } = useAsyncTask()
 
-const handleSubmit = () => {
+const { handleSubmit } = useForm<SignupFormValues>({
+  validationSchema: toTypedSchema(signupSchema),
+})
+
+const onSubmit = handleSubmit(values => {
   runSignup(
     () =>
-      auth.signup(email.value, password.value).then(() => auth.login(email.value, password.value)),
+      auth
+        .signup(values.email, values.password)
+        .then(() => auth.login(values.email, values.password)),
     () => {
       showSuccess('Account created successfully! You are now logged in.')
       router.push('/events')
     }
   )
-}
+})
 </script>
 
 <template>
-  <form class="grid gap-4" @submit.prevent="handleSubmit">
-    <div class="grid gap-2">
-      <Label for="email">Email</Label>
-      <Input id="email" v-model="email" type="email" placeholder="name@example.com" required />
-    </div>
-    <div class="grid gap-2">
-      <Label for="password">Password</Label>
-      <Input id="password" v-model="password" type="password" required />
-    </div>
-    <Button type="submit" class="w-full" :disabled="isLoading">
-      {{ isLoading ? 'Creating...' : 'Create an account' }}
-    </Button>
-    <div class="flex gap-2">
-      <OauthButton class="flex-1" provider="github" />
-      <OauthButton class="flex-1" provider="google" />
+  <form @submit="onSubmit" class="mt-2 space-y-6">
+    <div class="grid gap-6">
+      <!-- OAuth Buttons -->
+      <div class="flex flex-col gap-4">
+        <OauthButton class="flex-1" provider="github" />
+        <OauthButton class="flex-1" provider="google" />
+      </div>
+
+      <!-- Divider -->
+      <div
+        class="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t"
+      >
+        <span class="bg-background text-muted-foreground relative z-10 px-2">
+          Or continue with
+        </span>
+      </div>
+
+      <!-- Email -->
+      <FormField name="email" v-slot="{ componentField }">
+        <FormItem>
+          <FormLabel>Email</FormLabel>
+          <FormControl>
+            <Input type="email" placeholder="name@example.com" v-bind="componentField" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+
+      <!-- Password -->
+      <FormField name="password" v-slot="{ componentField }">
+        <FormItem>
+          <FormLabel>Password</FormLabel>
+          <FormControl>
+            <Input type="password" v-bind="componentField" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+
+      <!-- Submit -->
+      <Button type="submit" class="w-full" :disabled="isLoading"> Sign Up </Button>
+
+      <!-- Link to login -->
+      <div class="text-center text-sm">
+        Already have an account?
+        <RouterLink to="/login" class="underline underline-offset-4">Log in</RouterLink>
+      </div>
     </div>
   </form>
-  <div class="mt-4 text-center text-sm">
-    Already have an account?
-    <RouterLink to="/login" class="underline underline-offset-4"> Sign in </RouterLink>
-  </div>
 </template>

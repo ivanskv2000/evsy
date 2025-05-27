@@ -2,8 +2,11 @@
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { Button } from '@/shared/ui/button'
 import { Icon } from '@iconify/vue'
+import { computed } from 'vue'
 
 const props = defineProps<{ provider: 'google' | 'github' }>()
+const icon = computed(() => (props.provider === 'google' ? 'mdi:google' : 'mdi:github'))
+const providerLabel = computed(() => (props.provider === 'google' ? 'Google' : 'GitHub'))
 const { showError } = useEnhancedToast()
 
 function handleOAuth() {
@@ -25,8 +28,8 @@ function handleOAuth() {
 </script>
 
 <template>
-  <Button variant="outline" class="w-full" @click="handleOAuth">
-    <Icon :icon="props.provider === 'google' ? 'mdi:google' : 'mdi:github'" class="mr-2 h-4 w-4" />
-    Sign in with {{ props.provider === 'google' ? 'Google' : 'GitHub' }}
+  <Button type="button" variant="outline" class="w-full" @click="handleOAuth">
+    <Icon :icon="icon" class="mr-2 h-4 w-4" />
+    Sign in with {{ providerLabel }}
   </Button>
 </template>

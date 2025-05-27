@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/modules/auth/stores/useAuthStore'
 import { routes } from './routes'
 
-// const publicPages = ['/login', '/signup', '/landing']
+const publicPages = ['/login', '/signup', '/landing']
 
 const router = createRouter({
   history: createWebHistory(),
@@ -11,8 +11,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore()
-  // const isPublic = publicPages.includes(to.path)
-  const isPublic = true
+  const isPublic = publicPages.includes(to.path)
 
   if (!isPublic && !auth.token) {
     next({ path: '/login', query: { redirect: to.fullPath } })

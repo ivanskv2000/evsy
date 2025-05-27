@@ -1,44 +1,50 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useAuthStore } from '@/modules/auth/stores/useAuthStore'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
-import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
-import { Button } from '@/shared/ui/button'
-import { Input } from '@/shared/ui/input'
-import { Label } from '@/shared/ui/label'
 import { useRouter, useRoute } from 'vue-router'
+import { useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import { useAuthStore } from '@/modules/auth/stores/useAuthStore'
+import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
+import { useAsyncTask } from '@/shared/composables/useAsyncTask'
+import { loginSchema, type LoginFormValues } from '@/modules/auth/validation/loginSchema'
+
+import { Input } from '@/shared/ui/input'
+import { Button } from '@/shared/ui/button'
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/shared/ui/form'
 import OauthButton from '@/modules/auth/oauth/OauthButton.vue'
 
-const email = ref('')
-const password = ref('')
-const auth = useAuthStore()
 const router = useRouter()
 const route = useRoute()
+const auth = useAuthStore()
+const { showSuccess } = useEnhancedToast()
+const { run: runLogin, isLoading } = useAsyncTask()
 
 const redirect = route.query.redirect as string | undefined
 
-const { run: runLogin, isLoading } = useAsyncTask()
-const { showSuccess } = useEnhancedToast()
+const { handleSubmit } = useForm<LoginFormValues>({
+  validationSchema: toTypedSchema(loginSchema),
+})
 
-const handleSubmit = () => {
+const onSubmit = handleSubmit(values => {
   runLogin(
-    () => auth.login(email.value, password.value),
+    () => auth.login(values.email, values.password),
     () => {
-      showSuccess(`Successfully logged in!`)
+      showSuccess('Successfully logged in!')
       router.push(redirect || '/events')
     }
   )
-}
+})
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit" class="mt-2 space-y-6">
+  <form @submit="onSubmit" class="mt-2 space-y-6">
     <div class="grid gap-6">
+      <!-- OAuth buttons -->
       <div class="flex flex-col gap-4">
         <OauthButton class="flex-1" provider="github" />
         <OauthButton class="flex-1" provider="google" />
       </div>
 
+      <!-- Divider -->
       <div
         class="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t"
       >
@@ -46,22 +52,36 @@ const handleSubmit = () => {
           Or continue with
         </span>
       </div>
-      <div class="grid gap-6">
-        <div class="grid gap-2">
-          <Label html-for="email">Email</Label>
-          <Input id="email" v-model="email" type="email" placeholder="name@example.com" required />
-        </div>
-        <div class="grid gap-2">
-          <Label html-for="password">Password</Label>
-          <Input id="password" v-model="password" type="password" required />
-        </div>
-        <Button type="submit" class="w-full" :disabled="isLoading">
-          {{ isLoading ? 'Logging in...' : 'Login' }}
-        </Button>
-      </div>
+
+      <!-- Email -->
+      <FormField name="email" v-slot="{ componentField }">
+        <FormItem>
+          <FormLabel>Email</FormLabel>
+          <FormControl>
+            <Input type="email" placeholder="name@example.com" v-bind="componentField" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+
+      <!-- Password -->
+      <FormField name="password" v-slot="{ componentField }">
+        <FormItem>
+          <FormLabel>Password</FormLabel>
+          <FormControl>
+            <Input type="password" v-bind="componentField" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+
+      <!-- Submit -->
+      <Button type="submit" class="w-full" :disabled="isLoading"> Log In </Button>
+
+      <!-- Link to signup -->
       <div class="text-center text-sm">
-        Don't have an account?
-        <RouterLink to="/signup" class="underline underline-offset-4"> Sign up </RouterLink>
+        Don’t have an account?
+        <RouterLink to="/signup" class="underline underline-offset-4">Sign up</RouterLink>
       </div>
     </div>
   </form>

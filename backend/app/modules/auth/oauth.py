@@ -133,7 +133,9 @@ def exchange_code_for_email(provider: str, code: str, redirect_uri: str) -> str:
             import traceback
 
             print("[GITHUB OAUTH ERROR]", traceback.format_exc())
-            raise HTTPException(status_code=400, detail="GitHub token exchange failed") from e
+            raise HTTPException(
+                status_code=400, detail="GitHub token exchange failed"
+            ) from e
 
     elif provider == "google":
         token_resp = httpx.post(
