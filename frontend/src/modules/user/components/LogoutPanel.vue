@@ -10,7 +10,7 @@ import LogoutButton from '@/modules/auth/components/LogoutButton.vue'
     :with-separator="true"
   >
     <template #default>
-        <LogoutButton />
+      <LogoutButton />
     </template>
   </UserSection>
 </template>

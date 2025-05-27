@@ -6,5 +6,5 @@ export const userRoutes: RouteRecordRaw[] = [
     path: '/me',
     name: 'UserSettings',
     component: UserSettingsPage,
-  }
+  },
 ]
