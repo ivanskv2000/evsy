@@ -7,7 +7,7 @@ import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
-import { Icon } from '@iconify/vue'
+import OauthButton from '@/modules/auth/oauth/OauthButton.vue'
 
 const email = ref('')
 const password = ref('')
@@ -33,7 +33,7 @@ const handleSubmit = () => {
   <form class="grid gap-4" @submit.prevent="handleSubmit">
     <div class="grid gap-2">
       <Label for="email">Email</Label>
-      <Input id="email" v-model="email" type="email" placeholder="m@example.com" required />
+      <Input id="email" v-model="email" type="email" placeholder="name@example.com" required />
     </div>
     <div class="grid gap-2">
       <Label for="password">Password</Label>
@@ -43,12 +43,8 @@ const handleSubmit = () => {
       {{ isLoading ? 'Creating...' : 'Create an account' }}
     </Button>
     <div class="flex gap-2">
-      <Button variant="outline" class="flex-1" disabled>
-        <Icon icon="simple-icons:google" class="mr-2 h-4 w-4" /> Sign up with Google
-      </Button>
-      <Button variant="outline" class="flex-1" disabled>
-        <Icon icon="simple-icons:github" class="mr-2 h-4 w-4" /> Sign up with GitHub
-      </Button>
+      <OauthButton class="flex-1" provider="github" />
+      <OauthButton class="flex-1" provider="google" />
     </div>
   </form>
   <div class="mt-4 text-center text-sm">

@@ -9,10 +9,12 @@ import {
 } from '@/shared/ui/dropdown-menu'
 import { Button } from '@/shared/ui/button'
 import { Icon } from '@iconify/vue'
+import { useAuthStore } from '@/modules/auth/stores/useAuthStore'
 
 import { ref } from 'vue'
 import ThemeProvider from '@/shared/components/providers/theme-provider.vue'
 
+const auth = useAuthStore()
 const isDropdownOpen = ref(false)
 </script>
 
@@ -63,6 +65,12 @@ const isDropdownOpen = ref(false)
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          <DropdownMenuItem v-if="auth.token" as-child>
+            <RouterLink to="/me" class="flex items-center">
+              <Icon icon="radix-icons:person" class="mr-2 h-4 w-4" />
+              <span>User settings</span>
+            </RouterLink>
+          </DropdownMenuItem>
           <DropdownMenuItem as-child>
             <RouterLink to="/switchboard" class="flex items-center">
               <Icon icon="radix-icons:mixer-horizontal" class="mr-2 h-4 w-4" />

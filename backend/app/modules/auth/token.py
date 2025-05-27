@@ -9,9 +9,12 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.modules.auth import crud
 from app.modules.auth.models import User
+from app.settings import Settings
+
+settings = Settings()
 
 # Secret and settings
-SECRET_KEY = "your_secret_key_here"
+SECRET_KEY = settings.secret_key
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 

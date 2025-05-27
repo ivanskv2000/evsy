@@ -6,8 +6,8 @@ import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
-import { Icon } from '@iconify/vue'
 import { useRouter, useRoute } from 'vue-router'
+import OauthButton from '@/modules/auth/oauth/OauthButton.vue'
 
 const email = ref('')
 const password = ref('')
@@ -35,15 +35,10 @@ const handleSubmit = () => {
   <form @submit.prevent="handleSubmit" class="mt-2 space-y-6">
     <div class="grid gap-6">
       <div class="flex flex-col gap-4">
-        <Button variant="outline" class="w-full" disabled>
-          <Icon icon="simple-icons:google" class="mr-2 h-4 w-4" />
-          Login with Google
-        </Button>
-        <Button variant="outline" class="w-full" disabled>
-          <Icon icon="simple-icons:github" class="mr-2 h-4 w-4" />
-          Login with GitHub
-        </Button>
+        <OauthButton class="flex-1" provider="github" />
+        <OauthButton class="flex-1" provider="google" />
       </div>
+
       <div
         class="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t"
       >
@@ -54,15 +49,10 @@ const handleSubmit = () => {
       <div class="grid gap-6">
         <div class="grid gap-2">
           <Label html-for="email">Email</Label>
-          <Input id="email" v-model="email" type="email" placeholder="m@example.com" required />
+          <Input id="email" v-model="email" type="email" placeholder="name@example.com" required />
         </div>
         <div class="grid gap-2">
-          <div class="flex items-center">
-            <Label html-for="password">Password</Label>
-            <a href="#" class="ml-auto text-sm underline-offset-4 hover:underline">
-              Forgot your password?
-            </a>
-          </div>
+          <Label html-for="password">Password</Label>
           <Input id="password" v-model="password" type="password" required />
         </div>
         <Button type="submit" class="w-full" :disabled="isLoading">

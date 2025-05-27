@@ -14,7 +14,7 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <Button v-if="auth.token" variant="ghost" class="text-sm" @click="handleLogout">
+  <Button variant="destructive" class="text-sm" @click="handleLogout">
     <Icon icon="radix-icons:exit" class="mr-2 h-4 w-4" />
     Log out
   </Button>

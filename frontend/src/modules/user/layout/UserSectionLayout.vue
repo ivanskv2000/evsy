@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Separator } from '@/shared/ui/separator'
 defineProps<{
-  title: string
+  title?: string
   description?: string
   withSeparator?: boolean
 }>()
@@ -13,7 +13,7 @@ defineProps<{
     <Separator v-if="withSeparator" class="mt-12 mb-6 opacity-50" />
 
     <!-- Header -->
-    <div class="mb-6 flex items-center justify-between">
+    <div v-if="title" class="mb-6 flex items-center justify-between">
       <div class="space-y-1">
         <h2 class="text-xl font-semibold tracking-tight">
           {{ title }}

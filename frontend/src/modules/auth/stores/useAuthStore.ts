@@ -1,10 +1,26 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { api } from '@/shared/utils/api'
 
 export const useAuthStore = defineStore('auth', () => {
-  const token = ref<string | null>(null)
-  const email = ref<string | null>(null)
+  const token = ref<string | null>(localStorage.getItem('token'))
+  const email = ref<string | null>(localStorage.getItem('email'))
+
+  watch(token, newToken => {
+    if (newToken) {
+      localStorage.setItem('token', newToken)
+    } else {
+      localStorage.removeItem('token')
+    }
+  })
+
+  watch(email, newEmail => {
+    if (newEmail) {
+      localStorage.setItem('email', newEmail)
+    } else {
+      localStorage.removeItem('email')
+    }
+  })
 
   const login = async (emailInput: string, password: string) => {
     const response = await api.post('/auth/login', {
@@ -24,9 +40,13 @@ export const useAuthStore = defineStore('auth', () => {
     email.value = emailInput
   }
 
-  const logout = () => {
-    token.value = null
-    email.value = null
+  const loginWithOAuthCode = async (provider: 'google' | 'github', code: string) => {
+    const response = await api.post('/auth/oauth', {
+      provider,
+      token: code, // this is the authorization code, not a token!
+    })
+    token.value = response.data.access_token
+    await fetchCurrentUser()
   }
 
   const fetchCurrentUser = async () => {
@@ -34,5 +54,18 @@ export const useAuthStore = defineStore('auth', () => {
     email.value = response.data.email
   }
 
-  return { token, email, login, signup, logout, fetchCurrentUser }
+  const logout = () => {
+    token.value = null
+    email.value = null
+  }
+
+  return {
+    token,
+    email,
+    login,
+    signup,
+    loginWithOAuthCode,
+    fetchCurrentUser,
+    logout,
+  }
 })
