@@ -81,7 +81,7 @@ const onSubmit = handleSubmit(values => {
       <!-- Link to signup -->
       <div class="text-center text-sm">
         Don’t have an account?
-        <RouterLink to="/signup" class="underline underline-offset-4">Sign up</RouterLink>
+        <RouterLink :to="{ path: '/signup', query: { redirect } }" class="underline underline-offset-4">Sign up</RouterLink>
       </div>
     </div>
   </form>

@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/modules/auth/stores/useAuthStore'
 import { routes } from './routes'
 
-const publicPages = ['/login', '/signup', '/landing']
+const publicPages = ['/login', '/signup', '/landing', '/oauth/callback']
 
 const router = createRouter({
   history: createWebHistory(),

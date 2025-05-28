@@ -16,8 +16,9 @@ from app.modules.events.schemas import EventCreate, EventOut
 from app.modules.events.service import generate_json_schema_for_event
 from app.modules.fields.crud import get_fields_by_ids
 from app.modules.tags.crud import get_or_create_tags
+from app.modules.auth.token import get_current_user
 
-router = APIRouter(prefix="/events", tags=["events"])
+router = APIRouter(prefix="/events", tags=["events"], dependencies=[Depends(get_current_user)])
 
 
 @router.post(

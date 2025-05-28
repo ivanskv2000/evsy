@@ -1,4 +1,5 @@
 import base64
+import json
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import RedirectResponse
@@ -8,7 +9,13 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.modules.auth import crud, oauth, schemas, service
 from app.modules.auth.models import User
-from app.modules.auth.schemas import OAuthLogin, TokenOut, UserCreate, UserLogin
+from app.modules.auth.schemas import (
+    OAuthLogin,
+    ProviderName,
+    TokenOut,
+    UserCreate,
+    UserLogin,
+)
 from app.modules.auth.token import create_access_token, get_current_user
 from app.settings import Settings
 
@@ -69,25 +76,26 @@ def login_for_access_token(
 
 @router.get("/oauth/init/{provider}")
 def start_oauth_login(
-    provider: str,
+    provider: ProviderName,
     request: Request,
     redirect: str = Query("/events"),
 ):
     redirect_uri = request.url_for("oauth_callback")
-    state = base64.urlsafe_b64encode(redirect.encode()).decode()
 
-    callback_with_provider = f"{redirect_uri}?provider={provider}"
+    state_payload = {
+        "provider": provider,
+        "redirect": redirect,
+    }
+    state = base64.urlsafe_b64encode(json.dumps(state_payload).encode()).decode()
 
-    url = oauth.build_oauth_redirect(provider, callback_with_provider, state)
+    url = oauth.build_oauth_redirect(provider, redirect_uri, state)
     return RedirectResponse(url=url)
 
 
 @router.get("/oauth/callback", name="oauth_callback")
 def handle_oauth_callback(
-    request: Request,
     code: str = Query(...),
-    state: str = Query("", description="Base64-encoded redirect path"),
-    provider: str = Query(...),
+    state: str = Query(...),
 ):
-    final_url = f"{settings.frontend_url}/oauth/callback?code={code}&provider={provider}&state={state}"
+    final_url = f"{settings.frontend_url}/oauth/callback?code={code}&state={state}"
     return RedirectResponse(url=final_url)

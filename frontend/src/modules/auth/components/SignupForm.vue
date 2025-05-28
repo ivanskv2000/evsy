@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { signupSchema, type SignupFormValues } from '@/modules/auth/validation/signupSchema'
@@ -14,8 +14,11 @@ import OauthButton from '@/modules/auth/oauth/OauthButton.vue'
 
 const auth = useAuthStore()
 const router = useRouter()
+const route = useRoute()
 const { showSuccess } = useEnhancedToast()
 const { run: runSignup, isLoading } = useAsyncTask()
+
+const redirect = route.query.redirect as string | undefined
 
 const { handleSubmit } = useForm<SignupFormValues>({
   validationSchema: toTypedSchema(signupSchema),
@@ -29,7 +32,7 @@ const onSubmit = handleSubmit(values => {
         .then(() => auth.login(values.email, values.password)),
     () => {
       showSuccess('Account created successfully! You are now logged in.')
-      router.push('/events')
+      router.push(redirect || '/events')
     }
   )
 })
@@ -81,7 +84,7 @@ const onSubmit = handleSubmit(values => {
       <!-- Link to login -->
       <div class="text-center text-sm">
         Already have an account?
-        <RouterLink to="/login" class="underline underline-offset-4">Log in</RouterLink>
+        <RouterLink :to="{ path: '/login', query: { redirect } }" class="underline underline-offset-4">Log in</RouterLink>
       </div>
     </div>
   </form>

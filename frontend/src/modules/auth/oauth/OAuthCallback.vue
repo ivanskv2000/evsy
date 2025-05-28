@@ -9,10 +9,21 @@ const { showError } = useEnhancedToast()
 
 onMounted(async () => {
   const code = route.query.code as string | undefined
-  const provider = route.query.provider as 'google' | 'github' | undefined
-  const state = route.query.state
-    ? decodeURIComponent(atob(route.query.state as string))
-    : '/events'
+  const stateRaw = route.query.state as string | undefined
+
+  let provider: 'google' | 'github' | undefined
+  let redirect = '/events'
+
+  if (stateRaw) {
+    try {
+      const decoded = JSON.parse(atob(stateRaw))
+      provider = decoded.provider
+      redirect = decoded.redirect || '/events'
+    } catch {
+      provider = undefined
+      redirect = '/events'
+    }
+  }
 
   if (!code || !provider) {
     showError('OAuth login failed.')
@@ -27,7 +38,7 @@ onMounted(async () => {
     })
     const accessToken = response.data.access_token
 
-    window.opener?.postMessage({ token: accessToken, redirect: state }, window.origin)
+    window.opener?.postMessage({ token: accessToken, redirect }, window.origin)
     window.close()
   } catch {
     showError('OAuth login failed.')
