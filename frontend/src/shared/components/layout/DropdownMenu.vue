@@ -64,21 +64,23 @@ const isDropdownOpen = ref(false)
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem v-if="auth.token" as-child>
-            <RouterLink to="/me" class="flex items-center">
-              <Icon icon="radix-icons:person" class="mr-2 h-4 w-4" />
-              <span>User settings</span>
-            </RouterLink>
-          </DropdownMenuItem>
-          <DropdownMenuItem as-child>
-            <RouterLink to="/switchboard" class="flex items-center">
-              <Icon icon="radix-icons:mixer-horizontal" class="mr-2 h-4 w-4" />
-              <span>Switchboard</span>
-            </RouterLink>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+        <template v-if="auth.token">
+          <DropdownMenuGroup>
+            <DropdownMenuItem as-child>
+              <RouterLink to="/me" class="flex items-center">
+                <Icon icon="radix-icons:person" class="mr-2 h-4 w-4" />
+                <span>User settings</span>
+              </RouterLink>
+            </DropdownMenuItem>
+            <DropdownMenuItem as-child>
+              <RouterLink to="/switchboard" class="flex items-center">
+                <Icon icon="radix-icons:mixer-horizontal" class="mr-2 h-4 w-4" />
+                <span>Switchboard</span>
+              </RouterLink>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+        </template>
         <DropdownMenuGroup>
           <DropdownMenuItem as-child>
             <a

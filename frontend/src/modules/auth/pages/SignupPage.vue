@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/shared/ui/card'
 
 <template>
   <div>
-    <Header title="Sign Up" backLink fallbackBackLink="/" />
+    <Header title="Sign Up" />
 
     <Card class="mx-auto max-w-md">
       <CardContent>
