@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/shared/ui/card'
 
 <template>
   <div>
-    <Header title="Login" />
+    <Header title="Log In" />
 
     <Card class="mx-auto max-w-md">
       <CardContent>
