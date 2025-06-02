@@ -9,7 +9,7 @@ const router = createRouter({
   routes: routes,
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const auth = useAuthStore()
   const isPublic = publicPages.includes(to.path)
 
