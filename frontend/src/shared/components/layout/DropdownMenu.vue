@@ -13,8 +13,11 @@ import { useAuthStore } from '@/modules/auth/stores/useAuthStore'
 
 import { ref } from 'vue'
 import ThemeProvider from '@/shared/components/providers/theme-provider.vue'
+import { useAppConfig } from '@/shared/composables/useAppConfig'
 
 const auth = useAuthStore()
+const { isDemo } = useAppConfig()
+
 const isDropdownOpen = ref(false)
 </script>
 
@@ -66,7 +69,7 @@ const isDropdownOpen = ref(false)
         <DropdownMenuSeparator />
         <template v-if="auth.token">
           <DropdownMenuGroup>
-            <DropdownMenuItem as-child>
+            <DropdownMenuItem v-if="!isDemo" as-child>
               <RouterLink to="/me" class="flex items-center">
                 <Icon icon="radix-icons:person" class="mr-2 h-4 w-4" />
                 <span>User settings</span>

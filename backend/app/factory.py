@@ -4,8 +4,26 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.routes import admin, auth, events, fields, generic, tags
 from app.settings import Settings
 
+from app.modules.auth.service import create_user_if_not_exists
+from app.modules.auth.schemas import UserCreate
 
-def create_app(settings: Settings) -> FastAPI:
+from contextlib import asynccontextmanager
+
+from sqlalchemy.orm import sessionmaker
+
+
+def create_app(settings: Settings, SessionLocal: sessionmaker) -> FastAPI:
+
+    @asynccontextmanager
+    async def lifespan(app: FastAPI):
+        if settings.is_demo:
+            with SessionLocal() as db:
+                create_user_if_not_exists(
+                    db,
+                    UserCreate(email="demo@evsy.dev", password="bestructured")
+                )
+        yield
+
     app = FastAPI(
         title="Evsy API",
         description="Evsy is a service for managing and tracking product events.",
@@ -30,6 +48,7 @@ def create_app(settings: Settings) -> FastAPI:
         ],
         debug=settings.is_dev,
         root_path="/api",
+        lifespan=lifespan,
     )
 
     app.state.settings = settings

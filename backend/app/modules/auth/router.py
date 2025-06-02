@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import RedirectResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+from app.core.guard import ensure_not_demo
 
 from app.core.database import get_db
 from app.modules.auth import crud, oauth, schemas, service
@@ -24,7 +25,7 @@ settings = Settings()
 router = APIRouter()
 
 
-@router.post("/signup", response_model=TokenOut, status_code=status.HTTP_201_CREATED)
+@router.post("/signup", response_model=TokenOut, status_code=status.HTTP_201_CREATED, dependencies=[Depends(ensure_not_demo)])
 def signup(user_in: UserCreate, db: Session = Depends(get_db)):
     user = service.create_user(db, user_in)
     token = create_access_token({"sub": user.email})
@@ -46,7 +47,7 @@ def login(user_in: UserLogin, db: Session = Depends(get_db)):
     return {"access_token": token, "token_type": "bearer"}
 
 
-@router.post("/oauth", response_model=TokenOut)
+@router.post("/oauth", response_model=TokenOut, dependencies=[Depends(ensure_not_demo)])
 def login_oauth(payload: OAuthLogin, db: Session = Depends(get_db)):
     email = oauth.get_email_from_oauth(payload)
     user = service.get_or_create_oauth_user(db, email=email, provider=payload.provider)
@@ -74,7 +75,7 @@ def login_for_access_token(
     return {"access_token": token, "token_type": "bearer"}
 
 
-@router.get("/oauth/init/{provider}")
+@router.get("/oauth/init/{provider}", dependencies=[Depends(ensure_not_demo)])
 def start_oauth_login(
     provider: ProviderName,
     request: Request,
@@ -92,7 +93,7 @@ def start_oauth_login(
     return RedirectResponse(url=url)
 
 
-@router.get("/oauth/callback", name="oauth_callback")
+@router.get("/oauth/callback", name="oauth_callback", dependencies=[Depends(ensure_not_demo)])
 def handle_oauth_callback(
     code: str = Query(...),
     state: str = Query(...),
