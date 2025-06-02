@@ -11,6 +11,9 @@ import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/shared/ui/form'
 import OauthButton from '@/modules/auth/oauth/OauthButton.vue'
+import { useAppConfig } from '@/shared/composables/useAppConfig'
+
+const { isDemo } = useAppConfig()
 
 const router = useRouter()
 const route = useRoute()
@@ -39,7 +42,7 @@ const onSubmit = handleSubmit(values => {
   <form @submit="onSubmit" class="mt-2 space-y-6">
     <div class="grid gap-6">
       <!-- OAuth buttons -->
-      <div class="flex flex-col gap-4">
+      <div v-if="!isDemo" class="flex flex-col gap-4">
         <OauthButton class="flex-1" provider="github" />
         <OauthButton class="flex-1" provider="google" />
       </div>
