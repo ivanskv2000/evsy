@@ -13,7 +13,7 @@ test_settings = Settings(_env_file=".env.test")
 test_engine, TestingSessionLocal = init_db(test_settings)
 
 # Create the test app
-app = create_app(test_settings)
+app = create_app(test_settings, TestingSessionLocal)
 
 
 # Override FastAPI's get_db dependency
