@@ -49,7 +49,7 @@ def export_data(
         405: {"description": "Import not allowed on non-empty database"},
         501: {"description": "Import method not implemented"},
     },
-    dependencies=[Depends(ensure_not_demo)]
+    dependencies=[Depends(ensure_not_demo)],
 )
 async def import_data(
     request: Request,

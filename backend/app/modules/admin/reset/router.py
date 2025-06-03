@@ -20,7 +20,7 @@ router = APIRouter(prefix="/reset", tags=["reset"])
     responses={
         200: {"description": "Reset performed or dry-run preview returned"},
     },
-    dependencies=[Depends(ensure_not_demo)]
+    dependencies=[Depends(ensure_not_demo)],
 )
 def reset_all_data(
     dry_run: bool = Query(

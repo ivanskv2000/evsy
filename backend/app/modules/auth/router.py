@@ -5,9 +5,9 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import RedirectResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from app.core.guard import ensure_not_demo
 
 from app.core.database import get_db
+from app.core.guard import ensure_not_demo
 from app.modules.auth import crud, oauth, schemas, service
 from app.modules.auth.models import User
 from app.modules.auth.schemas import (
@@ -25,7 +25,12 @@ settings = Settings()
 router = APIRouter()
 
 
-@router.post("/signup", response_model=TokenOut, status_code=status.HTTP_201_CREATED, dependencies=[Depends(ensure_not_demo)])
+@router.post(
+    "/signup",
+    response_model=TokenOut,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(ensure_not_demo)],
+)
 def signup(user_in: UserCreate, db: Session = Depends(get_db)):
     user = service.create_user(db, user_in)
     token = create_access_token({"sub": user.email})
@@ -93,7 +98,9 @@ def start_oauth_login(
     return RedirectResponse(url=url)
 
 
-@router.get("/oauth/callback", name="oauth_callback", dependencies=[Depends(ensure_not_demo)])
+@router.get(
+    "/oauth/callback", name="oauth_callback", dependencies=[Depends(ensure_not_demo)]
+)
 def handle_oauth_callback(
     code: str = Query(...),
     state: str = Query(...),

@@ -1,11 +1,10 @@
 from fastapi import HTTPException
 from passlib.context import CryptContext
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.modules.auth import crud
 from app.modules.auth.schemas import UserCreate
-
-from sqlalchemy.exc import IntegrityError
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -22,12 +21,11 @@ def create_user(db: Session, user_in: UserCreate):
     hashed_pw = hash_password(user_in.password)
     try:
         return crud.create_user(db, email=user_in.email, hashed_pw=hashed_pw)
-    except IntegrityError:
+    except IntegrityError as err:
         db.rollback()
         raise HTTPException(
-            status_code=400,
-            detail="User with this email already exists."
-        )
+            status_code=400, detail="User with this email already exists."
+        ) from err
 
 
 def get_or_create_oauth_user(db: Session, email: str, provider: str):

@@ -1,10 +1,10 @@
 import os
+from functools import lru_cache
 from pathlib import Path
 from typing import Literal, Optional
 
 from pydantic import ConfigDict
 from pydantic_settings import BaseSettings
-from functools import lru_cache
 
 
 def resolve_env_file(base_dir: str = ".") -> str:
@@ -42,6 +42,7 @@ class Settings(BaseSettings):
     @property
     def is_demo(self):
         return self.env == "demo"
+
 
 @lru_cache()
 def get_settings() -> Settings:

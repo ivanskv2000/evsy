@@ -1,15 +1,13 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-
-from app.api.v1.routes import admin, auth, events, fields, generic, tags
-from app.settings import Settings
-
-from app.modules.auth.service import create_user_if_not_exists
-from app.modules.auth.schemas import UserCreate
-
 from contextlib import asynccontextmanager
 
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import sessionmaker
+
+from app.api.v1.routes import admin, auth, events, fields, generic, tags
+from app.modules.auth.schemas import UserCreate
+from app.modules.auth.service import create_user_if_not_exists
+from app.settings import Settings
 
 
 def create_app(settings: Settings, SessionLocal: sessionmaker) -> FastAPI:
@@ -19,8 +17,7 @@ def create_app(settings: Settings, SessionLocal: sessionmaker) -> FastAPI:
         if settings.is_demo:
             with SessionLocal() as db:
                 create_user_if_not_exists(
-                    db,
-                    UserCreate(email="demo@evsy.dev", password="bestructured")
+                    db, UserCreate(email="demo@evsy.dev", password="bestructured")
                 )
         yield
 
