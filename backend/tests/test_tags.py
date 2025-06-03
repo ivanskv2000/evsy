@@ -12,15 +12,15 @@ def sample_tag():
     )
 
 
-def test_create_tag(client, sample_tag):
+def test_create_tag(auth_client, sample_tag):
     """Тест на создание события"""
-    response = client.post("/v1/tags/", json=sample_tag.model_dump())
+    response = auth_client.post("/v1/tags/", json=sample_tag.model_dump())
     assert response.status_code == 201
     assert response.json()["id"] == sample_tag.id
 
 
-def test_get_tag(client, sample_tag):
+def test_get_tag(auth_client, sample_tag):
     """Тест на получение события"""
-    response = client.get("/v1/tags/release")
+    response = auth_client.get("/v1/tags/release")
     assert response.status_code == 200
     assert response.json()["id"] == sample_tag.id

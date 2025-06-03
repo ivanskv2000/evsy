@@ -48,7 +48,7 @@ def test_user(override_get_db):
     db = next(override_get_db())
     user = create_user(
         db,
-        "test@example.com",
+        email="test@example.com",
         hashed_pw=bcrypt.hashpw(b"password123", bcrypt.gensalt()).decode("utf-8"),
     )
 
@@ -57,7 +57,7 @@ def test_user(override_get_db):
 
 @pytest.fixture(scope="session")
 def access_token(test_user):
-    return create_access_token({"sub": str(test_user.id)})
+    return create_access_token({"sub": str(test_user.email)})
 
 # FastAPI test client
 @pytest.fixture(scope="module")
