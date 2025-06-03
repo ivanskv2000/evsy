@@ -6,6 +6,10 @@ from app.core.database import Base, get_db, init_db
 from app.factory import create_app
 from app.settings import Settings
 
+import bcrypt
+from app.modules.auth.token import create_access_token
+from app.modules.auth.crud import create_user
+
 # Load test settings from .env.test
 test_settings = Settings(_env_file=".env.test")
 
@@ -38,8 +42,30 @@ def setup_database(override_get_db):
     Base.metadata.drop_all(bind=test_engine)
 
 
+@pytest.fixture(scope="session")
+def test_user(override_get_db):
+    """Create a test user in the DB"""
+    db = next(override_get_db())
+    user = create_user(
+        db,
+        "test@example.com",
+        hashed_pw=bcrypt.hashpw(b"password123", bcrypt.gensalt()).decode("utf-8"),
+    )
+
+    return user
+
+
+@pytest.fixture(scope="session")
+def access_token(test_user):
+    return create_access_token({"sub": str(test_user.id)})
+
 # FastAPI test client
 @pytest.fixture(scope="module")
 def client():
     with TestClient(app) as c:
         yield c
+
+@pytest.fixture
+def auth_client(client, access_token):
+    client.headers.update({"Authorization": f"Bearer {access_token}"})
+    return client
