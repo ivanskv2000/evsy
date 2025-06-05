@@ -7,6 +7,10 @@ import { api } from '@/shared/utils/api'
 const route = useRoute()
 const { showError } = useEnhancedToast()
 
+function isSafeRedirect(path: string | undefined): path is string {
+  return !!path && path.startsWith('/') && !path.startsWith('//')
+}
+
 onMounted(async () => {
   const code = route.query.code as string | undefined
   const stateRaw = route.query.state as string | undefined
@@ -18,7 +22,9 @@ onMounted(async () => {
     try {
       const decoded = JSON.parse(atob(stateRaw))
       provider = decoded.provider
-      redirect = decoded.redirect || '/events'
+      if (isSafeRedirect(decoded.redirect)) {
+        redirect = decoded.redirect
+      }
     } catch {
       provider = undefined
       redirect = '/events'

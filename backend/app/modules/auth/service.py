@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 from fastapi import HTTPException
 from passlib.context import CryptContext
 from sqlalchemy.exc import IntegrityError
@@ -36,3 +38,15 @@ def create_user_if_not_exists(db: Session, user_in: UserCreate):
     user = crud.get_user_by_email(db, user_in.email)
     if not user:
         create_user(db, user_in)
+
+
+def is_safe_redirect(redirect: str, frontend_url: str) -> bool:
+    if redirect.startswith("/"):
+        return not redirect.startswith("//")
+
+    try:
+        parsed = urlparse(redirect)
+        allowed = urlparse(frontend_url)
+        return parsed.scheme in ("http", "https") and parsed.netloc == allowed.netloc
+    except Exception:
+        return False

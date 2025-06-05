@@ -17,6 +17,7 @@ from app.modules.auth.schemas import (
     UserCreate,
     UserLogin,
 )
+from app.modules.auth.service import is_safe_redirect
 from app.modules.auth.token import create_access_token, get_current_user
 from app.settings import get_settings
 
@@ -102,6 +103,15 @@ def start_oauth_login(
 def handle_oauth_callback(
     code: str = Query(...), state: str = Query(...), settings=Depends(get_settings)
 ):
+    try:
+        decoded = json.loads(base64.b64decode(state).decode())
+        redirect = decoded.get("redirect", "/events")
+    except Exception as err:
+        raise HTTPException(status_code=400, detail="Invalid state parameter") from err
+
+    if not is_safe_redirect(redirect, settings.frontend_url):
+        raise HTTPException(status_code=400, detail="Unsafe redirect path")
+
     final_url = f"{settings.frontend_url}/oauth/callback?code={code}&state={state}"
     return RedirectResponse(url=final_url)
 
