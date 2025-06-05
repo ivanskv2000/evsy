@@ -13,4 +13,4 @@ except ValidationError as e:
     sys.exit(1)
 
 engine, SessionLocal = init_db(settings)
-app = create_app(settings)
+app = create_app(settings, SessionLocal)

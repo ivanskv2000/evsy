@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, Query, Request, status
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
+from app.core.guard import ensure_not_demo
 
 from .schemas import ExportBundle
 from .service import ExportTarget, ImportSource, export_to, import_from
@@ -48,6 +49,7 @@ def export_data(
         405: {"description": "Import not allowed on non-empty database"},
         501: {"description": "Import method not implemented"},
     },
+    dependencies=[Depends(ensure_not_demo)],
 )
 async def import_data(
     request: Request,

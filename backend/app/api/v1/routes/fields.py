@@ -2,10 +2,13 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
+from app.modules.auth.token import get_current_user
 from app.modules.fields import crud as field_crud
 from app.modules.fields.schemas import FieldCreate, FieldOut, FieldOutWithEventCount
 
-router = APIRouter(prefix="/fields", tags=["fields"])
+router = APIRouter(
+    prefix="/fields", tags=["fields"], dependencies=[Depends(get_current_user)]
+)
 
 
 @router.post(

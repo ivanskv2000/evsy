@@ -11,13 +11,16 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
+from app.modules.auth.token import get_current_user
 from app.modules.events import crud as event_crud
 from app.modules.events.schemas import EventCreate, EventOut
 from app.modules.events.service import generate_json_schema_for_event
 from app.modules.fields.crud import get_fields_by_ids
 from app.modules.tags.crud import get_or_create_tags
 
-router = APIRouter(prefix="/events", tags=["events"])
+router = APIRouter(
+    prefix="/events", tags=["events"], dependencies=[Depends(get_current_user)]
+)
 
 
 @router.post(

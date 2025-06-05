@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
+from app.core.guard import ensure_not_demo
 
 from .service import count_entities, reset_database
 
@@ -19,6 +20,7 @@ router = APIRouter(prefix="/reset", tags=["reset"])
     responses={
         200: {"description": "Reset performed or dry-run preview returned"},
     },
+    dependencies=[Depends(ensure_not_demo)],
 )
 def reset_all_data(
     dry_run: bool = Query(

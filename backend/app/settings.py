@@ -1,4 +1,5 @@
 import os
+from functools import lru_cache
 from pathlib import Path
 from typing import Literal, Optional
 
@@ -17,7 +18,13 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///./test.db"
     frontend_url: Optional[str] = None
 
-    secret_key: Optional[str] = None
+    secret_key: str = "your_secret_key_here"
+
+    github_client_id: Optional[str] = None
+    github_client_secret: Optional[str] = None
+
+    google_client_id: Optional[str] = None
+    google_client_secret: Optional[str] = None
 
     model_config = ConfigDict(
         env_file=resolve_env_file(),
@@ -35,3 +42,17 @@ class Settings(BaseSettings):
     @property
     def is_demo(self):
         return self.env == "demo"
+
+    @property
+    def available_oauth_providers(self) -> list[str]:
+        providers = []
+        if self.github_client_id and self.github_client_secret:
+            providers.append("github")
+        if self.google_client_id and self.google_client_secret:
+            providers.append("google")
+        return providers
+
+
+@lru_cache()
+def get_settings() -> Settings:
+    return Settings()

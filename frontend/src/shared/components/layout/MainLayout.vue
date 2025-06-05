@@ -4,7 +4,9 @@ import NavigationMenu from '@/shared/components/layout/NavigationMenu.vue'
 import DropdownMenu from '@/shared/components/layout/DropdownMenu.vue'
 import LoveFooter from './LoveFooter.vue'
 import { useAppConfig } from '@/shared/composables/useAppConfig'
+import { useAuthStore } from '@/modules/auth/stores/useAuthStore'
 
+const auth = useAuthStore()
 const { isDemo, isDev } = useAppConfig()
 </script>
 
@@ -15,12 +17,13 @@ const { isDemo, isDev } = useAppConfig()
       <div class="container flex h-14 items-center">
         <div class="flex">
           <MainLogo />
-          <NavigationMenu />
+          <NavigationMenu v-if="auth.token" />
         </div>
         <div class="flex flex-1 items-center justify-end space-x-2">
           <div v-if="isDev || isDemo" class="text-muted-foreground font-mono text-sm font-semibold">
             {{ isDev ? 'DEV' : 'DEMO' }}
           </div>
+          <!-- Dropdown Menu -->
           <DropdownMenu />
         </div>
       </div>

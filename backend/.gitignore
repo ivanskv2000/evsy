@@ -9,9 +9,6 @@ __pycache__/
 env/
 venv/
 
-# Alembic
-migrations/versions/
-
 # Database files
 *.sqlite3
 *.db

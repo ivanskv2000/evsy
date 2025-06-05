@@ -14,20 +14,20 @@ def sample_event():
     )
 
 
-def test_create_event(client, sample_event):
-    response = client.post("/v1/events/", json=sample_event.model_dump())
+def test_create_event(auth_client, sample_event):
+    response = auth_client.post("/v1/events/", json=sample_event.model_dump())
     assert response.status_code == 201
     assert response.json()["name"] == sample_event.name
 
 
-def test_get_event(client):
-    response = client.get("/v1/events/1")
+def test_get_event(auth_client):
+    response = auth_client.get("/v1/events/1")
     assert response.status_code == 200
     assert response.json()["id"] == 1
 
 
-def test_create_event_with_invalid_field(client):
-    response = client.post(
+def test_create_event_with_invalid_field(auth_client):
+    response = auth_client.post(
         "/v1/events/",
         json={
             "name": "Event with a bad field",
@@ -40,8 +40,8 @@ def test_create_event_with_invalid_field(client):
     assert "fields" in response.json()["detail"].lower()
 
 
-def test_create_event_with_new_tag(client):
-    response = client.post(
+def test_create_event_with_new_tag(auth_client):
+    response = auth_client.post(
         "/v1/events/",
         json={
             "name": "Event with a new tag",
@@ -52,13 +52,13 @@ def test_create_event_with_new_tag(client):
     )
     assert response.status_code == 201
 
-    tag_response = client.get("/v1/tags/new-tag")
+    tag_response = auth_client.get("/v1/tags/new-tag")
     assert tag_response.status_code == 200
     assert tag_response.json()["id"] == "new-tag"
 
 
-def test_update_event_with_new_tag(client):
-    create_response = client.post(
+def test_update_event_with_new_tag(auth_client):
+    create_response = auth_client.post(
         "/v1/events/",
         json={
             "name": "Event without optional fields",
@@ -69,7 +69,7 @@ def test_update_event_with_new_tag(client):
     )
     event_id = create_response.json()["id"]
 
-    update_response = client.put(
+    update_response = auth_client.put(
         f"/v1/events/{event_id}",
         json={
             "name": "Updated Event, now with a tag!",
@@ -80,6 +80,6 @@ def test_update_event_with_new_tag(client):
     )
     assert update_response.status_code == 200
 
-    tag_response = client.get("/v1/tags/updated-tag")
+    tag_response = auth_client.get("/v1/tags/updated-tag")
     assert tag_response.status_code == 200
     assert tag_response.json()["id"] == "updated-tag"
