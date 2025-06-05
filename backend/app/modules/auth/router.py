@@ -18,9 +18,7 @@ from app.modules.auth.schemas import (
     UserLogin,
 )
 from app.modules.auth.token import create_access_token, get_current_user
-from app.settings import Settings
-
-settings = Settings()
+from app.settings import get_settings
 
 router = APIRouter()
 
@@ -102,8 +100,12 @@ def start_oauth_login(
     "/oauth/callback", name="oauth_callback", dependencies=[Depends(ensure_not_demo)]
 )
 def handle_oauth_callback(
-    code: str = Query(...),
-    state: str = Query(...),
+    code: str = Query(...), state: str = Query(...), settings=Depends(get_settings)
 ):
     final_url = f"{settings.frontend_url}/oauth/callback?code={code}&state={state}"
     return RedirectResponse(url=final_url)
+
+
+@router.get("/providers", tags=["auth"])
+def list_oauth_providers(settings=Depends(get_settings)):
+    return {"providers": settings.available_oauth_providers}

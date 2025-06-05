@@ -21,3 +21,6 @@ export const loginWithOAuth = (provider: OAuthProvider, code: string) =>
     provider,
     token: code,
   })
+
+export const getAvailableOAuthProviders = () =>
+  api.get<{ providers: OAuthProvider[] }>('/auth/providers')

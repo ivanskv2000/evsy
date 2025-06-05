@@ -1,11 +1,18 @@
 import { defineStore } from 'pinia'
-import { ref, watch } from 'vue'
-import { getUser, loginWithEmail, signupWithEmail, loginWithOAuth } from '../api'
+import { ref, watch, onMounted } from 'vue'
+import {
+  getUser,
+  loginWithEmail,
+  signupWithEmail,
+  loginWithOAuth,
+  getAvailableOAuthProviders,
+} from '../api'
 import type { OAuthProvider } from '../types'
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(localStorage.getItem('token'))
   const email = ref<string | null>(localStorage.getItem('email'))
+  const availableProviders = ref<OAuthProvider[]>([])
 
   watch(token, newToken => {
     if (newToken) {
@@ -22,6 +29,17 @@ export const useAuthStore = defineStore('auth', () => {
       localStorage.removeItem('email')
     }
   })
+
+  const fetchOAuthProviders = async () => {
+    try {
+      const response = await getAvailableOAuthProviders()
+      availableProviders.value = response.data.providers
+    } catch {
+      availableProviders.value = []
+    }
+  }
+
+  onMounted(fetchOAuthProviders)
 
   const login = async (emailInput: string, password: string) => {
     const response = await loginWithEmail({ email: emailInput, password })
@@ -54,6 +72,7 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     token,
     email,
+    availableProviders,
     login,
     signup,
     loginWithOAuthCode,

@@ -43,6 +43,15 @@ class Settings(BaseSettings):
     def is_demo(self):
         return self.env == "demo"
 
+    @property
+    def available_oauth_providers(self) -> list[str]:
+        providers = []
+        if self.github_client_id and self.github_client_secret:
+            providers.append("github")
+        if self.google_client_id and self.google_client_secret:
+            providers.append("google")
+        return providers
+
 
 @lru_cache()
 def get_settings() -> Settings:

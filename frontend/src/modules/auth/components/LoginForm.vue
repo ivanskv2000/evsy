@@ -42,9 +42,13 @@ const onSubmit = handleSubmit(values => {
   <form @submit="onSubmit" class="mt-2 space-y-6">
     <div class="grid gap-6">
       <!-- OAuth buttons -->
-      <div v-if="!isDemo" class="flex flex-col gap-4">
-        <OauthButton class="flex-1" provider="github" />
-        <OauthButton class="flex-1" provider="google" />
+      <div v-if="!isDemo && auth.availableProviders.length" class="flex flex-col gap-4">
+        <OauthButton
+          v-for="provider in auth.availableProviders"
+          :key="provider"
+          class="flex-1"
+          :provider="provider"
+        />
       </div>
 
       <!-- Divider -->

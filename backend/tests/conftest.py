@@ -1,14 +1,13 @@
+import bcrypt
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.core.database import Base, get_db, init_db
 from app.factory import create_app
-from app.settings import Settings
-
-import bcrypt
-from app.modules.auth.token import create_access_token
 from app.modules.auth.crud import create_user
+from app.modules.auth.token import create_access_token
+from app.settings import Settings
 
 # Load test settings from .env.test
 test_settings = Settings(_env_file=".env.test")
@@ -59,11 +58,13 @@ def test_user(override_get_db):
 def access_token(test_user):
     return create_access_token({"sub": str(test_user.email)})
 
+
 # FastAPI test client
 @pytest.fixture(scope="module")
 def client():
     with TestClient(app) as c:
         yield c
+
 
 @pytest.fixture
 def auth_client(client, access_token):
