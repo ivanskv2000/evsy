@@ -1,26 +1,27 @@
-# evsy
+# Evsy
 Evsy is a lightweight admin panel for managing and documenting product analytics events and their properties.
 
 (!) Evsy is currently in active development. Expect rapid improvements and frequent updates!
 
 ## ✨ About
-Evsy is an open-source application for managing analytics events —
-including event descriptions, their attributes (fields), and tags.
+Evsy is an open-source application for managing analytics events — including event descriptions, their attributes (fields), and tags.
 
-It helps product teams, analysts, and developers structure and document all key events in a convenient, extensible way.
+It helps product teams, analysts, and developers structure and document their events in a convenient, extensible way.
 
 ## 📚 Features
-- Manage events: create, update, delete, tag them.
-- Manage fields: document event attributes.
-- Manage tags: group related events together.
-- Dark/light theme switcher.
+- Create and document events and fields.
+- Organize them by type, tag, or team.
+- Export events to Swagger schemas.
+- Sign up via email/password or OAuth2 (GitHub & Google)
 
 **Future roadmap includes:**
-- Field examples;
-- Audit log (history of changes);
-- Session and user management;
-- Teams and organizations support;
-- SaaS hosting.
+- Roles and user management;
+- Audit log (history of changes) and event versioning;
+- Full-text search;
+- Additional event states (`draft`, `archived`);
+- Markdown descriptions;
+- Grafana integration;
+- ... and more!
 
 ## 🚀 Quick Start
 To run Evsy via Docker compose, do:
@@ -55,7 +56,7 @@ evsy/
 ```
 
 ## 🤝 Contributing
-We welcome all kinds of contributions — from code to ideas, design suggestions, and bug reports.
+We welcome all kinds of contributions — code, ideas, design suggestions, and bug reports.
 [Read the contributing guide →](CONTRIBUTING.md)
 
 ## Build Status
