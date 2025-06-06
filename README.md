@@ -3,6 +3,8 @@ Evsy is a lightweight admin panel for managing and documenting product analytics
 
 (!) Evsy is currently in active development. Expect rapid improvements and frequent updates!
 
+![Evsy main page screenshot.](screenshot.png)
+
 ## ✨ About
 Evsy is an open-source application for managing analytics events — including event descriptions, their attributes (fields), and tags.
 
