@@ -25,11 +25,3 @@ test:
 
 test-fast:
 	poetry run pytest tests
-
-drop-db:
-	PYTHONPATH=./ poetry run python app/database/seeds/reset_db.py
-
-seed:
-	poetry run python -m app.database.seeds
-
-reseed: drop-db seed
