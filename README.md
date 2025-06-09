@@ -1,28 +1,28 @@
 # Evsy
 Evsy is a lightweight admin panel for managing and documenting product analytics events and their properties.
 
-(!) Evsy is currently in active development. Expect rapid improvements and frequent updates!
-
 ![Evsy main page screenshot.](screenshot.png)
 
-## ✨ About
-Evsy is an open-source application for managing analytics events — including event descriptions, their attributes (fields), and tags.
+Check out the live demo at [demo.evsy.dev](demo.evsy.dev)
+- Login: `demo@evsy.dev`
+- Password: `bestructured`
 
-It helps product teams, analysts, and developers structure and document their events in a convenient, extensible way.
+## ✨ About
+Evsy is an open-source application that helps product teams, analysts, and developers structure, document, and maintain a single source of truth for product analytics events and fields.
 
 ## 📚 Features
 - Create and document events and fields.
-- Organize them by type, tag, or team.
-- Export events to Swagger schemas.
-- Sign up via email/password or OAuth2 (GitHub & Google)
+- Organize by type, tag, or team.
+- Export events as Swagger-compatible schemas.
+- Sign in with email/password or OAuth2 (GitHub & Google).
+
 
 **Future roadmap includes:**
-- Roles and user management;
-- Audit log (history of changes) and event versioning;
+- Role-based access control (RBAC);
+- History of changes and event versioning;
 - Full-text search;
-- Additional event states (`draft`, `archived`);
-- Markdown descriptions;
-- Grafana integration;
+- Draft and archived states for events;
+- Markdown-based descriptions;
 - ... and more!
 
 ## 🚀 Quick Start
@@ -30,21 +30,21 @@ To run Evsy via Docker compose, do:
 1. `cp .env.example .env`
 2. `make up`
 
-### Alternative: deploy to Render
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ivanskv2000/evsy)
+> Make sure to review .env.example — it contains helpful comments for configuring your setup.
 
 ## ⚙️ Tech Stack
 - Backend: FastAPI + Pydantic + SQLAlchemy + Alembic
-- Frontend: Vue 3 + Vite + Shadcn
+- Frontend: Vue 3 + Vite
+- Component library: [shadcn-vue](https://www.shadcn-vue.com/)
 
 ## 🧩 Project Structure
-Evsy is a project combining a Python backend and a modern JS frontend, developed and versioned together.
+Evsy is a project combining a Python FastAPI backend and a Vue3 frontend, developed and versioned together.
 
 ```
 evsy/
-├── backend/              # FastAPI backend (Python, Poetry-managed)
+├── backend/              # FastAPI backend (Poetry-managed)
 │   ├── app/              # Application code
-│   └── tests/            # Pytest test suite
+│   └── tests/            # Pytest
 ├── frontend/             # Vue 3 + Vite frontend (npm-managed)
 │   ├── src/              # Application code
 │   └── public/           # Static assets
