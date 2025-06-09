@@ -5,21 +5,54 @@ We deeply appreciate every bit of help, whether it's fixing a bug, suggesting an
 
 ## 🫶 You don’t have to code to contribute
 
-We welcome all kinds of contributions:
+Not a developer? No problem — Evsy welcomes all kinds of contributions:
 
-- 🐛 **Bug reports** — Found something broken? Let us know!
-- 💡 **Feature suggestions** — Got an idea to improve Evsy?
-- 🎨 **Design help** — We love thoughtful UI/UX suggestions.
-- 📚 **Docs feedback** — Is something unclear? Missing? Tell us.
-- 🙏 Just saying “this helped” — Encouragement matters, too.
+- Report bugs — If something’s not working as expected, let us know.
+- Suggest features — Ideas to improve workflows or usability are always appreciated.
+- Give design feedback — UI/UX suggestions help us make Evsy more intuitive.
+- Improve the docs — Flag anything confusing or missing.
+- Share your experience — Even a quick "this was helpful" can go a long way.
 
-Create an [issue](https://github.com/ivanskv2000/evsy/issues) or open a [discussion](https://github.com/ivanskv2000/evsy/discussions) — we’d love to hear from you.
+You can open an [issue](https://github.com/ivanskv2000/evsy/issues) — we’d love to hear from you.
 
----
 
-## 🧑‍💻 If you do want to contribute code
+## 🧑‍💻 Contributing code
 
-### Backend (FastAPI, Poetry)
+### Docker-compose setup (recommended)
+
+You can setup both the backend and frontend in dev mode with hot-reloading:
+
+```bash
+make dev
+```
+
+This launches everything via `docker-compose.dev.yaml`:
+
+- FastAPI backend on `localhost:8000`
+- Vite frontend on `localhost:3000`
+
+
+When you need to create a new migration:
+
+```bash
+make revision name="your_migration_name"
+```
+
+...and then apply it:
+
+```bash
+make migrate
+```
+
+After you're done developing, just do:
+
+```bash
+make down
+```
+
+Alternatively, you can setup your backend and frontend independently.
+
+### Backend (FastAPI + Poetry)
 
 1. **Install [Poetry](https://python-poetry.org/docs/#installation)**.
 2. Install dependencies:
@@ -48,7 +81,7 @@ Create an [issue](https://github.com/ivanskv2000/evsy/issues) or open a [discuss
    make format && make lint
    ```
 
-### Frontend (Vue 3, Vite)
+### Frontend (Vue 3 + Vite)
 
 1. Install dependencies:
 
@@ -67,11 +100,10 @@ Create an [issue](https://github.com/ivanskv2000/evsy/issues) or open a [discuss
 3. Lint and format:
 
    ```bash
-   npm run format
-   npm run lint
+   npm run format && npm run lint
    ```
 
-## Opening a pull request
+## 📦 Opening a pull request
 
 1. Create a new branch:
    ```bash

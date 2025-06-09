@@ -26,7 +26,7 @@ Evsy is an open-source application that helps product teams, analysts, and devel
 - ... and more!
 
 ## 🚀 Quick Start
-To run Evsy via Docker compose, do:
+To run Evsy via Docker compose, just do:
 1. `cp .env.example .env`
 2. `make up`
 
