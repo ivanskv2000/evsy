@@ -17,3 +17,6 @@ __pycache__/
 *.pyd
 node_modules/
 dist/
+
+# Auxiliary scripts
+reset_demo.sh
