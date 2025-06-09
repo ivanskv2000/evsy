@@ -19,3 +19,6 @@ test.db
 .python-version
 coverage/
 htmlcov/
+
+# Auxiliary files
+seed_demo.py
