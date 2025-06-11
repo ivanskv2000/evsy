@@ -1,0 +1,27 @@
+site_name: Evsy Docs
+site_url: https://docs.evsy.dev
+
+theme:
+  name: material
+  palette:
+    scheme: default
+    primary: black
+  font:
+    text: Inter
+  logo: assets/favicon_inverted.svg
+  favicon: assets/favicon_inverted.svg
+  features:
+    - navigation.footer
+    - header.autohide
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/ivanskv2000/evsy
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/ivanskv2000
+
+repo_url: https://github.com/ivanskv2000/evsy
+
+plugins:
+  - search
