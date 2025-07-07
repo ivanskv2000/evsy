@@ -1,4 +1,5 @@
 import random
+import uuid
 
 from faker import Faker
 from sqlalchemy.orm import Session
@@ -45,11 +46,20 @@ TARGETS = [
 ]
 
 
-def generate_event_slug():
-    adjective = faker.word(part_of_speech="adjective")
-    action = random.choice(SHORT_ACTIONS)
-    target = random.choice(TARGETS)
-    return f"{adjective}_{target}_{action}"
+def generate_event_slug(existing: set) -> str:
+    attempts = 0
+    while attempts < 100:
+        adjective = faker.word(part_of_speech="adjective")
+        action = random.choice(SHORT_ACTIONS)
+        target = random.choice(TARGETS)
+
+        name = f"{adjective}_{target}_{action}"
+
+        if name not in existing:
+            return name
+        attempts += 1
+
+    return f"event_{uuid.uuid4()}"
 
 
 ACTIONS = [
@@ -132,13 +142,11 @@ def seed(db: Session, count: int = 10):
         print("⚠️ No tags or fields available. Please seed them first.")
         return
 
-    used_names = set()
+    existing_names = set()
 
     for _ in range(count):
-        name = generate_event_slug()
-        while name in used_names:
-            name = generate_event_slug()
-        used_names.add(name)
+        name = generate_event_slug(existing_names)
+        existing_names.add(name)
 
         links = [generate_event_link() for _ in range(random.randint(0, 4))]
 

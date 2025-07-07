@@ -6,8 +6,8 @@ from app.modules.tags.seed.seeder import seed as seed_tags
 from app.shared.service import assert_db_empty
 
 
-def seed_all(db: Session):
+def seed_all(db: Session, n_tags=10, n_fields=10, n_events=10):
     assert_db_empty(db)
-    seed_tags(db)
-    seed_fields(db)
-    seed_events(db)
+    seed_tags(db, count=n_tags)
+    seed_fields(db, count=n_fields)
+    seed_events(db, count=n_events)
