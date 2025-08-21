@@ -1,4 +1,5 @@
 import random
+import uuid
 
 from faker import Faker
 from sqlalchemy.orm import Session
@@ -32,13 +33,13 @@ TAG_NAMES = feature_tags + context_tags
 
 def generate_tag_name(existing: set) -> str:
     attempts = 0
-    while attempts < 50:
+    while attempts < 100:
         name = random.choice(TAG_NAMES)
         if name not in existing:
             return name
         attempts += 1
 
-    return f"tag_{random.randint(1000, 9999)}"
+    return f"tag_{uuid.uuid4()}"
 
 
 FEATURES = [

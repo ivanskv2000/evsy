@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class FieldType(str, Enum):
@@ -15,7 +15,9 @@ class FieldType(str, Enum):
 
 
 class FieldBase(BaseModel):
-    name: str
+    name: str = Field(
+        min_length=1, max_length=100, description="Field name cannot be empty"
+    )
     description: Optional[str] = None
     field_type: FieldType
     example: Optional[Any] = None

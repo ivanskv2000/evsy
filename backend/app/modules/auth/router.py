@@ -29,6 +29,12 @@ router = APIRouter()
     response_model=TokenOut,
     status_code=status.HTTP_201_CREATED,
     dependencies=[Depends(ensure_not_demo)],
+    summary="Create user account",
+    description="Register a new user account with email and password. Returns authentication token.",
+    responses={
+        201: {"description": "User created successfully"},
+        400: {"description": "User already exists or validation error"},
+    },
 )
 def signup(user_in: UserCreate, db: Session = Depends(get_db)):
     user = service.create_user(db, user_in)
@@ -36,7 +42,16 @@ def signup(user_in: UserCreate, db: Session = Depends(get_db)):
     return {"access_token": token, "token_type": "bearer"}
 
 
-@router.post("/login", response_model=TokenOut)
+@router.post(
+    "/login",
+    response_model=TokenOut,
+    summary="Login with email and password",
+    description="Authenticate user with email and password credentials. Returns authentication token.",
+    responses={
+        200: {"description": "Login successful"},
+        401: {"description": "Invalid credentials"},
+    },
+)
 def login(user_in: UserLogin, db: Session = Depends(get_db)):
     user = crud.get_user_by_email(db, user_in.email)
     if (
@@ -51,7 +66,17 @@ def login(user_in: UserLogin, db: Session = Depends(get_db)):
     return {"access_token": token, "token_type": "bearer"}
 
 
-@router.post("/oauth", response_model=TokenOut, dependencies=[Depends(ensure_not_demo)])
+@router.post(
+    "/oauth",
+    response_model=TokenOut,
+    dependencies=[Depends(ensure_not_demo)],
+    summary="OAuth login",
+    description="Authenticate user with OAuth provider (GitHub, Google). Creates account if it doesn't exist.",
+    responses={
+        200: {"description": "OAuth login successful"},
+        400: {"description": "Invalid OAuth payload"},
+    },
+)
 def login_oauth(payload: OAuthLogin, db: Session = Depends(get_db)):
     email = oauth.get_email_from_oauth(payload)
     user = service.get_or_create_oauth_user(db, email=email, provider=payload.provider)
@@ -59,12 +84,29 @@ def login_oauth(payload: OAuthLogin, db: Session = Depends(get_db)):
     return {"access_token": token, "token_type": "bearer"}
 
 
-@router.get("/me", response_model=schemas.UserOut)
+@router.get(
+    "/me",
+    response_model=schemas.UserOut,
+    summary="Get current user",
+    description="Get details of the currently authenticated user.",
+    responses={
+        200: {"description": "User details returned"},
+        401: {"description": "Not authenticated"},
+    },
+)
 def read_current_user(current_user: User = Depends(get_current_user)):
     return current_user
 
 
-@router.post("/token")
+@router.post(
+    "/token",
+    summary="Get access token (OAuth2 compatible)",
+    description="OAuth2 compatible token endpoint for form-based authentication.",
+    responses={
+        200: {"description": "Token generated successfully"},
+        400: {"description": "Invalid credentials"},
+    },
+)
 def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),
@@ -79,11 +121,22 @@ def login_for_access_token(
     return {"access_token": token, "token_type": "bearer"}
 
 
-@router.get("/oauth/init/{provider}", dependencies=[Depends(ensure_not_demo)])
+@router.get(
+    "/oauth/init/{provider}",
+    dependencies=[Depends(ensure_not_demo)],
+    summary="Start OAuth flow",
+    description="Initiate OAuth authentication with GitHub or Google. Redirects to provider.",
+    responses={
+        302: {"description": "Redirect to OAuth provider"},
+        400: {"description": "Invalid provider"},
+    },
+)
 def start_oauth_login(
     provider: ProviderName,
     request: Request,
-    redirect: str = Query("/events"),
+    redirect: str = Query(
+        "/events", description="Where to redirect after successful login"
+    ),
 ):
     redirect_uri = request.url_for("oauth_callback")
 
@@ -98,10 +151,20 @@ def start_oauth_login(
 
 
 @router.get(
-    "/oauth/callback", name="oauth_callback", dependencies=[Depends(ensure_not_demo)]
+    "/oauth/callback",
+    name="oauth_callback",
+    dependencies=[Depends(ensure_not_demo)],
+    summary="OAuth callback",
+    description="Handle OAuth provider callback. Internal endpoint used by OAuth flow.",
+    responses={
+        302: {"description": "Redirect to frontend with auth code"},
+        400: {"description": "Invalid callback parameters"},
+    },
 )
 def handle_oauth_callback(
-    code: str = Query(...), state: str = Query(...), settings=Depends(get_settings)
+    code: str = Query(..., description="OAuth authorization code from provider"),
+    state: str = Query(..., description="OAuth state parameter"),
+    settings=Depends(get_settings),
 ):
     try:
         decoded = json.loads(base64.b64decode(state).decode())
@@ -116,6 +179,12 @@ def handle_oauth_callback(
     return RedirectResponse(url=final_url)
 
 
-@router.get("/providers", tags=["auth"])
+@router.get(
+    "/providers",
+    tags=["auth"],
+    summary="List OAuth providers",
+    description="Get list of available OAuth authentication providers.",
+    responses={200: {"description": "List of available OAuth providers"}},
+)
 def list_oauth_providers(settings=Depends(get_settings)):
     return {"providers": settings.available_oauth_providers}

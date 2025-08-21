@@ -1,4 +1,5 @@
 import random
+import uuid
 
 from faker import Faker
 from sqlalchemy.orm import Session
@@ -21,17 +22,32 @@ BASES = [
     "experiment",
     "click",
     "ref",
+    "tab",
+    "entity",
+    "icon",
+    "window",
 ]
 
-SUFFIXES = ["id", "type", "name", "source", "status", "variant", "group", "version"]
+SUFFIXES = [
+    "id",
+    "type",
+    "name",
+    "source",
+    "status",
+    "variant",
+    "group",
+    "version",
+    "position",
+    "size",
+    "kind",
+]
 
 PREFIXES = ["is", "has", "from", "to", "ref"]
 
 
 def generate_field_slug(existing: set) -> str:
     attempts = 0
-    while attempts < 50:
-        # Randomly pick naming pattern
+    while attempts < 100:
         if random.random() < 0.3:
             prefix = random.choice(PREFIXES)
             base = random.choice(BASES)
@@ -45,7 +61,7 @@ def generate_field_slug(existing: set) -> str:
             return name
         attempts += 1
 
-    return f"field_{random.randint(1000, 9999)}"
+    return f"field_{uuid.uuid4()}"
 
 
 DESCRIPTION_TEMPLATES = [

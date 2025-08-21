@@ -81,7 +81,13 @@ onMounted(() => {
     <!-- Toolbar -->
     <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
       <div class="flex-1">
-        <Input v-model="searchQuery" placeholder="Search tags..." class="max-w-xs"> </Input>
+        <Input
+          v-model="searchQuery"
+          placeholder="Search tags..."
+          class="max-w-xs"
+          :disabled="tags.length === 0"
+        >
+        </Input>
       </div>
       <Button as-child>
         <RouterLink to="/tags/new">
