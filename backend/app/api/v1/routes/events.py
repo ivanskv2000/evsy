@@ -126,12 +126,21 @@ def delete_event_route(event_id: int, db: Session = Depends(get_db)):
     return db_event
 
 
-@router.get("/{event_id}/schema.json", response_class=JSONResponse)
+@router.get(
+    "/{event_id}/schema.json",
+    response_class=JSONResponse,
+    summary="Export event as JSON Schema",
+    description="Generate a JSON Schema for the event's data structure. Useful for validation and documentation.",
+    responses={
+        200: {"description": "JSON Schema generated successfully"},
+        404: {"description": "Event not found"}
+    }
+)
 def get_event_json_schema(
     event_id: int,
-    include_descriptions: bool = Query(True),
-    include_examples: bool = Query(True),
-    additional_properties: bool = Query(True),
+    include_descriptions: bool = Query(True, description="Include field descriptions in schema"),
+    include_examples: bool = Query(True, description="Include field examples in schema"),
+    additional_properties: bool = Query(True, description="Allow additional properties in schema"),
     db: Session = Depends(get_db),
 ):
     db_event = event_crud.get_event(db=db, event_id=event_id)
@@ -148,12 +157,20 @@ def get_event_json_schema(
     return schema
 
 
-@router.get("/{event_id}/schema.yaml")
+@router.get(
+    "/{event_id}/schema.yaml",
+    summary="Export event as YAML Schema",
+    description="Generate a YAML Schema for the event's data structure. Same as JSON but in YAML format.",
+    responses={
+        200: {"description": "YAML Schema generated successfully"},
+        404: {"description": "Event not found"}
+    }
+)
 def get_event_yaml_schema(
     event_id: int,
-    include_descriptions: bool = Query(True),
-    include_examples: bool = Query(True),
-    additional_properties: bool = Query(True),
+    include_descriptions: bool = Query(True, description="Include field descriptions in schema"),
+    include_examples: bool = Query(True, description="Include field examples in schema"),
+    additional_properties: bool = Query(True, description="Allow additional properties in schema"),
     db: Session = Depends(get_db),
 ):
     db_event = event_crud.get_event(db=db, event_id=event_id)
