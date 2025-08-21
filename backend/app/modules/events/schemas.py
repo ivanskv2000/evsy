@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import List, Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.modules.fields.schemas import FieldOut
 from app.modules.tags.schemas import TagOut
@@ -29,7 +29,9 @@ class EventLink(BaseModel):
 
 
 class EventBase(BaseModel):
-    name: str
+    name: str = Field(
+        min_length=1, max_length=100, description="Event name cannot be empty"
+    )
     description: Optional[str] = None
     links: Optional[List[EventLink]] = None
     tags: List[str] = []

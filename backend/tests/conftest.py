@@ -67,6 +67,8 @@ def client():
 
 
 @pytest.fixture
-def auth_client(client, access_token):
-    client.headers.update({"Authorization": f"Bearer {access_token}"})
-    return client
+def auth_client(access_token):
+    # Create a fresh client for authenticated requests to avoid polluting the shared client
+    with TestClient(app) as auth_client:
+        auth_client.headers.update({"Authorization": f"Bearer {access_token}"})
+        yield auth_client

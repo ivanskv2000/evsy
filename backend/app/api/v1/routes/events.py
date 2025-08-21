@@ -133,14 +133,20 @@ def delete_event_route(event_id: int, db: Session = Depends(get_db)):
     description="Generate a JSON Schema for the event's data structure. Useful for validation and documentation.",
     responses={
         200: {"description": "JSON Schema generated successfully"},
-        404: {"description": "Event not found"}
-    }
+        404: {"description": "Event not found"},
+    },
 )
 def get_event_json_schema(
     event_id: int,
-    include_descriptions: bool = Query(True, description="Include field descriptions in schema"),
-    include_examples: bool = Query(True, description="Include field examples in schema"),
-    additional_properties: bool = Query(True, description="Allow additional properties in schema"),
+    include_descriptions: bool = Query(
+        True, description="Include field descriptions in schema"
+    ),
+    include_examples: bool = Query(
+        True, description="Include field examples in schema"
+    ),
+    additional_properties: bool = Query(
+        True, description="Allow additional properties in schema"
+    ),
     db: Session = Depends(get_db),
 ):
     db_event = event_crud.get_event(db=db, event_id=event_id)
@@ -163,14 +169,20 @@ def get_event_json_schema(
     description="Generate a YAML Schema for the event's data structure. Same as JSON but in YAML format.",
     responses={
         200: {"description": "YAML Schema generated successfully"},
-        404: {"description": "Event not found"}
-    }
+        404: {"description": "Event not found"},
+    },
 )
 def get_event_yaml_schema(
     event_id: int,
-    include_descriptions: bool = Query(True, description="Include field descriptions in schema"),
-    include_examples: bool = Query(True, description="Include field examples in schema"),
-    additional_properties: bool = Query(True, description="Allow additional properties in schema"),
+    include_descriptions: bool = Query(
+        True, description="Include field descriptions in schema"
+    ),
+    include_examples: bool = Query(
+        True, description="Include field examples in schema"
+    ),
+    additional_properties: bool = Query(
+        True, description="Allow additional properties in schema"
+    ),
     db: Session = Depends(get_db),
 ):
     db_event = event_crud.get_event(db=db, event_id=event_id)

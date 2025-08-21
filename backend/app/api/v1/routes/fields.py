@@ -19,8 +19,8 @@ router = APIRouter(
     description="Create a new field that can be associated with events.",
     responses={
         201: {"description": "Field created successfully"},
-        400: {"description": "Validation error"}
-    }
+        400: {"description": "Validation error"},
+    },
 )
 def create_field_route(field: FieldCreate, db: Session = Depends(get_db)):
     return field_crud.create_field(db=db, field=field)
@@ -31,9 +31,7 @@ def create_field_route(field: FieldCreate, db: Session = Depends(get_db)):
     response_model=list[FieldOut],
     summary="List all fields",
     description="Return a paginated list of all fields that can be assigned to events.",
-    responses={
-        200: {"description": "List of fields returned successfully"}
-    }
+    responses={200: {"description": "List of fields returned successfully"}},
 )
 def list_fields_route(db: Session = Depends(get_db)):
     return field_crud.get_fields(db=db)
@@ -46,12 +44,14 @@ def list_fields_route(db: Session = Depends(get_db)):
     description="Return a single field by its ID. Optionally include count of events using this field.",
     responses={
         200: {"description": "Field found and returned"},
-        404: {"description": "Field not found"}
-    }
+        404: {"description": "Field not found"},
+    },
 )
 def get_field_route(
     field_id: int,
-    with_event_count: bool = Query(False, description="Include count of events using this field"),
+    with_event_count: bool = Query(
+        False, description="Include count of events using this field"
+    ),
     db: Session = Depends(get_db),
 ):
     db_field = field_crud.get_field(db=db, field_id=field_id)
@@ -73,8 +73,8 @@ def get_field_route(
     responses={
         200: {"description": "Field updated successfully"},
         404: {"description": "Field not found"},
-        400: {"description": "Validation error"}
-    }
+        400: {"description": "Validation error"},
+    },
 )
 def update_field_route(
     field_id: int, field: FieldCreate, db: Session = Depends(get_db)
@@ -92,8 +92,8 @@ def update_field_route(
     description="Delete a field by its ID. This will remove the field from all related events.",
     responses={
         200: {"description": "Field deleted successfully"},
-        404: {"description": "Field not found"}
-    }
+        404: {"description": "Field not found"},
+    },
 )
 def delete_field_route(field_id: int, db: Session = Depends(get_db)):
     db_field = field_crud.delete_field(db=db, field_id=field_id)
