@@ -2,7 +2,7 @@
 import TagItem from '../components/TagItem.vue'
 import { tagApi } from '@/modules/tags/api'
 import type { Tag } from '@/modules/tags/types'
-import { ref, onMounted, computed, defineAsyncComponent } from 'vue'
+import { ref, onMounted, computed, defineAsyncComponent, watch } from 'vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { TagFormValues } from '@/modules/tags/validation/tagSchema'
 import Header from '@/shared/components/layout/PageHeader.vue'
@@ -11,6 +11,8 @@ import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
 import { Icon } from '@iconify/vue'
 import ItemSkeleton from '@/shared/components/skeletons/ItemSkeleton.vue'
+import { useDebounceFn } from '@vueuse/core'
+import { filterTags } from '@/shared/utils/tableFilters'
 
 const DeleteModal = defineAsyncComponent(() => import('@/shared/components/modals/DeleteModal.vue'))
 const TagEditModal = defineAsyncComponent(
@@ -21,6 +23,7 @@ const { showUpdated, showDeleted } = useEnhancedToast()
 
 const tags = ref<Tag[]>([])
 const searchQuery = ref('')
+const debouncedSearchQuery = ref('')
 const { run, isLoading } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
@@ -31,14 +34,26 @@ const showDeleteModal = ref(false)
 const selectedTagId = ref<string | null>(null)
 const editedTag = ref<Tag | null>(null)
 
+// Debounced update of search query
+const debouncedUpdateSearch = useDebounceFn((query: string) => {
+  debouncedSearchQuery.value = query
+}, 300)
+
+// Watch for search query changes and apply debounce
+watch(searchQuery, newQuery => {
+  debouncedUpdateSearch(newQuery)
+})
+
+// Handle escape key to clear search
+const handleSearchKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Escape') {
+    searchQuery.value = ''
+    debouncedSearchQuery.value = ''
+  }
+}
+
 const filteredTags = computed(() => {
-  if (!searchQuery.value) return tags.value
-  const query = searchQuery.value.toLowerCase()
-  return tags.value.filter(
-    tag =>
-      tag.id.toLowerCase().includes(query) ||
-      (tag.description?.toLowerCase().includes(query) ?? false)
-  )
+  return filterTags(tags.value, debouncedSearchQuery.value)
 })
 
 const handleDelete = () => {
@@ -86,6 +101,7 @@ onMounted(() => {
           placeholder="Search tags..."
           class="max-w-xs"
           :disabled="tags.length === 0"
+          @keydown="handleSearchKeydown"
         >
         </Input>
       </div>

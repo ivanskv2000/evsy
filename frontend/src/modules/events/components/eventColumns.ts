@@ -7,6 +7,7 @@ import { RouterLink } from 'vue-router'
 import DataTableColumnHeader from '@/shared/components/data/DataTableColumnHeader.vue'
 import { Badge } from '@/shared/ui/badge'
 import TagScrollArea from '@/modules/tags/components/TagScrollArea.vue'
+import { eventsTableFilter } from '@/shared/utils/tableFilters'
 
 export function getEventColumns(
   onEdit: (event: Event) => void,
@@ -34,6 +35,7 @@ export function getEventColumns(
     {
       accessorKey: 'name',
       enableHiding: false,
+      filterFn: eventsTableFilter,
       meta: {
         class: 'w-[18ch]',
         headerClass: 'w-[18ch]',
