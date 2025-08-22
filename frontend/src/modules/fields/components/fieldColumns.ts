@@ -4,6 +4,7 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import FieldsDataTableDropdown from '@/modules/fields/components/FieldsDataTableDropdown.vue'
 import { RouterLink } from 'vue-router'
 import DataTableColumnHeader from '@/shared/components/data/DataTableColumnHeader.vue'
+import { fieldsTableFilter } from '@/shared/utils/tableFilters'
 
 export function getFieldColumns(
   onEdit: (field: Field) => void,
@@ -31,6 +32,7 @@ export function getFieldColumns(
     {
       accessorKey: 'name',
       enableHiding: false,
+      filterFn: fieldsTableFilter,
       meta: {
         class: 'w-[18ch]',
         headerClass: 'w-[18ch]',
