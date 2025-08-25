@@ -5,11 +5,12 @@ import { Icon } from '@iconify/vue'
 import { Button } from '@/shared/ui/button'
 import DataTablePagination from '@/shared/components/data/DataTablePagination.vue'
 import DataTable from '@/shared/components/data/DataTable.vue'
-import { useDataTable } from '@/shared/composables/useDataTable'
 import DataTableLayout from '@/shared/components/data/DataTableLayout.vue'
+import { useDataTableWithUrlQuery } from '@/shared/composables/useDataTableWithUrlQuery'
 import DataTableSkeleton from '@/shared/components/skeletons/DataTableSkeleton.vue'
 import DataTableSingleSelectFilter from '@/shared/components/data/DataTableSingleSelectFilter.vue'
 import type { Tag } from '@/modules/tags/types'
+import type { UrlFiltersReturn, EventsUrlFilters } from '@/shared/types/urlFilters'
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
@@ -17,13 +18,18 @@ const props = defineProps<{
   tags: Tag[]
   isLoading: boolean
   isLoadingTags: boolean
+  urlFilters: UrlFiltersReturn<EventsUrlFilters>
 }>()
 
-const { table } = useDataTable({
-  data: () => props.data,
-  columns: () => props.columns,
-  defaultSorting: [{ id: 'id', desc: true }],
-})
+const { table } = useDataTableWithUrlQuery(
+  {
+    data: () => props.data,
+    columns: () => props.columns,
+    defaultSorting: [{ id: 'id', desc: true }],
+  },
+  props.urlFilters,
+  'events'
+)
 </script>
 
 <template>

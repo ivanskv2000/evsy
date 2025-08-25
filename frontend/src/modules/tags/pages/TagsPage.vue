@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import TagItem from '../components/TagItem.vue'
+import TagsDataGrid from '../components/TagsDataGrid.vue'
 import { tagApi } from '@/modules/tags/api'
 import type { Tag } from '@/modules/tags/types'
-import { ref, onMounted, computed, defineAsyncComponent, watch } from 'vue'
+import { ref, onMounted, defineAsyncComponent, computed } from 'vue'
 import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { TagFormValues } from '@/modules/tags/validation/tagSchema'
 import Header from '@/shared/components/layout/PageHeader.vue'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
-import { Input } from '@/shared/ui/input'
-import { Button } from '@/shared/ui/button'
-import { Icon } from '@iconify/vue'
-import ItemSkeleton from '@/shared/components/skeletons/ItemSkeleton.vue'
-import { useDebounceFn } from '@vueuse/core'
+import { useUrlFilters, tagsFiltersConfig } from '@/shared/composables/useUrlFilters'
 import { filterTags } from '@/shared/utils/tableFilters'
 
 const DeleteModal = defineAsyncComponent(() => import('@/shared/components/modals/DeleteModal.vue'))
@@ -22,8 +18,6 @@ const TagEditModal = defineAsyncComponent(
 const { showUpdated, showDeleted } = useEnhancedToast()
 
 const tags = ref<Tag[]>([])
-const searchQuery = ref('')
-const debouncedSearchQuery = ref('')
 const { run, isLoading } = useAsyncTask()
 const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
 const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
@@ -34,26 +28,12 @@ const showDeleteModal = ref(false)
 const selectedTagId = ref<string | null>(null)
 const editedTag = ref<Tag | null>(null)
 
-// Debounced update of search query
-const debouncedUpdateSearch = useDebounceFn((query: string) => {
-  debouncedSearchQuery.value = query
-}, 300)
+// URL filters with search synchronization
+const urlFilters = useUrlFilters(tagsFiltersConfig)
 
-// Watch for search query changes and apply debounce
-watch(searchQuery, newQuery => {
-  debouncedUpdateSearch(newQuery)
-})
-
-// Handle escape key to clear search
-const handleSearchKeydown = (event: KeyboardEvent) => {
-  if (event.key === 'Escape') {
-    searchQuery.value = ''
-    debouncedSearchQuery.value = ''
-  }
-}
-
+// Filter tags based on URL search
 const filteredTags = computed(() => {
-  return filterTags(tags.value, debouncedSearchQuery.value)
+  return filterTags(tags.value, urlFilters.filters.search)
 })
 
 const handleDelete = () => {
@@ -79,6 +59,17 @@ const handleUpdate = (values: TagFormValues) => {
   )
 }
 
+// Handlers for TagsDataGrid
+const selectEditTag = (tag: Tag) => {
+  editedTag.value = tag
+  showEditModal.value = true
+}
+
+const selectDeleteTag = (tag: Tag) => {
+  selectedTagId.value = tag.id
+  showDeleteModal.value = true
+}
+
 onMounted(() => {
   run(
     () => tagApi.getAll(),
@@ -93,52 +84,13 @@ onMounted(() => {
   <div class="container mx-auto">
     <Header title="Tags" />
 
-    <!-- Toolbar -->
-    <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
-      <div class="flex-1">
-        <Input
-          v-model="searchQuery"
-          placeholder="Search tags..."
-          class="max-w-xs"
-          :disabled="tags.length === 0"
-          @keydown="handleSearchKeydown"
-        >
-        </Input>
-      </div>
-      <Button as-child>
-        <RouterLink to="/tags/new">
-          <Icon icon="radix-icons:plus" class="mr-2 h-4 w-4" />
-          Add Tag
-        </RouterLink>
-      </Button>
-    </div>
-
-    <!-- Tags Grid -->
-    <div class="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
-      <template v-if="isLoading">
-        <ItemSkeleton v-for="n in 4" :key="n" />
-      </template>
-
-      <template v-else>
-        <TagItem
-          v-for="tag in filteredTags"
-          :key="tag.id"
-          :tag="tag"
-          @updateMe="
-            () => {
-              showEditModal = true
-              editedTag = tag
-            }
-          "
-          @deleteMe="
-            id => {
-              showDeleteModal = true
-              selectedTagId = id
-            }
-          "
-        />
-      </template>
-    </div>
+    <TagsDataGrid
+      :filtered-data="filteredTags"
+      :isLoading="isLoading"
+      :url-filters="urlFilters"
+      :onEdit="selectEditTag"
+      :onDelete="selectDeleteTag"
+    />
 
     <!-- Modals -->
     <TagEditModal

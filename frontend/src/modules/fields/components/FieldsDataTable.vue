@@ -6,22 +6,28 @@ import { Button } from '@/shared/ui/button'
 import DataTablePagination from '@/shared/components/data/DataTablePagination.vue'
 import { FieldType } from '@/modules/fields/types'
 import DataTable from '@/shared/components/data/DataTable.vue'
-import { useDataTable } from '@/shared/composables/useDataTable'
 import DataTableLayout from '@/shared/components/data/DataTableLayout.vue'
 import DataTableSkeleton from '@/shared/components/skeletons/DataTableSkeleton.vue'
 import DataTableMultiSelectFilter from '@/shared/components/data/DataTableMultiSelectFilter.vue'
+import type { UrlFiltersReturn, FieldsUrlFilters } from '@/shared/types/urlFilters'
+import { useDataTableWithUrlQuery } from '@/shared/composables/useDataTableWithUrlQuery'
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   isLoading: boolean
+  urlFilters: UrlFiltersReturn<FieldsUrlFilters>
 }>()
 
-const { table } = useDataTable({
-  data: () => props.data,
-  columns: () => props.columns,
-  defaultSorting: [{ id: 'id', desc: true }],
-})
+const { table } = useDataTableWithUrlQuery(
+  {
+    data: () => props.data,
+    columns: () => props.columns,
+    defaultSorting: [{ id: 'id', desc: true }],
+  },
+  props.urlFilters,
+  'fields'
+)
 
 const fieldTypes = Object.values(FieldType)
 </script>

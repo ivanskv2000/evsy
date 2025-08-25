@@ -46,7 +46,7 @@ export function filterMultiField<T>(data: T[], fields: string[], searchQuery: st
  * @returns TanStack Table filter function
  */
 export function createTableFilter<TData>(fields: string[]): FilterFn<TData> {
-  return (row, columnId, filterValue) => {
+  return (row, _columnId, filterValue) => {
     return searchMultiField(row.original, fields, filterValue as string)
   }
 }

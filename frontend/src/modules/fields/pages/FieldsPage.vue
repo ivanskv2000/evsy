@@ -8,6 +8,7 @@ import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { getFieldColumns } from '@/modules/fields/components/fieldColumns'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
+import { useUrlFilters, fieldsFiltersConfig } from '@/shared/composables/useUrlFilters'
 
 const DeleteModal = defineAsyncComponent(() => import('@/shared/components/modals/DeleteModal.vue'))
 const FieldEditModal = defineAsyncComponent(
@@ -23,6 +24,8 @@ const fields = ref<Field[]>([])
 
 const selectedFieldId = ref<number | null>(null)
 const editedField = ref<Field | null>(null)
+
+const urlFilters = useUrlFilters(fieldsFiltersConfig)
 
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
@@ -87,7 +90,12 @@ onMounted(() => {
   <div>
     <Header title="Fields" />
     <div class="container mx-auto">
-      <FieldsDataTable :columns="columns" :data="fields" :isLoading="isLoading" />
+      <FieldsDataTable
+        :columns="columns"
+        :data="fields"
+        :isLoading="isLoading"
+        :url-filters="urlFilters"
+      />
     </div>
 
     <!-- Modals -->

@@ -10,6 +10,7 @@ import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { getEventColumns } from '@/modules/events/components/eventColumns'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import type { EventFormValues } from '@/modules/events/validation/eventSchema'
+import { useUrlFilters, eventsFiltersConfig } from '@/shared/composables/useUrlFilters'
 
 const DeleteModal = defineAsyncComponent(() => import('@/shared/components/modals/DeleteModal.vue'))
 const EventEditModal = defineAsyncComponent(
@@ -27,6 +28,8 @@ const tags = ref<Tag[]>([])
 
 const selectedEventId = ref<number | null>(null)
 const editedEvent = ref<Event | null>(null)
+
+const urlFilters = useUrlFilters(eventsFiltersConfig)
 
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
@@ -99,6 +102,7 @@ onMounted(() => {
         :tags="tags"
         :isLoading="isLoading"
         :isLoadingTags="isLoadingTags"
+        :url-filters="urlFilters"
       />
     </div>
 
