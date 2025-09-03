@@ -25,7 +25,7 @@ services:
     env_file:
       - .env
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     depends_on:
       db:
         condition: service_healthy
@@ -47,7 +47,7 @@ services:
     env_file:
       - .env
     ports:
-      - "3000:80"
+      - "127.0.0.1:3000:80"
     depends_on:
       backend:
         condition: service_healthy
