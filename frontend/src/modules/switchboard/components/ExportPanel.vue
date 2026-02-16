@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import SwitchboardSection from '../layout/SwitchboardSectionLayout.vue'
 import { ref } from 'vue'
+import { useMutation } from '@tanstack/vue-query'
 import { exportData } from '../api'
 import { Button } from '@/shared/ui/button'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { downloadJson } from '@/shared/utils/downloadJson'
 import {
   Select,
@@ -16,23 +16,22 @@ import {
 import type { ExportTarget } from '../types'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 
-const { run, isLoading } = useAsyncTask()
 const { showSuccess } = useEnhancedToast()
 
 const selectedFormat = ref<ExportTarget>('json')
 
-const handleExport = () => {
-  run(
-    () => exportData(selectedFormat.value),
-    data => {
-      if (selectedFormat.value === 'json') {
-        downloadJson(data.data, 'evsy-export.json')
-      } else {
-        console.warn('Export format not implemented yet.')
-      }
-      showSuccess('Exported successfully')
+const { mutate, isPending: isLoading } = useMutation({
+  mutationFn: (format: ExportTarget) => exportData(format),
+  onSuccess: (data, format) => {
+    if (format === 'json') {
+      downloadJson(data.data, 'evsy-export.json')
     }
-  )
+    showSuccess('Exported successfully')
+  }
+})
+
+const handleExport = () => {
+  mutate(selectedFormat.value)
 }
 </script>
 
