@@ -1,47 +1,62 @@
 import { isAxiosError } from 'axios'
 
-type ErrorResponse =
-  | {
-      detail?: string | { msg: string }[] | { msg?: string; type?: string }
-      message?: string
-      title?: string
-    }
-  | { [key: string]: unknown }
+// Type definition that mirrors the backend's ErrorResponse Pydantic model
+interface ApiErrorResponse {
+  code: string
+  message: string
+  details?: {
+    loc: (string | number)[]
+    msg: string
+    type: string
+  }[]
+}
+
+/**
+ * Type guard to check if the given data object conforms to the ApiErrorResponse structure.
+ */
+function isApiErrorResponse(data: unknown): data is ApiErrorResponse {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    'code' in data &&
+    'message' in data &&
+    typeof (data as ApiErrorResponse).code === 'string' &&
+    typeof (data as ApiErrorResponse).message === 'string'
+  )
+}
 
 /**
  * Extracts a user-friendly message from an unknown error.
- * Handles Axios errors, Pydantic validation errors, network issues, and generic JS errors.
+ * Designed to work with the standardized API error format.
  */
-export function parseApiError(error: unknown, fallbackMessage = 'Something went wrong'): string {
-  if (isAxiosError<ErrorResponse>(error)) {
-    const status = error.response?.status
-
+export function parseApiError(error: unknown, fallbackMessage = 'An unexpected error occurred'): string {
+  if (isAxiosError(error)) {
+    // Handle network errors where there's no response from the server
     if (!error.response) {
-      return 'Network error: Failed to connect to server'
+      return 'Network Error: Could not connect to the server.'
     }
 
     const data = error.response.data
 
-    if (typeof data?.detail === 'string') {
-      return `${status ?? ''} ${data.detail}`
-    } else if (Array.isArray(data?.detail)) {
-      const firstError = data.detail[0]
-      return `${status ?? ''} ${firstError?.msg ?? fallbackMessage}`
-    } else if (data?.message) {
-      return `${status ?? ''} ${data.message}`
-    } else if (data?.title) {
-      return `${status ?? ''} ${data.title}`
-    } else if (
-      data?.detail &&
-      typeof data.detail === 'object' &&
-      'msg' in data.detail &&
-      typeof data.detail.msg === 'string'
-    ) {
-      return `${status ?? ''} ${data.detail.msg}`
+    // Check if the error response matches our standardized format
+    if (isApiErrorResponse(data)) {
+      // For validation errors, provide a more specific message from the details
+      if (data.code === 'validation_error' && data.details?.length) {
+        const firstDetail = data.details[0]
+        // Example: "name: Field required"
+        const fieldName = firstDetail.loc.slice(-1)[0]
+        return `${fieldName}: ${firstDetail.msg}`
+      }
+      // For all other standard API errors, use the main message
+      return data.message
     }
-  } else if (error instanceof Error) {
+  }
+
+  // Handle generic JavaScript errors (e.g., new Error('...'))
+  if (error instanceof Error) {
     return error.message
   }
 
+  // If the error is in an unknown format, return the fallback message
   return fallbackMessage
 }

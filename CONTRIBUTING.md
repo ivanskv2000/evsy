@@ -23,6 +23,7 @@ You can open an [issue](https://github.com/ivanskv2000/evsy/issues) — we’d l
 You can setup both the backend and frontend in dev mode with hot-reloading:
 
 ```bash
+cp .env.example .env
 make dev
 ```
 

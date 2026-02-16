@@ -4,8 +4,21 @@ import MainLayout from '@/shared/components/layout/MainLayout.vue'
 import { Toaster } from '@/shared/ui/sonner'
 import { useAuthStore } from '@/modules/auth/stores/useAuthStore'
 import router from './router'
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
+import { useEnhancedToast } from './shared/composables/useEnhancedToast'
+import { queryClient } from './shared/plugins/vue-query'
 
 const auth = useAuthStore()
+const { showError } = useEnhancedToast()
+
+const globalErrorHandler = (error: unknown) => {
+  showError(error)
+}
+
+const queryCache = queryClient.getQueryCache()
+const mutationCache = queryClient.getMutationCache()
+queryCache.config.onError = globalErrorHandler
+mutationCache.config.onError = globalErrorHandler
 
 if (auth.token) {
   auth.fetchCurrentUser().catch(() => {
@@ -33,4 +46,6 @@ window.addEventListener('message', async event => {
       </Transition>
     </RouterView>
   </MainLayout>
+
+  <VueQueryDevtools />
 </template>

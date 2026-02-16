@@ -1,36 +1,59 @@
-import { useApiErrorToast, useSuccessToast, useInfoToast } from '@/shared/utils/toast'
+import { toast } from 'vue-sonner'
 import { parseApiError } from '@/shared/utils/parseApiError'
 
+/**
+ * A composable that provides enhanced toast notifications,
+ * including automatic API error parsing.
+ */
 export function useEnhancedToast() {
-  const { showApiErrorToast } = useApiErrorToast()
-  const { showSuccessToast } = useSuccessToast()
-  const { showInfoToast } = useInfoToast()
+  /**
+   * Shows an error toast. If the error is from an API call,
+   * it will be parsed into a user-friendly message.
+   * @param error The error object (can be of unknown type).
+   * @param title The title for the toast.
+   */
+  function showError(error: unknown, title = 'An Error Occurred') {
+    const description = parseApiError(error)
+    toast.error(title, {
+      description,
+      duration: 5000, // Give users a bit more time to read errors
+    })
+  }
+
+  /**
+   * Shows a success toast.
+   * @param title The title for the toast.
+   * @param description Optional description.
+   */
+  function showSuccess(title = 'Success', description?: string) {
+    toast.success(title, {
+      description,
+      duration: 3000,
+    })
+  }
+
+  /**
+   * Shows an info toast.
+   * @param title The title for the toast.
+   * @param description Optional description.
+   */
+  function showInfo(title = 'Info', description?: string) {
+    toast.info(title, {
+      description,
+      duration: 3000,
+    })
+  }
 
   return {
-    // Success messages
-    showSuccess: (message: string) => showSuccessToast(message, ''),
-    showCreated: (entity: string) => showSuccessToast(`${entity} created successfully!`),
-    showUpdated: (entity: string) => showSuccessToast(`${entity} updated successfully!`),
-    showDeleted: (entity: string) => showSuccessToast(`${entity} deleted successfully!`),
+    showError,
+    showSuccess,
+    showInfo,
 
-    // Info messages
-    showInfo: (message: string) => showInfoToast(message),
-    showCopied: (item: string) => showInfoToast(`${item} copied to clipboard`),
-
-    // Error handling
-    showError: (error: unknown, fallbackMessage = 'Something went wrong') => {
-      const message = parseApiError(error, fallbackMessage)
-      showApiErrorToast(message)
-
-      if (import.meta.env.VITE_ENV === 'dev') {
-        console.error('[API ERROR]', error)
-      }
-    },
-
-    // Common error messages
-    showCopyError: (item: string) => showApiErrorToast(`Failed to copy ${item}`),
-    showDeleteError: (entity: string) => showApiErrorToast(`Failed to delete ${entity}`),
-    showUpdateError: (entity: string) => showApiErrorToast(`Failed to update ${entity}`),
-    showCreateError: (entity: string) => showApiErrorToast(`Failed to create ${entity}`),
+    // Common toasts utilities
+    showCreated: (entity: string) => showSuccess(`${entity} created successfully!`),
+    showUpdated: (entity: string) => showSuccess(`${entity} updated successfully!`),
+    showDeleted: (entity: string) => showSuccess(`${entity} deleted successfully!`),
+    showCopied: (item: string) => showInfo(`${item} copied to clipboard`),
+    showCopyError: (item: string) => showInfo(`Failed to copy ${item}`),
   }
 }

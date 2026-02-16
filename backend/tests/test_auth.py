@@ -21,7 +21,7 @@ def test_signup_duplicate_email(client, auth_data):
     # Repeat signup to trigger duplicate error
     response = client.post("/v1/auth/signup", json=auth_data)
     assert response.status_code == 400
-    assert "already exists" in response.json()["detail"].lower()
+    assert "already exists" in response.json()["message"].lower()
 
 
 def test_login_with_valid_credentials(client, auth_data):
@@ -38,7 +38,7 @@ def test_login_with_invalid_password(client, auth_data):
         json={"email": auth_data["email"], "password": "wrongpassword"},
     )
     assert response.status_code == 401
-    assert "invalid credentials" in response.json()["detail"].lower()
+    assert "invalid credentials" in response.json()["message"].lower()
 
 
 def test_login_with_unknown_email(client):
@@ -47,7 +47,7 @@ def test_login_with_unknown_email(client):
         json={"email": "unknown@example.com", "password": "irrelevant"},
     )
     assert response.status_code == 401
-    assert "invalid credentials" in response.json()["detail"].lower()
+    assert "invalid credentials" in response.json()["message"].lower()
 
 
 def test_me_requires_auth(client):

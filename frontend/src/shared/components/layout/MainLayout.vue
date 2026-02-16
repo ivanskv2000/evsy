@@ -2,6 +2,7 @@
 import MainLogo from '@/shared/components/layout/MainLogo.vue'
 import NavigationMenu from '@/shared/components/layout/NavigationMenu.vue'
 import DropdownMenu from '@/shared/components/layout/DropdownMenu.vue'
+import SyncStatusButton from '@/shared/components/layout/SyncStatusButton.vue'
 import LoveFooter from './LoveFooter.vue'
 import { useAppConfig } from '@/shared/composables/useAppConfig'
 import { useAuthStore } from '@/modules/auth/stores/useAuthStore'
@@ -23,7 +24,7 @@ const { isDemo, isDev } = useAppConfig()
           <div v-if="isDev || isDemo" class="text-muted-foreground font-mono text-sm font-semibold">
             {{ isDev ? 'DEV' : 'DEMO' }}
           </div>
-          <!-- Dropdown Menu -->
+          <SyncStatusButton/>
           <DropdownMenu />
         </div>
       </div>

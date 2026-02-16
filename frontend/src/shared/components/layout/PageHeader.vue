@@ -34,7 +34,6 @@ const goBack = () => {
       </h1>
     </div>
 
-    <!-- Пустой элемент для симметрии -->
     <div v-if="backLink || false" class="w-[30px]"></div>
   </div>
 </template>

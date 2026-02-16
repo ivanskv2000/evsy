@@ -56,7 +56,13 @@ def get_field_route(
 ):
     db_field = field_crud.get_field(db=db, field_id=field_id)
     if db_field is None:
-        raise HTTPException(status_code=404, detail="Field not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "resource_not_found",
+                "message": f"Field with id {field_id} not found",
+            },
+        )
 
     if with_event_count:
         count = field_crud.get_field_event_count(db=db, field_id=field_id)
@@ -81,7 +87,13 @@ def update_field_route(
 ):
     db_field = field_crud.update_field(db=db, field_id=field_id, field=field)
     if db_field is None:
-        raise HTTPException(status_code=404, detail="Field not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "resource_not_found",
+                "message": f"Field with id {field_id} not found",
+            },
+        )
     return db_field
 
 
@@ -98,5 +110,11 @@ def update_field_route(
 def delete_field_route(field_id: int, db: Session = Depends(get_db)):
     db_field = field_crud.delete_field(db=db, field_id=field_id)
     if db_field is None:
-        raise HTTPException(status_code=404, detail="Field not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "resource_not_found",
+                "message": f"Field with id {field_id} not found",
+            },
+        )
     return db_field

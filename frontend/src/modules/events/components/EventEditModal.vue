@@ -9,12 +9,9 @@ import {
 import type { EventFormValues } from '@/modules/events/validation/eventSchema.ts'
 import EventForm from './EventForm.vue'
 import type { Event } from '@/modules/events/types'
-import type { Field } from '@/modules/fields/types'
 import { fieldApi } from '@/modules/fields/api'
-import { ref, onMounted } from 'vue'
-import type { Tag } from '@/modules/tags/types'
 import { tagApi } from '@/modules/tags/api'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
+import { useQuery } from '@tanstack/vue-query'
 
 defineProps<{
   description?: string
@@ -25,18 +22,14 @@ defineProps<{
   isSaving?: boolean
 }>()
 
-const fields = ref<Field[]>([])
-const tags = ref<Tag[]>([])
-const { run: loadFields, isLoading: isLoadingFields } = useAsyncTask()
-const { run: loadTags, isLoading: isLoadingTags } = useAsyncTask()
+const { data: fields, isLoading: isLoadingFields } = useQuery({
+  queryKey: ['fields'],
+  queryFn: () => fieldApi.getAll(),
+})
 
-onMounted(() => {
-  loadFields(async () => {
-    fields.value = await fieldApi.getAll()
-  })
-  loadTags(async () => {
-    tags.value = await tagApi.getAll()
-  })
+const { data: tags, isLoading: isLoadingTags } = useQuery({
+  queryKey: ['tags'],
+  queryFn: () => tagApi.getAll(),
 })
 </script>
 
@@ -52,8 +45,8 @@ onMounted(() => {
       <EventForm
         v-if="event"
         :event="event"
-        :availableFields="fields"
-        :availableTags="tags"
+        :availableFields="fields ?? []"
+        :availableTags="tags ?? []"
         :isLoadingFields="isLoadingFields"
         :isLoadingTags="isLoadingTags"
         :onSubmit="onSubmit"
