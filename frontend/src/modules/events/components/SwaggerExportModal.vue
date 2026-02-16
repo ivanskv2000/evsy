@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, watch } from 'vue'
+import { useQuery } from '@tanstack/vue-query'
 import { useClipboard } from '@vueuse/core'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import {
@@ -13,7 +14,6 @@ import { Label } from '@/shared/ui/label'
 import { Button } from '@/shared/ui/button'
 import { Switch } from '@/shared/ui/switch'
 import { api } from '@/shared/utils/api'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { Icon } from '@iconify/vue'
 
 const props = defineProps<{
@@ -31,7 +31,24 @@ const settings = reactive({
 
 const preview = ref('')
 const updates = ref(0)
-const { run: fetchSchemaPreview, isLoading } = useAsyncTask()
+
+const { isLoading, refetch } = useQuery({
+  queryKey: ['eventSchema', props.eventId, settings],
+  queryFn: async () => {
+    const params = {
+      include_descriptions: settings.includeDescriptions,
+      include_examples: settings.includeExamples,
+      additional_properties: settings.additionalProperties,
+    }
+    const format = settings.format
+    const response = await api.get(`/events/${props.eventId}/schema.${format}`, {
+      params,
+      responseType: 'text',
+    })
+    return format === 'json' ? JSON.stringify(JSON.parse(response.data), null, 2) : response.data
+  },
+  enabled: false,
+})
 
 const { copy: copyJson, isSupported } = useClipboard({ source: preview })
 const { showCopied, showCopyError } = useEnhancedToast()
@@ -44,24 +61,12 @@ const handleCopy = async () => {
   }
 }
 
-function handleFetch() {
-  const params = {
-    include_descriptions: settings.includeDescriptions,
-    include_examples: settings.includeExamples,
-    additional_properties: settings.additionalProperties,
-  }
-  const format = settings.format
-
-  fetchSchemaPreview(async () => {
-    const response = await api.get(`/events/${props.eventId}/schema.${format}`, {
-      params,
-      responseType: 'text',
-    })
-
-    preview.value =
-      format === 'json' ? JSON.stringify(JSON.parse(response.data), null, 2) : response.data
+async function handleFetch() {
+  const { data } = await refetch()
+  if (data) {
+    preview.value = data
     updates.value += 1
-  })
+  }
 }
 
 watch(
@@ -136,8 +141,6 @@ watch(
 
         <!-- Preview Column -->
         <div>
-          <!-- <Textarea class="h-[400px] resize-none font-mono text-sm" :value="preview" readonly /> -->
-
           <div
             side="bottom"
             @click.stop
