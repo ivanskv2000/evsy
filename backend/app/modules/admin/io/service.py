@@ -5,7 +5,6 @@ from sqlalchemy.orm import Session
 
 from app.modules.events.models import Event
 from app.modules.fields.models import Field
-from app.modules.tags.crud import get_or_create_tags
 from app.modules.tags.models import Tag
 from app.shared.models import EventField, EventTag
 from app.shared.service import assert_db_empty
@@ -82,14 +81,19 @@ def import_bundle(bundle: ImportBundle, db: Session):
             example=field_data.example,
         )
         db.add(field)
-        db.flush()  # Ensures ID is available before linking
+        db.flush()
         field_map[field.name] = field
 
-    all_tag_ids = {tag.id for tag in bundle.tags}
+    tag_definitions = {tag.id: tag for tag in bundle.tags}
+
+    all_tag_ids = set(tag_definitions.keys())
     for event in bundle.events:
         all_tag_ids.update(event.tags)
 
-    _ = get_or_create_tags(db, list(all_tag_ids))
+    for tag_id in all_tag_ids:
+        tag_def = tag_definitions.get(tag_id)
+        db.add(Tag(id=tag_id, description=tag_def.description if tag_def else None))
+
     db.flush()
 
     for event_data in bundle.events:

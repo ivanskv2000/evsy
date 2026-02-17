@@ -6,16 +6,11 @@ import { Button } from '@/shared/ui/button'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import type { ResetPreview } from '../types'
 import { Badge } from '@/shared/ui/badge'
-import { Icon } from '@iconify/vue'
 
 const queryClient = useQueryClient()
 const { showSuccess } = useEnhancedToast()
 
-const {
-  data: preview,
-  isLoading: isFetching,
-  refetch: fetchPreview,
-} = useQuery({
+const { data: preview } = useQuery({
   queryKey: ['resetPreview'],
   queryFn: () => resetDatabase(true),
   select: data => (data as ResetPreview).would_delete,
@@ -57,16 +52,6 @@ const { mutate: handleReset, isPending: isResetting } = useMutation({
               <span v-if="preview" :key="preview.tags">{{ preview.tags }} tags</span>
             </Transition>
           </Badge>
-          <Button
-            variant="ghost"
-            size="icon"
-            :disabled="isFetching"
-            @click="fetchPreview"
-            title="Refresh counts"
-          >
-            <Icon v-if="isFetching" icon="radix-icons:reload" class="h-4 w-4 animate-spin" />
-            <Icon v-else icon="radix-icons:reload" class="h-4 w-4" />
-          </Button>
         </div>
       </div>
     </template>
