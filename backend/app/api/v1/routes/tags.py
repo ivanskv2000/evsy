@@ -50,7 +50,13 @@ def list_tags_route(db: Session = Depends(get_db)):
 def get_tag_route(tag_id: str, db: Session = Depends(get_db)):
     db_tag = tag_crud.get_tag(db=db, tag_id=tag_id)
     if db_tag is None:
-        raise HTTPException(status_code=404, detail="Tag not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "resource_not_found",
+                "message": f"Tag with id {tag_id!r} not found",
+            },
+        )
     return db_tag
 
 
@@ -68,7 +74,13 @@ def get_tag_route(tag_id: str, db: Session = Depends(get_db)):
 def update_tag_route(tag_id: str, tag: TagCreate, db: Session = Depends(get_db)):
     db_tag = tag_crud.update_tag(db=db, tag_id=tag_id, tag=tag)
     if db_tag is None:
-        raise HTTPException(status_code=404, detail="Tag not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "resource_not_found",
+                "message": f"Tag with id {tag_id!r} not found",
+            },
+        )
     return db_tag
 
 
@@ -85,5 +97,11 @@ def update_tag_route(tag_id: str, tag: TagCreate, db: Session = Depends(get_db))
 def delete_tag_route(tag_id: str, db: Session = Depends(get_db)):
     db_tag = tag_crud.delete_tag(db=db, tag_id=tag_id)
     if db_tag is None:
-        raise HTTPException(status_code=404, detail="Tag not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "resource_not_found",
+                "message": f"Tag with id {tag_id!r} not found",
+            },
+        )
     return db_tag

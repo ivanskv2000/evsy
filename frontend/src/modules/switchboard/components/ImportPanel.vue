@@ -1,17 +1,31 @@
 <script setup lang="ts">
 import SwitchboardSection from '../layout/SwitchboardSectionLayout.vue'
 import { ref } from 'vue'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { importData } from '../api'
 import { Button } from '@/shared/ui/button'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { Input } from '@/shared/ui/input'
 
 const fileInput = ref<HTMLInputElement | null>(null)
 const selectedFile = ref<File | null>(null)
 
-const { run, isLoading } = useAsyncTask()
+const queryClient = useQueryClient()
 const { showSuccess } = useEnhancedToast()
+
+const { mutate, isPending: isLoading } = useMutation({
+  mutationFn: async (file: File) => {
+    const text = await file.text()
+    const parsed = JSON.parse(text)
+    return importData(parsed, 'json')
+  },
+  onSuccess: () => {
+    showSuccess('Import successful')
+    queryClient.invalidateQueries()
+    selectedFile.value = null
+    if (fileInput.value) fileInput.value.value = ''
+  },
+})
 
 const handleFileSelect = (event: Event) => {
   const target = event.target as HTMLInputElement
@@ -22,16 +36,7 @@ const handleFileSelect = (event: Event) => {
 
 const handleImport = () => {
   if (!selectedFile.value) return
-
-  run(async () => {
-    const text = await selectedFile.value!.text()
-    const parsed = JSON.parse(text)
-    await importData(parsed, 'json')
-
-    showSuccess('Import successful')
-    selectedFile.value = null
-    fileInput.value!.value = ''
-  })
+  mutate(selectedFile.value)
 }
 </script>
 

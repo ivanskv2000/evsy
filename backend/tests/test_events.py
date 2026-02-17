@@ -37,7 +37,7 @@ def test_create_event_with_invalid_field(auth_client):
         },
     )
     assert response.status_code == 400
-    assert "fields" in response.json()["detail"].lower()
+    assert "fields" in response.json()["message"].lower()
 
 
 def test_create_event_with_new_tag(auth_client):

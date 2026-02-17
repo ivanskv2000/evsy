@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import TagsDataGrid from '../components/TagsDataGrid.vue'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
 import { tagApi } from '@/modules/tags/api'
 import type { Tag } from '@/modules/tags/types'
-import { ref, onMounted, defineAsyncComponent, computed } from 'vue'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
+import { ref, defineAsyncComponent, computed } from 'vue'
 import type { TagFormValues } from '@/modules/tags/validation/tagSchema'
 import Header from '@/shared/components/layout/PageHeader.vue'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
@@ -15,51 +15,50 @@ const TagEditModal = defineAsyncComponent(
   () => import('@/modules/tags/components/TagEditModal.vue')
 )
 
+const queryClient = useQueryClient()
 const { showUpdated, showDeleted } = useEnhancedToast()
-
-const tags = ref<Tag[]>([])
-const { run, isLoading } = useAsyncTask()
-const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
-const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
-
-const showEditModal = ref(false)
-const showDeleteModal = ref(false)
 
 const selectedTagId = ref<string | null>(null)
 const editedTag = ref<Tag | null>(null)
 
-// URL filters with search synchronization
+const showEditModal = ref(false)
+const showDeleteModal = ref(false)
+
 const urlFilters = useUrlFilters(tagsFiltersConfig)
 
-// Filter tags based on URL search
-const filteredTags = computed(() => {
-  return filterTags(tags.value, urlFilters.filters.search)
+const { data: tags, isLoading } = useQuery({
+  queryKey: ['tags'],
+  queryFn: () => tagApi.getAll(),
+})
+
+const { mutate: deleteTag, isPending: isDeleting } = useMutation({
+  mutationFn: (id: string) => tagApi.delete(id),
+  onSuccess: () => {
+    showDeleted('Tag')
+    queryClient.invalidateQueries({ queryKey: ['tags'] })
+  },
+})
+
+const { mutate: updateTag, isPending: isSaving } = useMutation({
+  mutationFn: ({ id, values }: { id: string; values: TagFormValues }) => tagApi.update(id, values),
+  onSuccess: () => {
+    showUpdated('Tag')
+    queryClient.invalidateQueries({ queryKey: ['tags'] })
+  },
 })
 
 const handleDelete = () => {
   if (!selectedTagId.value) return
-
-  runDeleteTask(async () => {
-    await tagApi.delete(selectedTagId.value!)
-    showDeleted('Tag')
-    tags.value = tags.value.filter(tag => tag.id !== selectedTagId.value)
-    selectedTagId.value = null
-    showDeleteModal.value = false
-  })
+  deleteTag(selectedTagId.value)
+  showDeleteModal.value = false
 }
 
 const handleUpdate = (values: TagFormValues) => {
-  runUpdateTask(
-    () => tagApi.update(editedTag.value!.id, values),
-    updated => {
-      showUpdated('Tag')
-      tags.value = tags.value.map(tag => (tag.id === updated.id ? updated : tag))
-      showEditModal.value = false
-    }
-  )
+  if (!editedTag.value) return
+  updateTag({ id: editedTag.value.id, values })
+  showEditModal.value = false
 }
 
-// Handlers for TagsDataGrid
 const selectEditTag = (tag: Tag) => {
   editedTag.value = tag
   showEditModal.value = true
@@ -70,13 +69,8 @@ const selectDeleteTag = (tag: Tag) => {
   showDeleteModal.value = true
 }
 
-onMounted(() => {
-  run(
-    () => tagApi.getAll(),
-    data => {
-      tags.value = data
-    }
-  )
+const filteredTags = computed(() => {
+  return filterTags(tags.value ?? [], urlFilters.filters.search)
 })
 </script>
 

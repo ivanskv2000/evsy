@@ -42,7 +42,13 @@ def create_event_route(event: EventCreate, db: Session = Depends(get_db)):
     db_fields = get_fields_by_ids(db, event.fields)
 
     if len(db_fields) != len(event.fields):
-        raise HTTPException(status_code=400, detail="One or more fields do not exist.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={
+                "code": "invalid_reference",
+                "message": "One or more referenced fields do not exist.",
+            },
+        )
 
     get_or_create_tags(db, event.tags)
     db_event = event_crud.create_event(db=db, event=event)
@@ -63,7 +69,13 @@ def create_event_route(event: EventCreate, db: Session = Depends(get_db)):
 def get_event_route(event_id: int, db: Session = Depends(get_db)):
     db_event = event_crud.get_event(db=db, event_id=event_id)
     if db_event is None:
-        raise HTTPException(status_code=404, detail="Event not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "resource_not_found",
+                "message": f"Event with id {event_id} not found",
+            },
+        )
     return db_event
 
 
@@ -100,12 +112,24 @@ def update_event_route(
     db_fields = get_fields_by_ids(db, event.fields)
 
     if len(db_fields) != len(event.fields):
-        raise HTTPException(status_code=400, detail="One or more fields do not exist.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={
+                "code": "invalid_reference",
+                "message": "One or more referenced fields do not exist.",
+            },
+        )
 
     get_or_create_tags(db, event.tags)
     db_event = event_crud.update_event(db=db, event_id=event_id, event=event)
     if db_event is None:
-        raise HTTPException(status_code=404, detail="Event not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "resource_not_found",
+                "message": f"Event with id {event_id} not found",
+            },
+        )
     return db_event
 
 
@@ -122,7 +146,13 @@ def update_event_route(
 def delete_event_route(event_id: int, db: Session = Depends(get_db)):
     db_event = event_crud.delete_event(db=db, event_id=event_id)
     if db_event is None:
-        raise HTTPException(status_code=404, detail="Event not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "resource_not_found",
+                "message": f"Event with id {event_id} not found",
+            },
+        )
     return db_event
 
 
@@ -151,7 +181,13 @@ def get_event_json_schema(
 ):
     db_event = event_crud.get_event(db=db, event_id=event_id)
     if not db_event:
-        raise HTTPException(status_code=404, detail="Event not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "resource_not_found",
+                "message": f"Event with id {event_id} not found",
+            },
+        )
 
     event = EventOut.model_validate(db_event)
     schema = generate_json_schema_for_event(
@@ -187,7 +223,13 @@ def get_event_yaml_schema(
 ):
     db_event = event_crud.get_event(db=db, event_id=event_id)
     if not db_event:
-        raise HTTPException(status_code=404, detail="Event not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "resource_not_found",
+                "message": f"Event with id {event_id} not found",
+            },
+        )
 
     event = EventOut.model_validate(db_event)
     schema = generate_json_schema_for_event(

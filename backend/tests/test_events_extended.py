@@ -119,7 +119,7 @@ def test_get_nonexistent_event(auth_client):
     """Test getting event that doesn't exist"""
     response = auth_client.get("/v1/events/99999")
     assert response.status_code == 404
-    assert "not found" in response.json()["detail"].lower()
+    assert "not found" in response.json()["message"].lower()
 
 
 def test_update_nonexistent_event(auth_client):

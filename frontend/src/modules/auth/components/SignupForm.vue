@@ -3,8 +3,8 @@ import { useRouter, useRoute } from 'vue-router'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { signupSchema, type SignupFormValues } from '@/modules/auth/validation/signupSchema'
+import { useMutation } from '@tanstack/vue-query'
 import { useAuthStore } from '@/modules/auth/stores/useAuthStore'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 
 import { Input } from '@/shared/ui/input'
@@ -19,7 +19,6 @@ const auth = useAuthStore()
 const router = useRouter()
 const route = useRoute()
 const { showSuccess } = useEnhancedToast()
-const { run: runSignup, isLoading } = useAsyncTask()
 
 const redirect = route.query.redirect as string | undefined
 
@@ -27,18 +26,18 @@ const { handleSubmit } = useForm<SignupFormValues>({
   validationSchema: toTypedSchema(signupSchema),
 })
 
-const onSubmit = handleSubmit(values => {
-  runSignup(
-    () =>
-      auth
-        .signup(values.email, values.password)
-        .then(() => auth.login(values.email, values.password)),
-    () => {
-      showSuccess('Account created successfully! You are now logged in.')
-      router.push(redirect || '/events')
-    }
-  )
+const { mutate: runSignup, isPending: isLoading } = useMutation({
+  mutationFn: (values: SignupFormValues) =>
+    auth
+      .signup(values.email, values.password)
+      .then(() => auth.login(values.email, values.password)),
+  onSuccess: () => {
+    showSuccess('Account created successfully! You are now logged in.')
+    router.push(redirect || '/events')
+  },
 })
+
+const onSubmit = handleSubmit(values => runSignup(values))
 </script>
 
 <template>

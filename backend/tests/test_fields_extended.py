@@ -210,7 +210,7 @@ def test_get_nonexistent_field(auth_client):
     """Test getting field that doesn't exist"""
     response = auth_client.get("/v1/fields/99999")
     assert response.status_code == 404
-    assert "not found" in response.json()["detail"].lower()
+    assert "not found" in response.json()["message"].lower()
 
 
 def test_update_nonexistent_field(auth_client):

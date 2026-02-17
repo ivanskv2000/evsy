@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import type { Field } from '@/modules/fields/types'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
 import FieldDetailsCard from '@/modules/fields/components/FieldDetailsCard.vue'
 import { fieldApi } from '@/modules/fields/api'
 import Header from '@/shared/components/layout/PageHeader.vue'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import DetailsCardSkeleton from '@/shared/components/skeletons/DetailsCardSkeleton.vue'
@@ -17,44 +16,44 @@ const FieldEditModal = defineAsyncComponent(
 
 const route = useRoute()
 const router = useRouter()
-const field = ref<Field | null>(null)
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
 
-const { run, isLoading } = useAsyncTask()
-const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
-const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
-
+const queryClient = useQueryClient()
 const { showDeleted, showUpdated } = useEnhancedToast()
+const fieldId = Number(route.params.id)
+
+const { data: field, isLoading } = useQuery({
+  queryKey: ['fields', fieldId],
+  queryFn: () => fieldApi.getById(fieldId, { with_event_count: true }),
+})
+
+const { mutate: deleteField, isPending: isDeleting } = useMutation({
+  mutationFn: () => fieldApi.delete(fieldId),
+  onSuccess: () => {
+    showDeleted('Field')
+    queryClient.invalidateQueries({ queryKey: ['fields'] })
+    router.push('/fields')
+  },
+})
+
+const { mutate: updateField, isPending: isSaving } = useMutation({
+  mutationFn: (values: FieldFormValues) => fieldApi.update(fieldId, values),
+  onSuccess: () => {
+    showUpdated('Field')
+    queryClient.invalidateQueries({ queryKey: ['fields', fieldId] })
+    queryClient.invalidateQueries({ queryKey: ['fields'] })
+    showEditModal.value = false
+  },
+})
 
 const handleDelete = () => {
-  runDeleteTask(async () => {
-    await fieldApi.delete(field.value!.id)
-    showDeleted('Field')
-    router.push('/fields')
-  })
+  deleteField()
 }
 
 const handleUpdate = (values: FieldFormValues) => {
-  runUpdateTask(
-    () => fieldApi.update(field.value!.id, values),
-    updated => {
-      showUpdated('Field')
-      field.value = updated
-      showEditModal.value = false
-    }
-  )
+  updateField(values)
 }
-
-onMounted(() => {
-  const id = Number(route.params.id)
-  run(
-    () => fieldApi.getById(id, { with_event_count: true }),
-    result => {
-      if (result) field.value = result
-    }
-  )
-})
 </script>
 
 <template>

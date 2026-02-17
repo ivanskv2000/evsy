@@ -1,25 +1,29 @@
 <script setup lang="ts">
 import FieldForm from '@/modules/fields/components/FieldForm.vue'
 import { useRouter } from 'vue-router'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import { fieldApi } from '@/modules/fields/api'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
+import type { Field } from '@/modules/fields/types'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
 import Header from '@/shared/components/layout/PageHeader.vue'
 import { Card, CardContent } from '@/shared/ui/card'
 
-const { isLoading, run } = useAsyncTask()
 const { showCreated } = useEnhancedToast()
 const router = useRouter()
+const queryClient = useQueryClient()
+
+const { mutate: createField, isPending: isLoading } = useMutation({
+  mutationFn: (values: FieldFormValues) => fieldApi.create(values),
+  onSuccess: (createdField: Field) => {
+    queryClient.invalidateQueries({ queryKey: ['fields'] })
+    router.push(`/fields/${createdField.id}`)
+    showCreated('Field')
+  },
+})
 
 const onSubmit = (values: FieldFormValues) => {
-  run(
-    () => fieldApi.create(values),
-    created => {
-      router.push(`/fields/${created.id}`)
-      showCreated('Field')
-    }
-  )
+  createField(values)
 }
 </script>
 

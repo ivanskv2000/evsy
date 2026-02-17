@@ -4,8 +4,8 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useAuthStore } from '@/modules/auth/stores/useAuthStore'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import { loginSchema, type LoginFormValues } from '@/modules/auth/validation/loginSchema'
+import { useMutation } from '@tanstack/vue-query'
 
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
@@ -19,7 +19,6 @@ const router = useRouter()
 const route = useRoute()
 const auth = useAuthStore()
 const { showSuccess } = useEnhancedToast()
-const { run: runLogin, isLoading } = useAsyncTask()
 
 const redirect = route.query.redirect as string | undefined
 
@@ -27,15 +26,15 @@ const { handleSubmit } = useForm<LoginFormValues>({
   validationSchema: toTypedSchema(loginSchema),
 })
 
-const onSubmit = handleSubmit(values => {
-  runLogin(
-    () => auth.login(values.email, values.password),
-    () => {
-      showSuccess('Successfully logged in!')
-      router.push(redirect || '/events')
-    }
-  )
+const { mutate: runLogin, isPending: isLoading } = useMutation({
+  mutationFn: (values: LoginFormValues) => auth.login(values.email, values.password),
+  onSuccess: () => {
+    showSuccess('Successfully logged in!')
+    router.push(redirect || '/events')
+  },
 })
+
+const onSubmit = handleSubmit(values => runLogin(values))
 </script>
 
 <template>
@@ -53,7 +52,7 @@ const onSubmit = handleSubmit(values => {
 
       <!-- Divider -->
       <div
-        v-if="!isDemo"
+        v-if="!isDemo && auth.availableProviders.length"
         class="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t"
       >
         <span class="bg-background text-muted-foreground relative z-10 px-2">

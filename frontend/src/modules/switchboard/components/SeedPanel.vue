@@ -1,19 +1,22 @@
 <script setup lang="ts">
 import SwitchboardSection from '../layout/SwitchboardSectionLayout.vue'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { seedDatabase } from '../api'
 import { Button } from '@/shared/ui/button'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 
-const { run, isLoading } = useAsyncTask()
+const queryClient = useQueryClient()
 const { showSuccess } = useEnhancedToast()
 
-const handleSeed = () => {
-  run(async () => {
-    await seedDatabase()
+const { mutate: handleSeed, isPending: isLoading } = useMutation({
+  mutationFn: () => seedDatabase(),
+  onSuccess: () => {
     showSuccess('Database seeded successfully')
-  })
-}
+    // Invalidate all queries to force a refetch across the app,
+    // ensuring components like the ResetPanel preview are updated.
+    queryClient.invalidateQueries()
+  },
+})
 </script>
 
 <template>

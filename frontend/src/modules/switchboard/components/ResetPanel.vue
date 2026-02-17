@@ -1,39 +1,33 @@
 <script setup lang="ts">
 import SwitchboardSection from '../layout/SwitchboardSectionLayout.vue'
-import { ref, onMounted } from 'vue'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
 import { resetDatabase } from '../api'
 import { Button } from '@/shared/ui/button'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { ResetPreview } from '../types'
 import { Badge } from '@/shared/ui/badge'
 import { Icon } from '@iconify/vue'
 
-const preview = ref<{ events: number; fields: number; tags: number } | null>(null)
-
-const { run: runResetTask, isLoading: isResetting } = useAsyncTask()
-const { run: runFetchTask, isLoading: isFetching } = useAsyncTask()
-
+const queryClient = useQueryClient()
 const { showSuccess } = useEnhancedToast()
 
-const fetchPreview = () => {
-  runFetchTask(
-    () => resetDatabase(true),
-    result => {
-      if (result) preview.value = (result as ResetPreview).would_delete
-    }
-  )
-}
+const {
+  data: preview,
+  isLoading: isFetching,
+  refetch: fetchPreview,
+} = useQuery({
+  queryKey: ['resetPreview'],
+  queryFn: () => resetDatabase(true),
+  select: data => (data as ResetPreview).would_delete,
+})
 
-const handleReset = () => {
-  runResetTask(async () => {
-    await resetDatabase(false)
-    fetchPreview()
+const { mutate: handleReset, isPending: isResetting } = useMutation({
+  mutationFn: () => resetDatabase(false),
+  onSuccess: () => {
     showSuccess('Database reset successfully')
-  })
-}
-
-onMounted(fetchPreview)
+    queryClient.invalidateQueries()
+  },
+})
 </script>
 
 <template>
@@ -46,22 +40,21 @@ onMounted(fetchPreview)
       <div class="flex flex-wrap items-center gap-4">
         <Button variant="destructive" :disabled="isResetting" @click="handleReset"> Reset </Button>
         <div
-          v-if="preview"
           class="text-muted-foreground flex flex-wrap items-center gap-2 text-xs transition-opacity duration-300"
         >
-          <Badge variant="outline" class="min-w-[14ch] text-center font-mono">
+          <Badge variant="outline" class="min-h-[1.5rem] min-w-[14ch] text-center font-mono">
             <Transition name="fade-slide" mode="out-in">
-              <span :key="preview.events">{{ preview.events }} events</span>
+              <span v-if="preview" :key="preview.events">{{ preview.events }} events</span>
             </Transition>
           </Badge>
-          <Badge variant="outline" class="min-w-[14ch] text-center font-mono">
+          <Badge variant="outline" class="min-h-[1.5rem] min-w-[14ch] text-center font-mono">
             <Transition name="fade-slide" mode="out-in">
-              <span :key="preview.fields">{{ preview.fields }} fields</span>
+              <span v-if="preview" :key="preview.fields">{{ preview.fields }} fields</span>
             </Transition>
           </Badge>
-          <Badge variant="outline" class="min-w-[14ch] text-center font-mono">
+          <Badge variant="outline" class="min-h-[1.5rem] min-w-[14ch] text-center font-mono">
             <Transition name="fade-slide" mode="out-in">
-              <span :key="preview.tags">{{ preview.tags }} tags</span>
+              <span v-if="preview" :key="preview.tags">{{ preview.tags }} tags</span>
             </Transition>
           </Badge>
           <Button
@@ -71,7 +64,8 @@ onMounted(fetchPreview)
             @click="fetchPreview"
             title="Refresh counts"
           >
-            <Icon icon="radix-icons:reload" class="h-4 w-4" />
+            <Icon v-if="isFetching" icon="radix-icons:reload" class="h-4 w-4 animate-spin" />
+            <Icon v-else icon="radix-icons:reload" class="h-4 w-4" />
           </Button>
         </div>
       </div>

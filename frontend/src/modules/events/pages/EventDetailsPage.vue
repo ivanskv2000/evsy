@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import type { Event } from '@/modules/events/types'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
 import EventDetailsCard from '@/modules/events/components/EventDetailsCard.vue'
 import { eventApi } from '@/modules/events/api'
 import Header from '@/shared/components/layout/PageHeader.vue'
-import { useAsyncTask } from '@/shared/composables/useAsyncTask'
 import type { EventFormValues } from '@/modules/events/validation/eventSchema'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import DetailsCardSkeleton from '@/shared/components/skeletons/DetailsCardSkeleton.vue'
@@ -18,46 +17,46 @@ const EventEditModal = defineAsyncComponent(
 
 const route = useRoute()
 const router = useRouter()
-const event = ref<Event | null>(null)
 
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
 const showSwaggerExportModal = ref(false)
 
-const { run, isLoading } = useAsyncTask()
-const { run: runDeleteTask, isLoading: isDeleting } = useAsyncTask()
-const { run: runUpdateTask, isLoading: isSaving } = useAsyncTask()
-
+const queryClient = useQueryClient()
 const { showDeleted, showUpdated } = useEnhancedToast()
+const eventId = Number(route.params.id)
+
+const { data: event, isLoading } = useQuery({
+  queryKey: ['events', eventId],
+  queryFn: () => eventApi.getById(eventId),
+})
+
+const { mutate: deleteEvent, isPending: isDeleting } = useMutation({
+  mutationFn: () => eventApi.delete(eventId),
+  onSuccess: () => {
+    showDeleted('Event')
+    queryClient.invalidateQueries({ queryKey: ['events'] })
+    router.push('/events')
+  },
+})
+
+const { mutate: updateEvent, isPending: isSaving } = useMutation({
+  mutationFn: (values: EventFormValues) => eventApi.update(eventId, values),
+  onSuccess: () => {
+    showUpdated('Event')
+    queryClient.invalidateQueries({ queryKey: ['events', eventId] })
+    queryClient.invalidateQueries({ queryKey: ['events'] })
+    showEditModal.value = false
+  },
+})
 
 const handleDelete = () => {
-  runDeleteTask(async () => {
-    await eventApi.delete(event.value!.id)
-    showDeleted('Event')
-    router.push('/events')
-  })
+  deleteEvent()
 }
 
 const handleUpdate = (values: EventFormValues) => {
-  runUpdateTask(
-    () => eventApi.update(event.value!.id, values),
-    updated => {
-      showUpdated('Event')
-      event.value = updated
-      showEditModal.value = false
-    }
-  )
+  updateEvent(values)
 }
-
-onMounted(() => {
-  const id = Number(route.params.id)
-  run(
-    () => eventApi.getById(id),
-    result => {
-      if (result) event.value = result
-    }
-  )
-})
 </script>
 
 <template>
