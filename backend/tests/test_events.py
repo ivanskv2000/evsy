@@ -5,7 +5,6 @@ from app.modules.events.schemas import EventCreate
 
 @pytest.fixture
 def sample_event():
-    """Тестовое событие"""
     return EventCreate(
         name="Test Event",
         description="Some event description.",

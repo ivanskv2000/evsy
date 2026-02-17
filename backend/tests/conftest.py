@@ -9,8 +9,8 @@ from app.modules.auth.crud import create_user
 from app.modules.auth.token import create_access_token
 from app.settings import Settings
 
-# Load test settings from .env.test
 test_settings = Settings(_env_file=".env.test")
+test_settings.database_url = "sqlite:///./test.db"
 
 # Initialize DB objects for test (engine + SessionLocal)
 test_engine, TestingSessionLocal = init_db(test_settings)
