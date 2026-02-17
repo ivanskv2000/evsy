@@ -3,10 +3,10 @@ import { useEnhancedToast } from './useEnhancedToast'
 
 const mockToast = vi.hoisted(() => {
   return {
-  error: vi.fn(),
-  success: vi.fn(),
-  info: vi.fn(),
-}
+    error: vi.fn(),
+    success: vi.fn(),
+    info: vi.fn(),
+  }
 })
 
 vi.mock('vue-sonner', () => ({
@@ -24,7 +24,16 @@ describe('useEnhancedToast', () => {
     vi.clearAllMocks()
   })
 
-  const { showError, showSuccess, showInfo, showCreated, showCopied } = useEnhancedToast()
+  const {
+    showError,
+    showSuccess,
+    showInfo,
+    showCreated,
+    showUpdated,
+    showDeleted,
+    showCopied,
+    showCopyError,
+  } = useEnhancedToast()
 
   describe('showError', () => {
     it('should parse the error and show an error toast with the parsed message', () => {
@@ -85,12 +94,45 @@ describe('useEnhancedToast', () => {
       })
     })
 
+    it('showUpdated should call showSuccess with a formatted message', () => {
+      // Act
+      showUpdated('Profile')
+
+      // Assert
+      expect(mockToast.success).toHaveBeenCalledWith('Profile updated successfully!', {
+        description: undefined,
+        duration: 3000,
+      })
+    })
+
+    it('showDeleted should call showSuccess with a formatted message', () => {
+      // Act
+      showDeleted('Item')
+
+      // Assert
+      expect(mockToast.success).toHaveBeenCalledWith('Item deleted successfully!', {
+        description: undefined,
+        duration: 3000,
+      })
+    })
+
     it('showCopied should call showInfo with a formatted message', () => {
       // Act
       showCopied('API Key')
 
       // Assert
       expect(mockToast.info).toHaveBeenCalledWith('API Key copied to clipboard', {
+        description: undefined,
+        duration: 3000,
+      })
+    })
+
+    it('showCopyError should call showInfo with a formatted message', () => {
+      // Act
+      showCopyError('API Key')
+
+      // Assert
+      expect(mockToast.info).toHaveBeenCalledWith('Failed to copy API Key', {
         description: undefined,
         duration: 3000,
       })

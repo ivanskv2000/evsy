@@ -48,13 +48,19 @@ describe('parseApiError', () => {
   })
 
   it('should return the message from a non-standard Axios error', () => {
-    const mockError = new AxiosError('Something went wrong on the backend', 'ERR_BAD_REQUEST', undefined, undefined, {
-      data: { error: 'This is not the format we expect' }, // non-compliant data
-      status: 500,
-      statusText: 'Internal Server Error',
-      headers: {},
-      config: { headers: new AxiosHeaders() },
-    })
+    const mockError = new AxiosError(
+      'Something went wrong on the backend',
+      'ERR_BAD_REQUEST',
+      undefined,
+      undefined,
+      {
+        data: { error: 'This is not the format we expect' }, // non-compliant data
+        status: 500,
+        statusText: 'Internal Server Error',
+        headers: {},
+        config: { headers: new AxiosHeaders() },
+      }
+    )
 
     expect(parseApiError(mockError)).toBe('Something went wrong on the backend')
   })
