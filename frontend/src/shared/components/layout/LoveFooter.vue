@@ -6,7 +6,7 @@ import { Icon } from '@iconify/vue'
   <footer
     class="bg-background drop-shadow-accent text-muted-foreground border-t py-3 text-center text-xs"
   >
-    Made with <Icon icon="radix-icons:heart-filled" class="h-lh w-lh inline" /> by
+    Made with <Icon icon="radix-icons:heart-filled" class="w-lh inline h-lh" /> by
     <a
       href="https://github.com/ivanskv2000"
       target="_blank"
