@@ -32,7 +32,6 @@ def app(test_settings: Settings, db_engine_session):
     return create_app(test_settings, session_local)
 
 
-# Override FastAPI's get_db dependency
 @pytest.fixture(scope="session")
 def override_get_db(db_engine_session):
     """Session-scoped fixture to override the `get_db` dependency."""
