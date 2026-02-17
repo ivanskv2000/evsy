@@ -1,17 +1,16 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import sessionmaker
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api.v1.routes import admin, auth, events, fields, generic, tags
+from app.core.handlers import http_exception_handler, validation_exception_handler
 from app.modules.auth.schemas import UserCreate
 from app.modules.auth.service import create_user_if_not_exists
 from app.settings import Settings
-from app.core.handlers import http_exception_handler, validation_exception_handler
-
-from fastapi.exceptions import RequestValidationError
-from starlette.exceptions import HTTPException as StarletteHTTPException
 
 
 def create_app(settings: Settings, SessionLocal: sessionmaker) -> FastAPI:

@@ -7,7 +7,9 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 
 class ValidationErrorDetail(BaseModel):
-    loc: tuple[str | int, ...] = Field(..., description="Location of the error in the request")
+    loc: tuple[str | int, ...] = Field(
+        ..., description="Location of the error in the request"
+    )
     msg: str = Field(..., description="A human-readable message for the error")
     type: str = Field(..., description="The type of the error")
 
@@ -52,7 +54,9 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content=jsonable_encoder(
             ErrorResponse(
-                code="validation_error", message="Input validation failed", details=details
+                code="validation_error",
+                message="Input validation failed",
+                details=details,
             )
         ),
     )

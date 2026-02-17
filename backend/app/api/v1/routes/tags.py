@@ -54,7 +54,7 @@ def get_tag_route(tag_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail={
                 "code": "resource_not_found",
-                "message": f"Tag with id '{tag_id}' not found",
+                "message": f"Tag with id {tag_id!r} not found",
             },
         )
     return db_tag
@@ -78,7 +78,7 @@ def update_tag_route(tag_id: str, tag: TagCreate, db: Session = Depends(get_db))
             status_code=status.HTTP_404_NOT_FOUND,
             detail={
                 "code": "resource_not_found",
-                "message": f"Tag with id '{tag_id}' not found",
+                "message": f"Tag with id {tag_id!r} not found",
             },
         )
     return db_tag
@@ -101,7 +101,7 @@ def delete_tag_route(tag_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail={
                 "code": "resource_not_found",
-                "message": f"Tag with id '{tag_id}' not found",
+                "message": f"Tag with id {tag_id!r} not found",
             },
         )
     return db_tag
