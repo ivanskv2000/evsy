@@ -14,7 +14,7 @@ const { showSuccess } = useEnhancedToast()
 const {
   data: preview,
   isLoading: isFetching,
-  refetch: fetchPreview
+  refetch: fetchPreview,
 } = useQuery({
   queryKey: ['resetPreview'],
   queryFn: () => resetDatabase(true),
@@ -26,7 +26,7 @@ const { mutate: handleReset, isPending: isResetting } = useMutation({
   onSuccess: () => {
     showSuccess('Database reset successfully')
     queryClient.invalidateQueries()
-  }
+  },
 })
 </script>
 
@@ -42,17 +42,17 @@ const { mutate: handleReset, isPending: isResetting } = useMutation({
         <div
           class="text-muted-foreground flex flex-wrap items-center gap-2 text-xs transition-opacity duration-300"
         >
-          <Badge variant="outline" class="min-w-[14ch] min-h-[1.5rem] text-center font-mono">
+          <Badge variant="outline" class="min-h-[1.5rem] min-w-[14ch] text-center font-mono">
             <Transition name="fade-slide" mode="out-in">
-              <span v-if="preview" :key="preview.events">{{ preview.events  }} events</span>
+              <span v-if="preview" :key="preview.events">{{ preview.events }} events</span>
             </Transition>
           </Badge>
-          <Badge variant="outline" class="min-w-[14ch] min-h-[1.5rem] text-center font-mono">
+          <Badge variant="outline" class="min-h-[1.5rem] min-w-[14ch] text-center font-mono">
             <Transition name="fade-slide" mode="out-in">
               <span v-if="preview" :key="preview.fields">{{ preview.fields }} fields</span>
             </Transition>
           </Badge>
-          <Badge variant="outline" class="min-w-[14ch] min-h-[1.5rem] text-center font-mono">
+          <Badge variant="outline" class="min-h-[1.5rem] min-w-[14ch] text-center font-mono">
             <Transition name="fade-slide" mode="out-in">
               <span v-if="preview" :key="preview.tags">{{ preview.tags }} tags</span>
             </Transition>

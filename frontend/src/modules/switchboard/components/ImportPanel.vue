@@ -24,7 +24,7 @@ const { mutate, isPending: isLoading } = useMutation({
     queryClient.invalidateQueries()
     selectedFile.value = null
     if (fileInput.value) fileInput.value.value = ''
-  }
+  },
 })
 
 const handleFileSelect = (event: Event) => {

@@ -36,16 +36,15 @@ const { mutate: deleteTag, isPending: isDeleting } = useMutation({
   onSuccess: () => {
     showDeleted('Tag')
     queryClient.invalidateQueries({ queryKey: ['tags'] })
-  }
+  },
 })
 
 const { mutate: updateTag, isPending: isSaving } = useMutation({
-  mutationFn: ({ id, values }: { id: string; values: TagFormValues }) =>
-    tagApi.update(id, values),
+  mutationFn: ({ id, values }: { id: string; values: TagFormValues }) => tagApi.update(id, values),
   onSuccess: () => {
     showUpdated('Tag')
     queryClient.invalidateQueries({ queryKey: ['tags'] })
-  }
+  },
 })
 
 const handleDelete = () => {

@@ -28,7 +28,7 @@ const eventId = Number(route.params.id)
 
 const { data: event, isLoading } = useQuery({
   queryKey: ['events', eventId],
-  queryFn: () => eventApi.getById(eventId)
+  queryFn: () => eventApi.getById(eventId),
 })
 
 const { mutate: deleteEvent, isPending: isDeleting } = useMutation({
@@ -37,7 +37,7 @@ const { mutate: deleteEvent, isPending: isDeleting } = useMutation({
     showDeleted('Event')
     queryClient.invalidateQueries({ queryKey: ['events'] })
     router.push('/events')
-  }
+  },
 })
 
 const { mutate: updateEvent, isPending: isSaving } = useMutation({
@@ -47,7 +47,7 @@ const { mutate: updateEvent, isPending: isSaving } = useMutation({
     queryClient.invalidateQueries({ queryKey: ['events', eventId] })
     queryClient.invalidateQueries({ queryKey: ['events'] })
     showEditModal.value = false
-  }
+  },
 })
 
 const handleDelete = () => {

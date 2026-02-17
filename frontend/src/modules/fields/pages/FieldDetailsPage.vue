@@ -25,7 +25,7 @@ const fieldId = Number(route.params.id)
 
 const { data: field, isLoading } = useQuery({
   queryKey: ['fields', fieldId],
-  queryFn: () => fieldApi.getById(fieldId, { with_event_count: true })
+  queryFn: () => fieldApi.getById(fieldId, { with_event_count: true }),
 })
 
 const { mutate: deleteField, isPending: isDeleting } = useMutation({
@@ -34,7 +34,7 @@ const { mutate: deleteField, isPending: isDeleting } = useMutation({
     showDeleted('Field')
     queryClient.invalidateQueries({ queryKey: ['fields'] })
     router.push('/fields')
-  }
+  },
 })
 
 const { mutate: updateField, isPending: isSaving } = useMutation({
@@ -44,7 +44,7 @@ const { mutate: updateField, isPending: isSaving } = useMutation({
     queryClient.invalidateQueries({ queryKey: ['fields', fieldId] })
     queryClient.invalidateQueries({ queryKey: ['fields'] })
     showEditModal.value = false
-  }
+  },
 })
 
 const handleDelete = () => {

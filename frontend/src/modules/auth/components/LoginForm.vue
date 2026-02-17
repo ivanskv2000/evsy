@@ -31,7 +31,7 @@ const { mutate: runLogin, isPending: isLoading } = useMutation({
   onSuccess: () => {
     showSuccess('Successfully logged in!')
     router.push(redirect || '/events')
-  }
+  },
 })
 
 const onSubmit = handleSubmit(values => runLogin(values))

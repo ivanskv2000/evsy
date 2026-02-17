@@ -36,7 +36,7 @@ const { mutate: deleteField, isPending: isDeleting } = useMutation({
   onSuccess: () => {
     showDeleted('Field')
     queryClient.invalidateQueries({ queryKey: ['fields'] })
-  }
+  },
 })
 
 const { mutate: updateField, isPending: isSaving } = useMutation({
@@ -45,7 +45,7 @@ const { mutate: updateField, isPending: isSaving } = useMutation({
   onSuccess: () => {
     showUpdated('Field')
     queryClient.invalidateQueries({ queryKey: ['fields'] })
-  }
+  },
 })
 
 const handleDelete = () => {

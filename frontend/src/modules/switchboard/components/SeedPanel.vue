@@ -15,7 +15,7 @@ const { mutate: handleSeed, isPending: isLoading } = useMutation({
     // Invalidate all queries to force a refetch across the app,
     // ensuring components like the ResetPanel preview are updated.
     queryClient.invalidateQueries()
-  }
+  },
 })
 </script>
 

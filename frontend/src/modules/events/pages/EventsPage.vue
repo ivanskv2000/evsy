@@ -78,7 +78,6 @@ const selectDeleteEvent = (event: Event) => {
 }
 
 const columns = getEventColumns(selectEditEvent, selectDeleteEvent)
-
 </script>
 
 <template>

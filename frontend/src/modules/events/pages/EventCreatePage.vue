@@ -24,7 +24,7 @@ const { data: tags, isLoading: isLoadingTags } = useQuery({
 
 const { data: fields, isLoading: isLoadingFields } = useQuery({
   queryKey: ['fields'],
-  queryFn:() => fieldApi.getAll(),
+  queryFn: () => fieldApi.getAll(),
 })
 
 const { mutate: createEvent, isPending: isSaving } = useMutation({
@@ -33,7 +33,7 @@ const { mutate: createEvent, isPending: isSaving } = useMutation({
     showCreated('Event')
     queryClient.invalidateQueries({ queryKey: ['events'] })
     router.push(`/events/${createdEvent.id}`)
-  }
+  },
 })
 
 const onSubmit = (values: EventFormValues) => {

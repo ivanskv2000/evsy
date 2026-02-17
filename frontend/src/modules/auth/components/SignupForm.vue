@@ -28,11 +28,13 @@ const { handleSubmit } = useForm<SignupFormValues>({
 
 const { mutate: runSignup, isPending: isLoading } = useMutation({
   mutationFn: (values: SignupFormValues) =>
-    auth.signup(values.email, values.password).then(() => auth.login(values.email, values.password)),
+    auth
+      .signup(values.email, values.password)
+      .then(() => auth.login(values.email, values.password)),
   onSuccess: () => {
     showSuccess('Account created successfully! You are now logged in.')
     router.push(redirect || '/events')
-  }
+  },
 })
 
 const onSubmit = handleSubmit(values => runSignup(values))

@@ -18,7 +18,7 @@ const { mutate: createTag, isPending: isLoading } = useMutation({
     queryClient.invalidateQueries({ queryKey: ['tags'] })
     router.push('/tags')
     showCreated('Tag')
-  }
+  },
 })
 
 const onSubmit = (values: TagFormValues) => {

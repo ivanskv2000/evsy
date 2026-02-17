@@ -19,7 +19,7 @@ const { mutate: createField, isPending: isLoading } = useMutation({
     queryClient.invalidateQueries({ queryKey: ['fields'] })
     router.push(`/fields/${createdField.id}`)
     showCreated('Field')
-  }
+  },
 })
 
 const onSubmit = (values: FieldFormValues) => {

@@ -27,7 +27,7 @@ const { mutate, isPending: isLoading } = useMutation({
       downloadJson(data.data, 'evsy-export.json')
     }
     showSuccess('Exported successfully')
-  }
+  },
 })
 
 const handleExport = () => {

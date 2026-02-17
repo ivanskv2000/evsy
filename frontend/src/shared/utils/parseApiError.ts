@@ -29,7 +29,10 @@ function isApiErrorResponse(data: unknown): data is ApiErrorResponse {
  * Extracts a user-friendly message from an unknown error.
  * Designed to work with the standardized API error format.
  */
-export function parseApiError(error: unknown, fallbackMessage = 'An unexpected error occurred'): string {
+export function parseApiError(
+  error: unknown,
+  fallbackMessage = 'An unexpected error occurred'
+): string {
   if (isAxiosError(error)) {
     // Handle network errors where there's no response from the server
     if (!error.response) {

@@ -24,7 +24,7 @@ const { isDemo, isDev } = useAppConfig()
           <div v-if="isDev || isDemo" class="text-muted-foreground font-mono text-sm font-semibold">
             {{ isDev ? 'DEV' : 'DEMO' }}
           </div>
-          <SyncStatusButton/>
+          <SyncStatusButton />
           <DropdownMenu />
         </div>
       </div>
