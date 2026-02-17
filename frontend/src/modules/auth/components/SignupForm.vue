@@ -68,7 +68,12 @@ const onSubmit = handleSubmit(values => runSignup(values))
         <FormItem>
           <FormLabel>Email</FormLabel>
           <FormControl>
-            <Input type="email" placeholder="name@example.com" v-bind="componentField" />
+            <Input
+              type="email"
+              placeholder="name@example.com"
+              v-bind="componentField"
+              autocomplete="email"
+            />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -79,7 +84,7 @@ const onSubmit = handleSubmit(values => runSignup(values))
         <FormItem>
           <FormLabel>Password</FormLabel>
           <FormControl>
-            <Input type="password" v-bind="componentField" />
+            <Input type="password" v-bind="componentField" autocomplete="new-password" />
           </FormControl>
           <FormMessage />
         </FormItem>
