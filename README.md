@@ -18,11 +18,9 @@ Evsy is an open-source application that helps product teams, analysts, and devel
 
 
 **Future roadmap includes:**
-- Role-based access control (RBAC);
+- Role-based access control;
 - History of changes and event versioning;
 - Full-text search;
-- Draft and archived states for events;
-- Markdown-based descriptions;
 - ... and more!
 
 ## 🚀 Quick Start
@@ -30,35 +28,17 @@ To run Evsy via Docker compose, just do:
 1. `cp .env.example .env`
 2. `make up`
 
-> Make sure to review .env.example — it contains helpful comments for configuring your setup.
+> Make sure to review .env.example &mdash; there are comments that might be useful for configuring your setup.
 
 ## ⚙️ Tech Stack
+Evsy combines a Python FastAPI backend and a Vue3 frontend, developed and versioned together.
+
 - Backend: FastAPI + Pydantic + SQLAlchemy + Alembic
 - Frontend: Vue 3 + Vite
 - Component library: [shadcn-vue](https://www.shadcn-vue.com/)
 
-## 🧩 Project Structure
-Evsy is a project combining a Python FastAPI backend and a Vue3 frontend, developed and versioned together.
-
-```
-evsy/
-├── backend/              # FastAPI backend (Poetry-managed)
-│   ├── app/              # Application code
-│   └── tests/            # Pytest
-├── frontend/             # Vue 3 + Vite frontend (npm-managed)
-│   ├── src/              # Application code
-│   └── public/           # Static assets
-├── .github/workflows/    # CI workflows
-├── VERSION               # Current version of the project
-├── bump_version.py       # Version bumping script (manual semantic versioning)
-├── Makefile              # Developer commands (e.g. `make up`)
-├── docker-compose.yaml   # Docker compose configuration
-├── Makefile              # Developer commands (e.g. `make up`)
-└── README.md             # Project overview
-```
-
 ## 🤝 Contributing
-We welcome all kinds of contributions — code, ideas, design suggestions, and bug reports.
+We welcome all kinds of contributions: code, ideas, design suggestions, and bug reports.
 [Read the contributing guide →](CONTRIBUTING.md)
 
 ## Build Status
