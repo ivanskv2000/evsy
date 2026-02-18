@@ -3,7 +3,7 @@ Evsy is a lightweight admin panel for managing and documenting product analytics
 
 ![Evsy main page screenshot.](screenshot.png)
 
-Check out the live demo at [demo.evsy.dev](demo.evsy.dev)
+Check out the live demo at [demo.evsy.dev](https://demo.evsy.dev/)
 - Login: `demo@evsy.dev`
 - Password: `bestructured`
 
