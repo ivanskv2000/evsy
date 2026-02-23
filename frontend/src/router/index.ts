@@ -7,6 +7,14 @@ const publicPages = ['/login', '/signup', '/landing', '/oauth/callback']
 const router = createRouter({
   history: createWebHistory(),
   routes: routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    }
+    else {
+      return { top: 0, behavior: 'smooth' }
+    }
+  },
 })
 
 router.beforeEach((to, _from, next) => {
