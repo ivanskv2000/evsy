@@ -1,22 +1,4 @@
 services:
-  db:
-    image: postgres:15
-    container_name: evsy-db
-    restart: always
-    environment:
-      POSTGRES_USER: evsy
-      POSTGRES_PASSWORD: evsy
-      POSTGRES_DB: evsy
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-#    ports:
-#      - "5432:5432"
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "evsy"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   backend:
     build:
       context: ./backend
@@ -51,6 +33,24 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+
+  db:
+    image: postgres:15
+    container_name: evsy-db
+    restart: always
+    environment:
+      POSTGRES_USER: evsy
+      POSTGRES_PASSWORD: evsy
+      POSTGRES_DB: evsy
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+#    ports:
+#      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "evsy"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:
