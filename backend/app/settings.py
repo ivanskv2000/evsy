@@ -3,7 +3,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal, Optional
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field
 from pydantic_settings import BaseSettings
 
 
@@ -14,7 +14,7 @@ def resolve_env_file(base_dir: str = ".") -> str:
 
 
 class Settings(BaseSettings):
-    env: Literal["dev", "prod", "demo"] = "dev"
+    env: Literal["dev", "prod", "demo"] = Field(default="dev", alias="ENV")
     database_url: str = "sqlite:///./test.db"
     frontend_url: Optional[str] = None
 
@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     model_config = ConfigDict(
         env_file=resolve_env_file(),
         env_file_encoding="utf-8",
+        case_sensitive=False,
     )
 
     @property
