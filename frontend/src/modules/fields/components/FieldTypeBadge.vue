@@ -2,12 +2,16 @@
 import { FieldType } from '@/modules/fields/types'
 import { Badge } from '@/shared/ui/badge'
 import { cn } from '@/shared/utils/general' // your utility for class merging
-import { useAttrs } from 'vue'
+import { computed, useAttrs } from 'vue'
 
-const props = defineProps<{
-  type: FieldType
-  monochrome?: boolean
-}>()
+interface Props {
+    type: FieldType,
+    monochrome?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  monochrome: false
+})
 
 const attrs = useAttrs()
 
@@ -31,11 +35,15 @@ const colorClass = {
 
 const baseClass = 'text-xs tracking-widest uppercase'
 
-const finalClass = cn(
+const color = computed(() => (props.monochrome ? 'bg-muted text-foreground' : colorClass[props.type]))
+
+const finalClass = computed(() => cn(
   baseClass,
-  props.monochrome ? 'bg-muted text-foreground' : colorClass[props.type],
+  color,
+  color.value,
   attrs.class as string | undefined
-)
+))
+
 </script>
 
 <template>
