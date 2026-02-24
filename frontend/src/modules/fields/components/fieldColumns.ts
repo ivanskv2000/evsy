@@ -1,10 +1,11 @@
 import { h } from 'vue'
-import type { Field } from '@/modules/fields/types.ts'
+import type { Field, FieldType } from '@/modules/fields/types.ts'
 import type { ColumnDef } from '@tanstack/vue-table'
 import FieldsDataTableDropdown from '@/modules/fields/components/FieldsDataTableDropdown.vue'
 import { RouterLink } from 'vue-router'
 import DataTableColumnHeader from '@/shared/components/data/DataTableColumnHeader.vue'
 import { fieldsTableFilter } from '@/shared/utils/tableFilters'
+import FieldTypeBadge from '@/modules/fields/components/FieldTypeBadge.vue'
 
 export function getFieldColumns(
   onEdit: (field: Field) => void,
@@ -63,7 +64,7 @@ export function getFieldColumns(
       accessorKey: 'field_type',
       enableHiding: false,
       meta: {
-        class: 'w-[10ch]',
+        class: 'max-w-[10ch] text-left',
         headerClass: 'w-[10ch]',
       },
       header: ({ column }) =>
@@ -73,7 +74,7 @@ export function getFieldColumns(
         }),
       cell: ({ row }) => {
         const field_type = String(row.getValue('field_type'))
-        return h('div', { class: 'text-left font-medium' }, field_type)
+        return h(FieldTypeBadge, { type: field_type as FieldType }, field_type)
       },
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id))
