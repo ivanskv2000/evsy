@@ -62,10 +62,8 @@ const handleSearchKeydown = (event: KeyboardEvent) => {
       </template>
 
       <template v-else>
-        <div class="col-span-full flex items-center justify-center py-6">
-          <div class="text-center">
-            <div class="text-sm">No results.</div>
-          </div>
+        <div class="col-span-full w-full rounded-lg border p-4 text-center text-sm">
+          <div>No results.</div>
         </div>
       </template>
     </div>
