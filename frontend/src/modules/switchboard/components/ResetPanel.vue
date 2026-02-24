@@ -37,7 +37,7 @@ const { mutate: handleReset, isPending: isResetting } = useMutation({
         <Button variant="destructive" :disabled="isResetting" @click="handleReset"> Reset </Button>
         <div
           v-if="!isLoading"
-          class="flex flex-wrap items-center gap-2 transition-opacity duration-300 text-muted-foreground text-xs font-mono"
+          class="text-muted-foreground flex flex-wrap items-center gap-2 font-mono text-xs transition-opacity duration-300"
         >
           <Badge variant="outline" class="min-h-[1.5rem] min-w-[14ch] text-center">
             <Transition name="fade-slide" mode="out-in">
@@ -59,7 +59,7 @@ const { mutate: handleReset, isPending: isResetting } = useMutation({
         </div>
         <div
           v-if="isLoading"
-          class="flex flex-wrap items-center gap-2 transition-opacity duration-300 text-muted-foreground text-xs font-mono"
+          class="text-muted-foreground flex flex-wrap items-center gap-2 font-mono text-xs transition-opacity duration-300"
         >
           <Skeleton class="h-[1.5rem] w-[14ch] rounded-md" />
           <Skeleton class="h-[1.5rem] w-[14ch] rounded-md" />
