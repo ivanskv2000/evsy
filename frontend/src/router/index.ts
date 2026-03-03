@@ -7,7 +7,7 @@ const publicPages = ['/login', '/signup', '/landing', '/oauth/callback']
 const router = createRouter({
   history: createWebHistory(),
   routes: routes,
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(_to, _from, savedPosition) {
     if (savedPosition) {
       return savedPosition
     } else {
