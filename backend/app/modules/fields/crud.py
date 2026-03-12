@@ -10,10 +10,7 @@ from . import models, schemas
 
 def create_field(db: Session, field: schemas.FieldCreate):
     db_field = models.Field(
-        name=field.name,
-        description=field.description,
-        field_type=field.field_type,
-        example=field.example,
+        name=field.name, description=field.description, field_type=field.field_type
     )
     db.add(db_field)
     try:
@@ -41,7 +38,6 @@ def update_field(db: Session, field_id: int, field: schemas.FieldCreate):
         db_field.name = field.name
         db_field.description = field.description
         db_field.field_type = field.field_type
-        db_field.example = field.example
         db.commit()
         db.refresh(db_field)
         return db_field

@@ -1,4 +1,4 @@
-from sqlalchemy import JSON, Column, Enum, Integer, String
+from sqlalchemy import Column, Enum, Integer, String
 from sqlalchemy.orm import relationship
 
 from app.core.database import Base
@@ -13,7 +13,6 @@ class Field(Base, TimestampMixin):
     name = Column(String, unique=True, index=True)
     description = Column(String, nullable=True)
     field_type = Column(Enum(FieldType), nullable=False)
-    example = Column(JSON, nullable=True)
 
     events = relationship(
         "Event", secondary="event_fields", back_populates="fields", viewonly=True

@@ -35,7 +35,6 @@ def export_bundle(db: Session) -> ExportBundle:
                 name=field.name,
                 description=field.description,
                 field_type=field.field_type,
-                example=field.example,
             )
             for field in fields
         ],
@@ -78,7 +77,6 @@ def import_bundle(bundle: ImportBundle, db: Session):
             name=field_data.name,
             description=field_data.description,
             field_type=field_data.field_type,
-            example=field_data.example,
         )
         db.add(field)
         db.flush()

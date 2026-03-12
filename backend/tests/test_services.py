@@ -50,7 +50,6 @@ def sample_event_out():
                 name="user_id",
                 description="Unique user identifier",
                 field_type=FieldType.string,
-                example="user_12345",
                 created_at="2024-01-01T00:00:00Z",
                 updated_at="2024-01-01T00:00:00Z",
             ),
@@ -59,7 +58,6 @@ def sample_event_out():
                 name="signup_method",
                 description="How user signed up",
                 field_type=FieldType.string,
-                example="email",
                 created_at="2024-01-01T00:00:00Z",
                 updated_at="2024-01-01T00:00:00Z",
             ),
@@ -104,23 +102,6 @@ def test_generate_json_schema_without_descriptions(sample_event_out):
 
     properties = schema["properties"]
     assert "description" not in properties["user_id"]
-
-
-def test_generate_json_schema_with_examples(sample_event_out):
-    """Test schema generation with examples enabled"""
-    schema = generate_json_schema_for_event(sample_event_out, include_examples=True)
-
-    properties = schema["properties"]
-    assert "example" in properties["user_id"]
-    assert properties["user_id"]["example"] == "user_12345"
-
-
-def test_generate_json_schema_without_examples(sample_event_out):
-    """Test schema generation with examples disabled"""
-    schema = generate_json_schema_for_event(sample_event_out, include_examples=False)
-
-    properties = schema["properties"]
-    assert "example" not in properties["user_id"]
 
 
 def test_generate_json_schema_additional_properties_true(sample_event_out):
