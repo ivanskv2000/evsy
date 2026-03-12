@@ -6,19 +6,15 @@ import { Button } from '@/shared/ui/button'
 import { Badge } from '@/shared/ui/badge'
 import { Icon } from '@iconify/vue'
 import EventFieldsTable from './EventFieldsTable.vue'
-import JsonPreview from '@/shared/components/JsonPreview.vue'
 import DetailsCardLayout from '@/shared/components/layout/DetailsCardLayout.vue'
 import DetailsCardAttribute from '@/shared/components/layout/DetailsCardAttribute.vue'
 import { getEventFieldsColumns } from '@/modules/events/components/eventFieldsColumns'
 import TagScrollArea from '@/modules/tags/components/TagScrollArea.vue'
-import { useEventExample } from '@/modules/events/composables/useEventExample'
 import EventLinks from '@/modules/events/components/EventLinks.vue'
 
 const props = defineProps<{
   event: Event
 }>()
-
-const eventExample = useEventExample(props.event.fields)
 
 const emit = defineEmits<{
   (e: 'edit'): void
@@ -76,13 +72,6 @@ const columns = getEventFieldsColumns()
                 {{ tag.id }}
               </Badge>
             </TagScrollArea>
-          </template>
-        </DetailsCardAttribute>
-
-        <!-- Example -->
-        <DetailsCardAttribute class="hidden sm:flex" icon="radix-icons:file-text" label="Example">
-          <template #value>
-            <JsonPreview :value="eventExample" />
           </template>
         </DetailsCardAttribute>
 

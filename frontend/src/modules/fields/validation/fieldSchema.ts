@@ -11,19 +11,6 @@ export const fieldSchema = z.object({
     .nullable(),
 
   field_type: z.nativeEnum(FieldType),
-
-  example: z
-    .custom(val => {
-      if (val === null || val === undefined) return true
-      try {
-        if (typeof val === 'string') JSON.parse(val)
-        return true
-      } catch {
-        return false
-      }
-    }, 'Example must be valid JSON')
-    .optional()
-    .nullable(),
 })
 
 // Inferred TypeScript type from schema

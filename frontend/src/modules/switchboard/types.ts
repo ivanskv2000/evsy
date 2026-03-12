@@ -9,8 +9,7 @@ export interface ImportBundle {
   fields: {
     name: string
     description?: string | null
-    field_type: string // could use enum if available
-    example?: unknown
+    field_type: string
   }[]
 
   events: {
