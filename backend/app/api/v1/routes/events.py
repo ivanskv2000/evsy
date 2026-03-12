@@ -171,9 +171,6 @@ def get_event_json_schema(
     include_descriptions: bool = Query(
         True, description="Include field descriptions in schema"
     ),
-    include_examples: bool = Query(
-        True, description="Include field examples in schema"
-    ),
     additional_properties: bool = Query(
         True, description="Allow additional properties in schema"
     ),
@@ -193,7 +190,6 @@ def get_event_json_schema(
     schema = generate_json_schema_for_event(
         event,
         include_descriptions=include_descriptions,
-        include_examples=include_examples,
         additional_properties=additional_properties,
     )
     return schema
@@ -213,9 +209,6 @@ def get_event_yaml_schema(
     include_descriptions: bool = Query(
         True, description="Include field descriptions in schema"
     ),
-    include_examples: bool = Query(
-        True, description="Include field examples in schema"
-    ),
     additional_properties: bool = Query(
         True, description="Allow additional properties in schema"
     ),
@@ -235,7 +228,6 @@ def get_event_yaml_schema(
     schema = generate_json_schema_for_event(
         event,
         include_descriptions=include_descriptions,
-        include_examples=include_examples,
         additional_properties=additional_properties,
     )
     yaml_data = yaml.dump(schema, sort_keys=False)

@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import Any, Optional
+from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -20,7 +20,6 @@ class FieldBase(BaseModel):
     )
     description: Optional[str] = None
     field_type: FieldType
-    example: Optional[Any] = None
 
 
 class FieldCreate(FieldBase):

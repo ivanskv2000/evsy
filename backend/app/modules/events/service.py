@@ -17,7 +17,6 @@ def generate_json_schema_for_event(
     *,
     additional_properties: bool = True,
     include_descriptions: bool = True,
-    include_examples: bool = True,
 ) -> dict:
     schema = {
         "type": "object",
@@ -35,9 +34,6 @@ def generate_json_schema_for_event(
 
         if include_descriptions and field.description:
             field_schema["description"] = field.description
-
-        if include_examples and field.example is not None:
-            field_schema["example"] = field.example
 
         schema["properties"][field.name] = field_schema
 

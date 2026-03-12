@@ -24,7 +24,6 @@ const props = defineProps<{
 
 const settings = reactive({
   includeDescriptions: true,
-  includeExamples: true,
   additionalProperties: true,
   format: 'yaml' as 'yaml' | 'json',
 })
@@ -37,7 +36,6 @@ const { isLoading, refetch } = useQuery({
   queryFn: async () => {
     const params = {
       include_descriptions: settings.includeDescriptions,
-      include_examples: settings.includeExamples,
       additional_properties: settings.additionalProperties,
     }
     const format = settings.format
@@ -98,11 +96,6 @@ watch(
           <div class="flex items-center justify-between">
             <Label for="includeDescriptions">Include descriptions</Label>
             <Switch id="includeDescriptions" v-model="settings.includeDescriptions" />
-          </div>
-
-          <div class="flex items-center justify-between">
-            <Label for="includeExamples">Include examples</Label>
-            <Switch id="includeExamples" v-model="settings.includeExamples" />
           </div>
 
           <div class="flex items-center justify-between">

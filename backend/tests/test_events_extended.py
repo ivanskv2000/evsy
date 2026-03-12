@@ -11,7 +11,6 @@ def sample_field_for_event(auth_client):
         name="user_id",
         description="Unique user identifier",
         field_type=FieldType.string,
-        example="user_12345",
     )
     response = auth_client.post("/v1/fields/", json=field_data.model_dump())
     return response.json()
@@ -197,12 +196,6 @@ def test_export_schema_with_options(auth_client):
     # Test without descriptions
     response = auth_client.get(
         f"/v1/events/{event_id}/schema.json", params={"include_descriptions": False}
-    )
-    assert response.status_code == 200
-
-    # Test without examples
-    response = auth_client.get(
-        f"/v1/events/{event_id}/schema.json", params={"include_examples": False}
     )
     assert response.status_code == 200
 

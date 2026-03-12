@@ -10,7 +10,6 @@ def sample_field_complete():
         name="transaction_amount",
         description="Monetary amount of transaction in cents",
         field_type=FieldType.number,
-        example=1299,
     )
 
 
@@ -21,7 +20,6 @@ def sample_boolean_field():
         name="is_premium_user",
         description="Whether user has premium subscription",
         field_type=FieldType.boolean,
-        example=True,
     )
 
 
@@ -29,10 +27,7 @@ def sample_boolean_field():
 def test_create_string_field(auth_client):
     """Test creating string field"""
     field_data = FieldCreate(
-        name="user_email",
-        description="User email address",
-        field_type=FieldType.string,
-        example="user@example.com",
+        name="user_email", description="User email address", field_type=FieldType.string
     )
 
     response = auth_client.post("/v1/fields/", json=field_data.model_dump())
@@ -40,7 +35,6 @@ def test_create_string_field(auth_client):
 
     data = response.json()
     assert data["field_type"] == "string"
-    assert data["example"] == "user@example.com"
 
 
 def test_create_number_field(auth_client, sample_field_complete):
@@ -50,7 +44,6 @@ def test_create_number_field(auth_client, sample_field_complete):
 
     data = response.json()
     assert data["field_type"] == "number"
-    assert data["example"] == 1299
 
 
 def test_create_boolean_field(auth_client, sample_boolean_field):
@@ -60,7 +53,6 @@ def test_create_boolean_field(auth_client, sample_boolean_field):
 
     data = response.json()
     assert data["field_type"] == "boolean"
-    assert data["example"] is True
 
 
 def test_create_array_field(auth_client):
@@ -69,7 +61,6 @@ def test_create_array_field(auth_client):
         name="user_interests",
         description="List of user interests",
         field_type=FieldType.array,
-        example=["sports", "technology", "music"],
     )
 
     response = auth_client.post("/v1/fields/", json=field_data.model_dump())
@@ -77,7 +68,6 @@ def test_create_array_field(auth_client):
 
     data = response.json()
     assert data["field_type"] == "array"
-    assert isinstance(data["example"], list)
 
 
 def test_create_object_field(auth_client):
@@ -86,7 +76,6 @@ def test_create_object_field(auth_client):
         name="user_profile",
         description="User profile object",
         field_type=FieldType.object,
-        example={"name": "John", "age": 30},
     )
 
     response = auth_client.post("/v1/fields/", json=field_data.model_dump())
@@ -94,16 +83,12 @@ def test_create_object_field(auth_client):
 
     data = response.json()
     assert data["field_type"] == "object"
-    assert isinstance(data["example"], dict)
 
 
 def test_create_integer_field(auth_client):
     """Test creating integer field"""
     field_data = FieldCreate(
-        name="user_age",
-        description="User age in years",
-        field_type=FieldType.integer,
-        example=25,
+        name="user_age", description="User age in years", field_type=FieldType.integer
     )
 
     response = auth_client.post("/v1/fields/", json=field_data.model_dump())
@@ -111,7 +96,6 @@ def test_create_integer_field(auth_client):
 
     data = response.json()
     assert data["field_type"] == "integer"
-    assert data["example"] == 25
 
 
 # Test field operations
@@ -130,7 +114,7 @@ def test_list_fields_returns_all(auth_client):
 
     fields = response.json()
     assert isinstance(fields, list)
-    assert len(fields) >= 2  # Should have at least our created fields
+    assert len(fields) >= 2  # Should have at least the previously created fields
 
 
 def test_get_field_with_event_count(auth_client):
@@ -159,7 +143,6 @@ def test_update_field(auth_client):
         name="update_test_field",
         description="Field to be updated",
         field_type=FieldType.string,
-        example="original",
     )
 
     create_response = auth_client.post("/v1/fields/", json=create_data.model_dump())
@@ -170,7 +153,6 @@ def test_update_field(auth_client):
         name="update_test_field",  # Name should stay same due to unique constraint
         description="Updated description",
         field_type=FieldType.string,
-        example="updated",
     )
 
     update_response = auth_client.put(
@@ -180,7 +162,6 @@ def test_update_field(auth_client):
 
     data = update_response.json()
     assert data["description"] == "Updated description"
-    assert data["example"] == "updated"
 
 
 def test_delete_field(auth_client):
@@ -292,21 +273,6 @@ def test_create_field_without_description(auth_client):
 
     data = response.json()
     assert data["description"] is None
-
-
-def test_create_field_without_example(auth_client):
-    """Test creating field without optional example"""
-    field_data = FieldCreate(
-        name="no_example_field",
-        description="Field without example",
-        field_type=FieldType.string,
-    )
-
-    response = auth_client.post("/v1/fields/", json=field_data.model_dump())
-    assert response.status_code == 201
-
-    data = response.json()
-    assert data["example"] is None
 
 
 # Test authentication

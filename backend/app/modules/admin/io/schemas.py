@@ -1,4 +1,4 @@
-from typing import Any, List, Optional
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -14,7 +14,6 @@ class ExportField(BaseModel):
     name: str
     description: Optional[str]
     field_type: FieldType
-    example: Optional[Any]
 
 
 class ExportEvent(BaseModel):
