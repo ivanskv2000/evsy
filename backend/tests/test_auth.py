@@ -18,6 +18,8 @@ def test_signup_returns_token(client, auth_data):
 
 
 def test_signup_duplicate_email(client, auth_data):
+    # First signup
+    client.post("/v1/auth/signup", json=auth_data)
     # Repeat signup to trigger duplicate error
     response = client.post("/v1/auth/signup", json=auth_data)
     assert response.status_code == 400
@@ -25,6 +27,8 @@ def test_signup_duplicate_email(client, auth_data):
 
 
 def test_login_with_valid_credentials(client, auth_data):
+    # Ensure user exists
+    client.post("/v1/auth/signup", json=auth_data)
     response = client.post("/v1/auth/login", json=auth_data)
     assert response.status_code == 200
     data = response.json()
@@ -63,6 +67,8 @@ def test_me_with_valid_token(auth_client, auth_data):
 
 
 def test_login_for_access_token(client, auth_data):
+    # Ensure user exists
+    client.post("/v1/auth/signup", json=auth_data)
     form_data = {
         "username": auth_data["email"],
         "password": auth_data["password"],

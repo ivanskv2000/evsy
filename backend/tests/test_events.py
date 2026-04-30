@@ -19,10 +19,14 @@ def test_create_event(auth_client, sample_event):
     assert response.json()["name"] == sample_event.name
 
 
-def test_get_event(auth_client):
-    response = auth_client.get("/v1/events/1")
+def test_get_event(auth_client, sample_event):
+    # Create an event first
+    create_response = auth_client.post("/v1/events/", json=sample_event.model_dump())
+    event_id = create_response.json()["id"]
+
+    response = auth_client.get(f"/v1/events/{event_id}")
     assert response.status_code == 200
-    assert response.json()["id"] == 1
+    assert response.json()["id"] == event_id
 
 
 def test_create_event_with_invalid_field(auth_client):
