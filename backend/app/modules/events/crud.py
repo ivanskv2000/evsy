@@ -24,10 +24,6 @@ def create_event(db: Session, event: schemas.EventCreate):
     return db_event
 
 
-def get_event(db: Session, event_id: int):
-    return db.query(models.Event).filter(models.Event.id == event_id).first()
-
-
 def get_events(db: Session):
     return (
         db.query(models.Event)
@@ -38,6 +34,10 @@ def get_events(db: Session):
         .order_by(models.Event.id)
         .all()
     )
+
+
+def get_event(db: Session, event_id: int):
+    return db.query(models.Event).filter(models.Event.id == event_id).first()
 
 
 def update_event(db: Session, event_id: int, event: schemas.EventCreate):

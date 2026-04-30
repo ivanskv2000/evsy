@@ -1,3 +1,4 @@
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.shared.models import EventTag
@@ -8,9 +9,13 @@ from . import models, schemas
 def create_tag(db: Session, tag: schemas.TagCreate):
     db_tag = models.Tag(id=tag.id, description=tag.description)
     db.add(db_tag)
-    db.commit()
-    db.refresh(db_tag)
-    return db_tag
+    try:
+        db.commit()
+        db.refresh(db_tag)
+        return db_tag
+    except IntegrityError:
+        db.rollback()
+        raise ValueError(f"Tag with id {tag.id!r} already exists.") from None
 
 
 def get_tags(db: Session):

@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 from sqlalchemy import func
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -19,9 +18,7 @@ def create_field(db: Session, field: schemas.FieldCreate):
         return db_field
     except IntegrityError:
         db.rollback()
-        raise HTTPException(
-            status_code=400, detail=f"Field with name {field.name!r} already exists."
-        ) from None
+        raise ValueError(f"Field with name {field.name!r} already exists.") from None
 
 
 def get_fields(db: Session):
@@ -38,9 +35,15 @@ def update_field(db: Session, field_id: int, field: schemas.FieldCreate):
         db_field.name = field.name
         db_field.description = field.description
         db_field.field_type = field.field_type
-        db.commit()
-        db.refresh(db_field)
-        return db_field
+        try:
+            db.commit()
+            db.refresh(db_field)
+            return db_field
+        except IntegrityError:
+            db.rollback()
+            raise ValueError(
+                f"Field with name {field.name!r} already exists."
+            ) from None
     return None
 
 

@@ -42,11 +42,8 @@ class EventCreate(EventBase):
     pass
 
 
-class EventOut(BaseModel):
+class EventOut(EventBase):
     id: int
-    name: str
-    description: Optional[str] = None
-    links: Optional[List[EventLink]] = None
     tags: list[TagOut]
     fields: list[FieldOut]
     created_at: datetime
