@@ -1,10 +1,12 @@
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class TagBase(BaseModel):
-    id: str
+    id: str = Field(
+        min_length=1, max_length=50, description="Tag ID must be between 1 and 50 characters"
+    )
     description: str | None = None
 
 

@@ -19,11 +19,20 @@ router = APIRouter(
     description="Create a new field that can be associated with events.",
     responses={
         201: {"description": "Field created successfully"},
-        400: {"description": "Validation error"},
+        400: {"description": "Validation error or field already exists"},
     },
 )
 def create_field_route(field: FieldCreate, db: Session = Depends(get_db)):
-    return field_crud.create_field(db=db, field=field)
+    try:
+        return field_crud.create_field(db=db, field=field)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={
+                "code": "duplicate_resource",
+                "message": str(e),
+            },
+        )
 
 
 @router.get(
@@ -79,22 +88,31 @@ def get_field_route(
     responses={
         200: {"description": "Field updated successfully"},
         404: {"description": "Field not found"},
-        400: {"description": "Validation error"},
+        400: {"description": "Validation error or field already exists"},
     },
 )
 def update_field_route(
     field_id: int, field: FieldCreate, db: Session = Depends(get_db)
 ):
-    db_field = field_crud.update_field(db=db, field_id=field_id, field=field)
-    if db_field is None:
+    try:
+        db_field = field_crud.update_field(db=db, field_id=field_id, field=field)
+        if db_field is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail={
+                    "code": "resource_not_found",
+                    "message": f"Field with id {field_id} not found",
+                },
+            )
+        return db_field
+    except ValueError as e:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail={
-                "code": "resource_not_found",
-                "message": f"Field with id {field_id} not found",
+                "code": "duplicate_resource",
+                "message": str(e),
             },
         )
-    return db_field
 
 
 @router.delete(
