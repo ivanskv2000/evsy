@@ -32,7 +32,7 @@ def create_field_route(field: FieldCreate, db: Session = Depends(get_db)):
                 "code": "duplicate_resource",
                 "message": str(e),
             },
-        )
+        ) from e
 
 
 @router.get(
@@ -112,7 +112,7 @@ def update_field_route(
                 "code": "duplicate_resource",
                 "message": str(e),
             },
-        )
+        ) from e
 
 
 @router.delete(

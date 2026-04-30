@@ -32,7 +32,7 @@ def create_tag_route(tag: TagCreate, db: Session = Depends(get_db)):
                 "code": "duplicate_resource",
                 "message": str(e),
             },
-        )
+        ) from e
 
 
 @router.get(
