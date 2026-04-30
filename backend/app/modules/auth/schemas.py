@@ -1,6 +1,6 @@
 from typing import Annotated, Literal, Optional
 
-from pydantic import BaseModel, ConfigDict, EmailStr, StringConstraints
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, StringConstraints
 
 PasswordStr = Annotated[str, StringConstraints(min_length=6)]
 ProviderName = Literal["github", "google"]
@@ -21,7 +21,10 @@ class UserLogin(UserBase):
 
 class OAuthLogin(BaseModel):
     provider: ProviderName
-    token: str
+    token: str = Field(
+        ...,
+        description="The authorization code received from the OAuth provider callback.",
+    )
 
 
 class UserOut(UserBase):

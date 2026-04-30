@@ -129,5 +129,5 @@ def exchange_code_for_email(provider: str, code: str, redirect_uri: str) -> str:
 
 
 def get_email_from_oauth(login: OAuthLogin) -> str:
-    redirect_uri = "http://localhost:8000/api/v1/auth/oauth/callback"
+    redirect_uri = f"{settings.backend_url}/api/v1/auth/oauth/callback"
     return exchange_code_for_email(login.provider, login.token, redirect_uri)

@@ -1,5 +1,6 @@
 import base64
 import json
+import secrets
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import RedirectResponse
@@ -143,6 +144,7 @@ def start_oauth_login(
     state_payload = {
         "provider": provider,
         "redirect": redirect,
+        "nonce": secrets.token_urlsafe(16),
     }
     state = base64.urlsafe_b64encode(json.dumps(state_payload).encode()).decode()
 

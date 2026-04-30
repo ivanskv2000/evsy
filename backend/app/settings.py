@@ -51,6 +51,7 @@ class Settings(BaseSettings):
     env: Literal["dev", "prod", "demo", "test"] = Field(default="dev", alias="ENV")
     database_url: str = "sqlite:///./test.db"
     frontend_url: Optional[str] = None
+    backend_url: str = "http://localhost:8000"
 
     secret_key: str = "your_secret_key_here"
 
