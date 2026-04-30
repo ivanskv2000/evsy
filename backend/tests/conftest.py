@@ -3,8 +3,6 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
-from dotenv import load_dotenv
-import os
 
 from app.core.database import Base, get_db
 from app.factory import create_app
@@ -14,6 +12,7 @@ from app.settings import Settings
 
 # No need for manual load_dotenv, Settings() will handle it via resolve_env_file()
 # or we can pass it explicitly for maximum clarity in tests.
+
 
 @pytest.fixture(scope="session")
 def test_settings():
@@ -59,6 +58,7 @@ def db(db_engine):
 @pytest.fixture
 def override_get_db(app, db):
     """Fixture to override the get_db dependency for every test."""
+
     def _get_db():
         yield db
 

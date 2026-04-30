@@ -3,16 +3,15 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal, Optional
 
-from pydantic import ConfigDict, Field
+from dotenv import load_dotenv
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
-from dotenv import load_dotenv
 
 def resolve_env_file() -> Optional[str]:
     # 1. Check if ENV is set (e.g., ENV=test)
     env_mode = os.getenv("ENV")
-    
+
     # Priority: current working directory (for tests)
     cwd = Path.cwd()
     if env_mode and (cwd / f".env.{env_mode}").exists():
@@ -26,15 +25,15 @@ def resolve_env_file() -> Optional[str]:
         test_path = backend_root / f".env.{env_mode}"
         if test_path.exists():
             return str(test_path)
-    
+
     local_env = backend_root / ".env"
     if local_env.exists():
         return str(local_env)
-        
+
     root_env = backend_root.parent / ".env"
     if root_env.exists():
         return str(root_env)
-        
+
     return None
 
 
@@ -43,10 +42,10 @@ class Settings(BaseSettings):
         # Dynamically resolve env file if not provided
         if _env_file is None:
             _env_file = resolve_env_file()
-            
+
         if _env_file:
             load_dotenv(_env_file, override=True)
-            
+
         super().__init__(**kwargs)
 
     env: Literal["dev", "prod", "demo", "test"] = Field(default="dev", alias="ENV")
