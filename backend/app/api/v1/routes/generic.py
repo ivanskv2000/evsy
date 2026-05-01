@@ -26,7 +26,7 @@ def ping(settings: Settings = Depends(get_settings)):
 )
 def get_config(settings: Settings = Depends(get_settings)):
     return {
-        "database_url": settings.database_url,
+        "database_url": settings.masked_database_url,
         "debug": settings.is_dev,
     }
 
