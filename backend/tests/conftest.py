@@ -17,7 +17,6 @@ from app.settings import Settings
 @pytest.fixture(scope="session")
 def test_settings():
     """Session-scoped fixture for test settings, using a Postgres DB."""
-    # We explicitly pass the env file to ensure we use exactly what we want
     return Settings(_env_file=".env.test")
 
 
@@ -35,7 +34,7 @@ def app(test_settings: Settings, db_engine):
     """Session-scoped fixture for the FastAPI application instance."""
     # We use a dummy session_local here because we'll override get_db at the request level
     dummy_session_local = sessionmaker(bind=db_engine)
-    return create_app(test_settings, dummy_session_local)
+    return create_app(test_settings, db_engine, dummy_session_local)
 
 
 @pytest.fixture
