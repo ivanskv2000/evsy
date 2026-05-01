@@ -3,7 +3,6 @@
 
 # Environment files
 .env
-.env.test
 
 # Editor configs
 .idea/

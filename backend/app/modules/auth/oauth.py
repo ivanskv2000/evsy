@@ -4,9 +4,7 @@ import httpx
 from fastapi import HTTPException
 
 from app.modules.auth.schemas import OAuthLogin
-from app.settings import Settings
-
-settings = Settings()
+from app.settings import get_settings
 
 # --- Provider-specific logic ---
 
@@ -52,36 +50,38 @@ def get_email_from_google(token: str) -> str:
 
 # --- Provider config registry ---
 
-OAUTH_PROVIDERS = {
-    "github": {
-        "client_id": settings.github_client_id,
-        "client_secret": settings.github_client_secret,
-        "auth_url": "https://github.com/login/oauth/authorize",
-        "token_url": "https://github.com/login/oauth/access_token",
-        "scope": "user:email",
-        "email_fetcher": get_email_from_github,
-        "headers": {"Accept": "application/json"},
-    },
-    "google": {
-        "client_id": settings.google_client_id,
-        "client_secret": settings.google_client_secret,
-        "auth_url": "https://accounts.google.com/o/oauth2/v2/auth",
-        "token_url": "https://oauth2.googleapis.com/token",
-        "scope": "openid email profile",
-        "email_fetcher": get_email_from_google,
-        "headers": {"Content-Type": "application/x-www-form-urlencoded"},
-        "extra_auth_params": {"access_type": "offline", "prompt": "consent"},
-    },
-}
 
-# --- Generic Logic ---
+def get_oauth_config() -> dict:
+    settings = get_settings()
+    return {
+        "github": {
+            "client_id": settings.github_client_id,
+            "client_secret": settings.github_client_secret,
+            "auth_url": "https://github.com/login/oauth/authorize",
+            "token_url": "https://github.com/login/oauth/access_token",
+            "scope": "user:email",
+            "email_fetcher": get_email_from_github,
+            "headers": {"Accept": "application/json"},
+        },
+        "google": {
+            "client_id": settings.google_client_id,
+            "client_secret": settings.google_client_secret,
+            "auth_url": "https://accounts.google.com/o/oauth2/v2/auth",
+            "token_url": "https://oauth2.googleapis.com/token",
+            "scope": "openid email profile",
+            "email_fetcher": get_email_from_google,
+            "headers": {"Content-Type": "application/x-www-form-urlencoded"},
+            "extra_auth_params": {"access_type": "offline", "prompt": "consent"},
+        },
+    }
 
 
 def build_oauth_redirect(provider: str, redirect_uri: str, state: str) -> str:
-    if provider not in OAUTH_PROVIDERS:
+    providers = get_oauth_config()
+    if provider not in providers:
         raise HTTPException(status_code=400, detail="Unsupported provider")
 
-    cfg = OAUTH_PROVIDERS[provider]
+    cfg = providers[provider]
     query = {
         "client_id": cfg["client_id"],
         "redirect_uri": redirect_uri,
@@ -101,10 +101,11 @@ def _post_token_request(url: str, data: dict, headers: dict) -> dict:
 
 
 def exchange_code_for_email(provider: str, code: str, redirect_uri: str) -> str:
-    if provider not in OAUTH_PROVIDERS:
+    providers = get_oauth_config()
+    if provider not in providers:
         raise HTTPException(status_code=400, detail="Unsupported provider")
 
-    cfg = OAUTH_PROVIDERS[provider]
+    cfg = providers[provider]
     try:
         data = {
             "code": code,
@@ -129,5 +130,6 @@ def exchange_code_for_email(provider: str, code: str, redirect_uri: str) -> str:
 
 
 def get_email_from_oauth(login: OAuthLogin) -> str:
+    settings = get_settings()
     redirect_uri = f"{settings.backend_url}/api/v1/auth/oauth/callback"
     return exchange_code_for_email(login.provider, login.token, redirect_uri)
