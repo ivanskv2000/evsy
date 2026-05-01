@@ -1,8 +1,10 @@
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
@@ -12,17 +14,25 @@ from app.modules.auth.schemas import UserCreate
 from app.modules.auth.service import create_user_if_not_exists
 from app.settings import Settings
 
+logger = logging.getLogger(__name__)
 
-def create_app(settings: Settings, SessionLocal: sessionmaker) -> FastAPI:
+
+def create_app(
+    settings: Settings, engine: Engine, SessionLocal: sessionmaker
+) -> FastAPI:
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
+        logger.info(f"Starting application in {settings.env} mode")
         if settings.is_demo:
             with SessionLocal() as db:
                 create_user_if_not_exists(
                     db, UserCreate(email="demo@evsy.dev", password="bestructured")
                 )
         yield
+        logger.info("Shutting down application")
+        engine.dispose()
+        logger.info("Database connections closed")
 
     app = FastAPI(
         title="Evsy API",
@@ -53,21 +63,9 @@ def create_app(settings: Settings, SessionLocal: sessionmaker) -> FastAPI:
 
     app.state.settings = settings
 
-    if settings.is_dev:
-        print("Running in development mode")
-    elif settings.is_demo:
-        print("Running in demo mode")
-
-    allowed_origins = ["http://localhost:5173", "http://localhost:3000"]
-    allowed_origins = (
-        allowed_origins + [settings.frontend_url]
-        if settings.is_dev
-        else [settings.frontend_url]
-    )
-
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=allowed_origins,
+        allow_origins=settings.cors_origins,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

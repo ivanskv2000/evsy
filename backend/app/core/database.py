@@ -15,12 +15,7 @@ def init_db(settings: Settings):
     """Initialize SQLAlchemy engine and sessionmaker with provided settings."""
     global _engine, _SessionLocal
 
-    _engine = create_engine(
-        settings.database_url,
-        connect_args=(
-            {"check_same_thread": False} if "sqlite" in settings.database_url else {}
-        ),
-    )
+    _engine = create_engine(settings.database_url)
     _SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=_engine)
     return _engine, _SessionLocal
 
