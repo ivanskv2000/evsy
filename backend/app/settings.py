@@ -1,57 +1,39 @@
 import os
 from functools import lru_cache
+from pathlib import Path
 from typing import Literal, Optional, Any
 
+from dotenv import load_dotenv
 from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-import os
-from functools import lru_cache
-from pathlib import Path
-from typing import Literal, Optional
-
-from dotenv import load_dotenv
-from pydantic import Field
-from pydantic_settings import BaseSettings, SettingsConfigDict
 
 def resolve_env_file() -> Optional[str]:
-    # 1. Check if ENV is set (e.g., ENV=test)
     env_mode = os.getenv("ENV")
-
-    # Priority: current working directory (for tests)
     cwd = Path.cwd()
-    if env_mode and (cwd / f".env.{env_mode}").exists():
-        return str(cwd / f".env.{env_mode}")
-    if (cwd / ".env").exists():
-        return str(cwd / ".env")
-
-    # Fallback: Absolute paths relative to this file
+    
+    candidates = []
+    if env_mode:
+        candidates.append(cwd / f".env.{env_mode}")
+    candidates.append(cwd / ".env")
+    
     backend_root = Path(__file__).parent.parent
     if env_mode:
-        test_path = backend_root / f".env.{env_mode}"
-        if test_path.exists():
-            return str(test_path)
-
-    local_env = backend_root / ".env"
-    if local_env.exists():
-        return str(local_env)
-
-    root_env = backend_root.parent / ".env"
-    if root_env.exists():
-        return str(root_env)
-
+        candidates.append(backend_root / f".env.{env_mode}")
+    candidates.append(backend_root / ".env")
+    
+    for path in candidates:
+        if path.exists():
+            return str(path)
     return None
 
 
 class Settings(BaseSettings):
-    def __init__(self, _env_file: Optional[str] = None, **kwargs):
-        # Dynamically resolve env file if not provided
+    def __init__(self, _env_file: Optional[str] = None, **kwargs: Any):
         if _env_file is None:
             _env_file = resolve_env_file()
-
         if _env_file:
             load_dotenv(_env_file, override=True)
-
         super().__init__(**kwargs)
 
     env: Literal["dev", "prod", "demo", "test"] = Field(default="dev", alias="ENV")
@@ -84,7 +66,6 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def validate_infrastructure(self) -> "Settings":
-        """Ensure critical infrastructure settings are provided."""
         if not self.database_url:
             raise ValueError(
                 "DATABASE_URL must be provided in the environment or a .env file"
@@ -118,31 +99,17 @@ class Settings(BaseSettings):
 
     @property
     def masked_database_url(self) -> str:
-        """Returns the database URL with password masked."""
         from urllib.parse import urlparse, urlunparse
-
         if not self.database_url:
             return ""
-
         parsed = urlparse(self.database_url)
-        
-        # If there's no password, return as is
         if not parsed.password:
             return self.database_url
-
-        # Reconstruct the netloc (user:pass@host:port)
-        # We replace only the password part
         host_port = parsed.hostname or ""
         if parsed.port:
             host_port = f"{host_port}:{parsed.port}"
-
-        # Build the masked netloc: user:******@host:port
         user_part = f"{parsed.username}:******@" if parsed.username else "******@"
-        new_netloc = f"{user_part}{host_port}"
-
-        # urlunparse reassembles the 6-part tuple: 
-        # (scheme, netloc, path, params, query, fragment)
-        return urlunparse(parsed._replace(netloc=new_netloc))
+        return urlunparse(parsed._replace(netloc=f"{user_part}{host_port}"))
 
     @property
     def available_oauth_providers(self) -> list[str]:

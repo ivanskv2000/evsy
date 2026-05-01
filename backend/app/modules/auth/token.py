@@ -11,7 +11,6 @@ from app.modules.auth import crud
 from app.modules.auth.models import User
 from app.settings import Settings, get_settings
 
-# OAuth2 scheme for token dependency
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/token")
 
 

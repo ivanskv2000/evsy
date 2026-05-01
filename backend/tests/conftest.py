@@ -10,8 +10,6 @@ from app.modules.auth.crud import create_user
 from app.modules.auth.token import create_access_token
 from app.settings import Settings
 
-# No need for manual load_dotenv, Settings() will handle it via resolve_env_file()
-# or we can pass it explicitly for maximum clarity in tests.
 
 
 @pytest.fixture(scope="session")

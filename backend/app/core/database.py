@@ -6,7 +6,6 @@ from app.settings import Settings
 
 Base = declarative_base()
 
-# Globals (will be set by init_db)
 _engine: Engine | None = None
 _SessionLocal: sessionmaker | None = None
 

@@ -77,7 +77,6 @@ def get_oauth_config() -> dict:
     }
 
 
-# --- Generic Logic ---
 
 
 def build_oauth_redirect(provider: str, redirect_uri: str, state: str) -> str:

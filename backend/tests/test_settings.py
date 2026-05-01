@@ -13,7 +13,6 @@ def write_temp_env(dir_path: Path, filename: str, content: str) -> Path:
 
 def test_dev_env_flags(tmp_path: Path, monkeypatch):
     monkeypatch.setenv("ENV", "dev")
-    # We must provide DATABASE_URL as it's now required
     url = "postgresql://user:pass@localhost/db"
     monkeypatch.setenv("DATABASE_URL", url)
     env_file = write_temp_env(tmp_path, ".env.dev", f"ENV=dev\nDATABASE_URL={url}")
