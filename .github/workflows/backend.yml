@@ -48,6 +48,13 @@ jobs:
         working-directory: ./backend
         run: poetry install
 
+      - name: Prepare .env.test for CI
+        working-directory: ./backend
+        run: |
+          echo "ENV=test" > .env.test
+          echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> .env.test
+          echo "SECRET_KEY=ci_secret_key" >> .env.test
+
       - name: Run isort
         working-directory: ./backend
         run: poetry run isort . --check-only
