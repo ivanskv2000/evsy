@@ -1,7 +1,7 @@
 import os
 from functools import lru_cache
 from pathlib import Path
-from typing import Literal, Optional, Any
+from typing import Any, Literal, Optional
 
 from dotenv import load_dotenv
 from pydantic import Field, model_validator
@@ -11,17 +11,17 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 def resolve_env_file() -> Optional[str]:
     env_mode = os.getenv("ENV")
     cwd = Path.cwd()
-    
+
     candidates = []
     if env_mode:
         candidates.append(cwd / f".env.{env_mode}")
     candidates.append(cwd / ".env")
-    
+
     backend_root = Path(__file__).parent.parent
     if env_mode:
         candidates.append(backend_root / f".env.{env_mode}")
     candidates.append(backend_root / ".env")
-    
+
     for path in candidates:
         if path.exists():
             return str(path)
@@ -100,6 +100,7 @@ class Settings(BaseSettings):
     @property
     def masked_database_url(self) -> str:
         from urllib.parse import urlparse, urlunparse
+
         if not self.database_url:
             return ""
         parsed = urlparse(self.database_url)

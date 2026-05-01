@@ -30,7 +30,7 @@ def test_settings_masked_db_url():
     """Test that database password is masked in masked_database_url."""
     url = "postgresql+psycopg2://user:secret_pass@localhost:5432/db"
     settings = Settings.model_construct(database_url=url)
-    
+
     masked = settings.masked_database_url
     assert "secret_pass" not in masked
     assert "******" in masked
@@ -48,7 +48,9 @@ def test_invalid_env_rejected(tmp_path: Path, monkeypatch):
     monkeypatch.setenv("ENV", "staging")
     url = "postgresql://localhost/db"
     monkeypatch.setenv("DATABASE_URL", url)
-    env_file = write_temp_env(tmp_path, ".env.staging", f"ENV=staging\nDATABASE_URL={url}")
+    env_file = write_temp_env(
+        tmp_path, ".env.staging", f"ENV=staging\nDATABASE_URL={url}"
+    )
 
     with pytest.raises(ValueError):
         Settings(_env_file=str(env_file))

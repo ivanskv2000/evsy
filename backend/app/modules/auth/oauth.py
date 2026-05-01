@@ -4,8 +4,7 @@ import httpx
 from fastapi import HTTPException
 
 from app.modules.auth.schemas import OAuthLogin
-from app.settings import Settings, get_settings
-
+from app.settings import get_settings
 
 # --- Provider-specific logic ---
 
@@ -75,8 +74,6 @@ def get_oauth_config() -> dict:
             "extra_auth_params": {"access_type": "offline", "prompt": "consent"},
         },
     }
-
-
 
 
 def build_oauth_redirect(provider: str, redirect_uri: str, state: str) -> str:

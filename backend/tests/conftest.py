@@ -11,7 +11,6 @@ from app.modules.auth.token import create_access_token
 from app.settings import Settings
 
 
-
 @pytest.fixture(scope="session")
 def test_settings():
     """Session-scoped fixture for test settings, using a Postgres DB."""
