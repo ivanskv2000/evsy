@@ -33,7 +33,7 @@ class Settings(BaseSettings):
         if _env_file is None:
             _env_file = resolve_env_file()
         if _env_file:
-            load_dotenv(_env_file, override=True)
+            load_dotenv(dotenv_path=_env_file, override=True)
         super().__init__(**kwargs)
 
     env: Literal["dev", "prod", "demo", "test"] = Field(default="dev", alias="ENV")
