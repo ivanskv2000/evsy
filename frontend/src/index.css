@@ -2,10 +2,12 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
-
 /* Theme */
 @theme inline {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-handwritten: 'Pacifico', cursive;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -42,14 +44,18 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Brand */
+  --color-brand: var(--primary);
+  --color-brand-foreground: var(--primary-foreground);
+
+  /* Spacing aliases */
+  --spacing-brand: 1.5rem;
 }
 
 /* Light theme */
 :root {
   color-scheme: light dark;
-
-  --font-sans: Inter, system-ui, sans-serif;
-  --font-handwritten: Pacifico, cursive;
 
   font-weight: 400;
   font-synthesis: none;
@@ -126,11 +132,6 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
-}
-
-/* Font */
-.font-handwritten {
-  font-family: 'Pacifico', cursive;
 }
 
 /* Page transition */
