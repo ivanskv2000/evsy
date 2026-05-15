@@ -7,7 +7,7 @@ import { ref, defineAsyncComponent, computed } from 'vue'
 import type { TagFormValues } from '@/modules/tags/validation/tagSchema'
 import Header from '@/shared/components/layout/PageHeader.vue'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
-import { useUrlFilters, tagsFiltersConfig } from '@/shared/composables/useUrlFilters'
+import { useDataTableUrlSync } from '@/shared/composables/useDataTableUrlSync'
 import { filterTags } from '@/shared/utils/tableFilters'
 
 const DeleteModal = defineAsyncComponent(() => import('@/shared/components/modals/DeleteModal.vue'))
@@ -24,7 +24,18 @@ const editedTag = ref<Tag | null>(null)
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
 
-const urlFilters = useUrlFilters(tagsFiltersConfig)
+const { state, updaters } = useDataTableUrlSync({
+  columnFilters: { search: { param: 'search' } },
+})
+
+const searchValue = computed(() => {
+  const filter = state.columnFilters.value.find(f => f.id === 'search')
+  return (filter?.value as string) || ''
+})
+
+const handleSearchUpdate = (value: string) => {
+  updaters.onColumnFiltersChange([{ id: 'search', value }])
+}
 
 const { data: tags, isLoading } = useQuery({
   queryKey: ['tags'],
@@ -70,7 +81,7 @@ const selectDeleteTag = (tag: Tag) => {
 }
 
 const filteredTags = computed(() => {
-  return filterTags(tags.value ?? [], urlFilters.filters.search)
+  return filterTags(tags.value ?? [], searchValue.value)
 })
 </script>
 
@@ -81,7 +92,8 @@ const filteredTags = computed(() => {
     <TagsDataGrid
       :filtered-data="filteredTags"
       :isLoading="isLoading"
-      :url-filters="urlFilters"
+      :search-value="searchValue"
+      @update:search-value="handleSearchUpdate"
       :onEdit="selectEditTag"
       :onDelete="selectDeleteTag"
     />
