@@ -107,7 +107,7 @@ describe('useDataTableUrlSync', () => {
       const { updaters } = useDataTableUrlSync(defaultConfig)
 
       // WHEN we use a functional updater to toggle the direction
-      updaters.onSortingChange((old) => [{ id: old[0].id, desc: !old[0].desc }])
+      updaters.onSortingChange(old => [{ id: old[0].id, desc: !old[0].desc }])
 
       // THEN it should calculate the new state based on old and update URL
       expect(mockRouter.replace).toHaveBeenCalledWith({
