@@ -8,7 +8,7 @@ import Header from '@/shared/components/layout/PageHeader.vue'
 import { getFieldColumns } from '@/modules/fields/components/fieldColumns'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import type { FieldFormValues } from '@/modules/fields/validation/fieldSchema'
-import { useUrlFilters, fieldsFiltersConfig } from '@/shared/composables/useUrlFilters'
+import { useDataTableUrlSync } from '@/shared/composables/useDataTableUrlSync'
 
 const DeleteModal = defineAsyncComponent(() => import('@/shared/components/modals/DeleteModal.vue'))
 const FieldEditModal = defineAsyncComponent(
@@ -24,7 +24,16 @@ const editedField = ref<Field | null>(null)
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
 
-const urlFilters = useUrlFilters(fieldsFiltersConfig)
+const urlSync = useDataTableUrlSync({
+  columnFilters: {
+    name: { param: 'search' },
+    field_type: { param: 'type', type: 'array' },
+  },
+  sorting: {
+    sortParam: 'sort',
+    orderParam: 'order',
+  },
+})
 
 const { data: fields, isLoading } = useQuery({
   queryKey: ['fields'],
@@ -81,7 +90,7 @@ const columns = getFieldColumns(selectEditField, selectDeleteField)
         :columns="columns"
         :data="fields ?? []"
         :isLoading="isLoading"
-        :url-filters="urlFilters"
+        :url-sync="urlSync"
       />
     </div>
 

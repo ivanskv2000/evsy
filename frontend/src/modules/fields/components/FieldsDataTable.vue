@@ -9,25 +9,24 @@ import DataTable from '@/shared/components/data/DataTable.vue'
 import DataTableLayout from '@/shared/components/data/DataTableLayout.vue'
 import DataTableSkeleton from '@/shared/components/skeletons/DataTableSkeleton.vue'
 import DataTableMultiSelectFilter from '@/shared/components/data/DataTableMultiSelectFilter.vue'
-import type { UrlFiltersReturn, FieldsUrlFilters } from '@/shared/types/urlFilters'
-import { useDataTableWithUrlQuery } from '@/shared/composables/useDataTableWithUrlQuery'
+import { useDataTable } from '@/shared/composables/useDataTable'
+import type { useDataTableUrlSync } from '@/shared/composables/useDataTableUrlSync'
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   isLoading: boolean
-  urlFilters: UrlFiltersReturn<FieldsUrlFilters>
+  urlSync: ReturnType<typeof useDataTableUrlSync>
 }>()
 
-const { table } = useDataTableWithUrlQuery(
-  {
-    data: () => props.data,
-    columns: () => props.columns,
-    defaultSorting: [{ id: 'id', desc: true }],
-  },
-  props.urlFilters,
-  'fields'
-)
+const { table } = useDataTable({
+  data: () => props.data,
+  columns: () => props.columns,
+  sorting: props.urlSync.state.sorting,
+  columnFilters: props.urlSync.state.columnFilters,
+  onSortingChange: props.urlSync.updaters.onSortingChange,
+  onColumnFiltersChange: props.urlSync.updaters.onColumnFiltersChange,
+})
 
 const fieldTypes = Object.values(FieldType)
 </script>
