@@ -12,6 +12,7 @@ const auth = useAuthStore()
 const { showError } = useEnhancedToast()
 
 const globalErrorHandler = (error: unknown) => {
+  if (error && typeof error === 'object' && 'silent' in error && error.silent) return
   showError(error)
 }
 
