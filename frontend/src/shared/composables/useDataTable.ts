@@ -1,10 +1,11 @@
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import type {
   ColumnDef,
   SortingState,
   ColumnFiltersState,
   VisibilityState,
   PaginationState,
+  Updater,
 } from '@tanstack/vue-table'
 import {
   getCoreRowModel,
@@ -17,26 +18,36 @@ import {
 } from '@tanstack/vue-table'
 import { valueUpdater } from '@/shared/utils/general'
 
-type SortingOption = {
-  id: string
-  desc: boolean
-}
-
 type UseDataTableOptions<TData, TValue> = {
   data: () => TData[]
   columns: () => ColumnDef<TData, TValue>[]
-  defaultSorting?: SortingOption[]
+  // Optional controlled state
+  sorting?: Ref<SortingState>
+  columnFilters?: Ref<ColumnFiltersState>
+  onSortingChange?: (updater: Updater<SortingState>) => void
+  onColumnFiltersChange?: (updater: Updater<ColumnFiltersState>) => void
+  // Default values for internal state
+  defaultSorting?: SortingState
   defaultPageSize?: number
 }
 
 export function useDataTable<TData, TValue>({
   data,
   columns,
+  sorting: externalSorting,
+  columnFilters: externalColumnFilters,
+  onSortingChange: externalOnSortingChange,
+  onColumnFiltersChange: externalOnColumnFiltersChange,
   defaultSorting = [],
   defaultPageSize = 10,
 }: UseDataTableOptions<TData, TValue>) {
-  const sorting = ref<SortingState>(defaultSorting ?? [])
-  const columnFilters = ref<ColumnFiltersState>([])
+  // Use external state if provided, otherwise create internal state
+  const internalSorting = ref<SortingState>(defaultSorting)
+  const internalColumnFilters = ref<ColumnFiltersState>([])
+
+  const sorting = externalSorting || internalSorting
+  const columnFilters = externalColumnFilters || internalColumnFilters
+
   const columnVisibility = ref<VisibilityState>({})
   const rowSelection = ref({})
   const pagination = ref<PaginationState>({
@@ -57,8 +68,11 @@ export function useDataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
-    onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
+    onSortingChange:
+      externalOnSortingChange || (updaterOrValue => valueUpdater(updaterOrValue, internalSorting)),
+    onColumnFiltersChange:
+      externalOnColumnFiltersChange ||
+      (updaterOrValue => valueUpdater(updaterOrValue, internalColumnFilters)),
     onColumnVisibilityChange: updaterOrValue => valueUpdater(updaterOrValue, columnVisibility),
     onRowSelectionChange: updaterOrValue => valueUpdater(updaterOrValue, rowSelection),
     onPaginationChange: updaterOrValue => valueUpdater(updaterOrValue, pagination),

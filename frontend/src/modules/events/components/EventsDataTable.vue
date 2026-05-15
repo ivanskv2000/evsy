@@ -6,11 +6,11 @@ import { Button } from '@/shared/ui/button'
 import DataTablePagination from '@/shared/components/data/DataTablePagination.vue'
 import DataTable from '@/shared/components/data/DataTable.vue'
 import DataTableLayout from '@/shared/components/data/DataTableLayout.vue'
-import { useDataTableWithUrlQuery } from '@/shared/composables/useDataTableWithUrlQuery'
+import { useDataTable } from '@/shared/composables/useDataTable'
 import DataTableSkeleton from '@/shared/components/skeletons/DataTableSkeleton.vue'
 import DataTableSingleSelectFilter from '@/shared/components/data/DataTableSingleSelectFilter.vue'
 import type { Tag } from '@/modules/tags/types'
-import type { UrlFiltersReturn, EventsUrlFilters } from '@/shared/types/urlFilters'
+import type { useDataTableUrlSync } from '@/shared/composables/useDataTableUrlSync'
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
@@ -18,18 +18,17 @@ const props = defineProps<{
   tags: Tag[]
   isLoading: boolean
   isLoadingTags: boolean
-  urlFilters: UrlFiltersReturn<EventsUrlFilters>
+  urlSync: ReturnType<typeof useDataTableUrlSync>
 }>()
 
-const { table } = useDataTableWithUrlQuery(
-  {
-    data: () => props.data,
-    columns: () => props.columns,
-    defaultSorting: [{ id: 'id', desc: true }],
-  },
-  props.urlFilters,
-  'events'
-)
+const { table } = useDataTable({
+  data: () => props.data,
+  columns: () => props.columns,
+  sorting: props.urlSync.state.sorting,
+  columnFilters: props.urlSync.state.columnFilters,
+  onSortingChange: props.urlSync.updaters.onSortingChange,
+  onColumnFiltersChange: props.urlSync.updaters.onColumnFiltersChange,
+})
 </script>
 
 <template>

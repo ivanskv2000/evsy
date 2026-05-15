@@ -9,7 +9,7 @@ import Header from '@/shared/components/layout/PageHeader.vue'
 import { getEventColumns } from '@/modules/events/components/eventColumns'
 import { useEnhancedToast } from '@/shared/composables/useEnhancedToast'
 import type { EventFormValues } from '@/modules/events/validation/eventSchema'
-import { useUrlFilters, eventsFiltersConfig } from '@/shared/composables/useUrlFilters'
+import { useDataTableUrlSync } from '@/shared/composables/useDataTableUrlSync'
 
 const DeleteModal = defineAsyncComponent(() => import('@/shared/components/modals/DeleteModal.vue'))
 const EventEditModal = defineAsyncComponent(
@@ -25,7 +25,16 @@ const editedEvent = ref<Event | null>(null)
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
 
-const urlFilters = useUrlFilters(eventsFiltersConfig)
+const urlSync = useDataTableUrlSync({
+  columnFilters: {
+    name: { param: 'search' },
+    tags: { param: 'tag' },
+  },
+  sorting: {
+    sortParam: 'sort',
+    orderParam: 'order',
+  },
+})
 
 const { data: tags, isLoading: isLoadingTags } = useQuery({
   queryKey: ['tags'],
@@ -90,7 +99,7 @@ const columns = getEventColumns(selectEditEvent, selectDeleteEvent)
         :tags="tags ?? []"
         :isLoading="isLoading"
         :isLoadingTags="isLoadingTags"
-        :url-filters="urlFilters"
+        :url-sync="urlSync"
       />
     </div>
 
