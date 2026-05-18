@@ -24,6 +24,12 @@ const redirect = route.query.redirect as string | undefined
 
 const { handleSubmit } = useForm<LoginFormValues>({
   validationSchema: toTypedSchema(loginSchema),
+  initialValues: isDemo
+    ? {
+        email: 'demo@evsy.dev',
+        password: 'bestructured',
+      }
+    : undefined,
 })
 
 const { mutate: runLogin, isPending: isLoading } = useMutation({
@@ -91,7 +97,7 @@ const onSubmit = handleSubmit(values => runLogin(values))
       <Button type="submit" class="w-full" :disabled="isLoading"> Log In </Button>
 
       <!-- Link to signup -->
-      <div class="text-center text-sm">
+      <div v-if="!isDemo" class="text-center text-sm">
         Don’t have an account?
         <RouterLink
           :to="{ path: '/signup', query: { redirect } }"

@@ -9,7 +9,7 @@
 ## 🚦 Strict Workflow Protocol
 Before modifying, generating, or deleting any files, the agent MUST follow these steps in exact order:
 1. **Plan First:** Present a comprehensive architectural review, design summary, or pseudo-code strategy. Wait for explicit user greenlight.
-2. **Git Branching:** Checkout to a distinct feature or refactor branch from `main` using the Conventional Commits specification (e.g., `feat(backend): ...`, `refactor(frontend): ...`).
+2. **Git Branching:** Checkout to a distinct feature or refactor branch from `main` using the Conventional Commits specification (e.g., `feat(backend)/...`, `refactor(frontend)/...`).
 3. **Execution:** Apply the changes within the tightly scoped workspace directory.
 4. **Finalize:** Upon user validation, stage and commit changes with concise, structured commit messages.
 5. **Documentation:** Auto-generate a pull request summary titled `pr_description.md` in the project root adhering to the workspace markdown template.
