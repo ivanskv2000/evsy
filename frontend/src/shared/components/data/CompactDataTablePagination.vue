@@ -20,7 +20,7 @@ defineProps<{
       <Icon icon="radix-icons:chevron-left" class="h-4 w-4" />
     </Button>
 
-    <span class="text-muted-foreground text-sm">
+    <span class="text-muted-foreground text-xs">
       Page {{ table.getState().pagination.pageIndex + 1 }} of {{ table.getPageCount() }}
     </span>
 
