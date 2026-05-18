@@ -19,3 +19,6 @@ dist/
 
 # Auxiliary scripts
 reset_demo.sh
+
+# LLM generated files
+pr_description.md
