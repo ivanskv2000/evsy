@@ -93,7 +93,7 @@ function removeTag(tagId: string) {
 <template>
   <form @submit="onSubmit" class="mt-2 space-y-6">
     <!-- Event Name -->
-    <FormField name="name" v-slot="{ componentField }">
+    <FormField name="event-name" v-slot="{ componentField }">
       <FormItem>
         <FormLabel>Event Name</FormLabel>
         <FormControl>
@@ -103,7 +103,6 @@ function removeTag(tagId: string) {
             autocapitalize="off"
             autocomplete="off"
             spellcheck="false"
-            name="event-name"
             v-bind="componentField"
           />
         </FormControl>
@@ -112,7 +111,7 @@ function removeTag(tagId: string) {
     </FormField>
 
     <!-- Description -->
-    <FormField name="description" v-slot="{ componentField }">
+    <FormField name="event-description" v-slot="{ componentField }">
       <FormItem>
         <FormLabel>Description</FormLabel>
         <FormControl>
@@ -120,7 +119,6 @@ function removeTag(tagId: string) {
             type="text"
             placeholder="Optional description"
             autocomplete="off"
-            name="event-description"
             v-bind="componentField"
           />
         </FormControl>
