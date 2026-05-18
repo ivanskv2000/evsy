@@ -45,7 +45,7 @@ const onSubmit = (values: EventFormValues) => {
   <div>
     <Header title="Create new event" backLink fallbackBackLink="/events" />
 
-    <Card class="mx-auto max-w-md">
+    <Card class="mx-auto max-w-lg">
       <CardContent>
         <EventForm
           :availableFields="fields ?? []"

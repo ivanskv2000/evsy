@@ -44,7 +44,7 @@ const fieldTypeOptions = Object.entries(FieldType).map(([key, value]) => ({
 <template>
   <form @submit="onSubmit" class="mt-2 space-y-6">
     <!-- Name -->
-    <FormField name="name" v-slot="{ componentField }">
+    <FormField name="field-name" v-slot="{ componentField }">
       <FormItem>
         <FormLabel>Name</FormLabel>
         <FormControl>
@@ -86,7 +86,7 @@ const fieldTypeOptions = Object.entries(FieldType).map(([key, value]) => ({
     </FormField>
 
     <!-- Description -->
-    <FormField name="description" v-slot="{ componentField }">
+    <FormField name="field-description" v-slot="{ componentField }">
       <FormItem>
         <FormLabel>Description</FormLabel>
         <FormControl>
