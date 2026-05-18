@@ -1,50 +1,17 @@
-## 📌 Pull Request Title
+## ✨ Overview
 
-<!-- 
-Use Conventional Commit format:
-<type>(<scope>): <summary>
+<!-- What does this PR do and why? (Features, fixes, or refactors) -->
 
-Examples:
-- feat(frontend): add event editor UI
-- fix(backend): correct field validation
-- docs(common): update contributing guide
-- chore(deps): update frontend packages
--->
+## 🛠️ Scope & Verification
 
-## ✨ What’s Changed?
+**Workspace:**
+- [ ] frontend  |  - [ ] backend  |  - [ ] common/config
 
-<!--
-Clearly describe what this PR does. Mention:
-- New features
-- Fixes
-- Refactors
-- Docs or config changes
--->
+**Checklist:**
+- [ ] Manually tested and verified locally
+- [ ] Automated suite passes cleanly (formatting, linting, tests)
+- [ ] New/updated unit tests included (if applicable)
 
-## 🧪 How to Test It
+## 📝 Developer Notes (Optional)
 
-<!--
-Explain how to manually test the change, or link to automated test coverage.
-If not testable, explain why.
--->
-
-## 📂 Scope
-
-<!-- Choose one or more folders this PR affects -->
-- [ ] frontend
-- [ ] backend
-- [ ] common/shared
-- [ ] CI/config
-
-## 📝 Notes (Optional)
-
-<!--
-Anything unusual, breaking, or helpful for reviewers.
--->
-
-## ✅ Checklist
-
-- [ ] PR title uses Conventional Commit format
-- [ ] Code is clean and commented where needed
-- [ ] I’ve manually tested relevant parts
-- [ ] I’ve updated docs (if needed)
+<!-- Breaking changes, architecture context, or specific areas for review -->
