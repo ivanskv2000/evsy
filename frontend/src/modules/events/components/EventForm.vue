@@ -53,18 +53,6 @@ const { handleSubmit, values, setValues, setFieldValue } = useForm<EventFormValu
   validationSchema: toTypedSchema(eventSchema),
 })
 
-function toggleFieldSelection(id: number) {
-  const current = values.fields || []
-  if (current.includes(id)) {
-    setFieldValue(
-      'fields',
-      current.filter(f => f !== id)
-    )
-  } else {
-    setFieldValue('fields', [...current, id])
-  }
-}
-
 watchEffect(() => {
   if (props.event) {
     setValues({
@@ -230,16 +218,39 @@ function removeTag(tagId: string) {
     </FormField>
 
     <!-- Linked Fields -->
-    <FormField name="fields">
+    <FormField name="fields" v-slot="{ componentField }">
       <FormItem>
         <FormLabel>Linked Fields</FormLabel>
         <FormDescription>Choose one or more fields this event uses.</FormDescription>
         <FormControl>
           <LinkedFieldsSelector
             :fields="availableFields"
-            :selected-ids="values.fields"
+            :selected-ids="componentField.modelValue || []"
             :is-loading="isLoadingFields"
-            @toggle="toggleFieldSelection"
+            @toggle="
+              (id: number) => {
+                const current: number[] = componentField.modelValue || []
+                const updated = current.includes(id)
+                  ? current.filter((f: number) => f !== id)
+                  : [...current, id]
+                componentField.onChange(updated)
+              }
+            "
+            @toggle-all="
+              (ids: number[], selected: boolean) => {
+                const current: number[] = componentField.modelValue || []
+                let updated: number[]
+                if (selected) {
+                  // Add all missing IDs
+                  const toAdd = ids.filter(id => !current.includes(id))
+                  updated = [...current, ...toAdd]
+                } else {
+                  // Remove all provided IDs
+                  updated = current.filter(id => !ids.includes(id))
+                }
+                componentField.onChange(updated)
+              }
+            "
           />
         </FormControl>
         <FormMessage />
