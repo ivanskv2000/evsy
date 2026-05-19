@@ -33,9 +33,9 @@ def auto_seed_data(db: Session):
         if e.status_code == 405:
             logger.info("Database already contains data. Skipping auto-seeding.")
         else:
-            logger.error(f"Auto-seeding failed with unexpected error: {e.detail}")
-    except Exception as e:
-        logger.error(f"Auto-seeding failed: {e}")
+            logger.exception(f"Auto-seeding failed with unexpected error: {e.detail}")
+    except Exception:
+        logger.exception("Auto-seeding failed")
 
 
 def run_startup_tasks(db: Session, settings: Settings):
