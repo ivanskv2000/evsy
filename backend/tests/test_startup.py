@@ -48,7 +48,7 @@ def test_setup_test_users(db, test_settings):
         db.delete(user)
         db.flush()
     
-    setup_test_users(db, test_settings.dev_users)
+    setup_test_users(db, test_settings.dev_users, test_settings.dev_users_password)
     
     user = db.query(User).filter(User.email == primary_dev_user["email"]).first()
     assert user is not None
@@ -75,10 +75,11 @@ def test_run_startup_tasks_dev_calls_subtasks(db):
     mock_settings = MagicMock()
     mock_settings.is_dev = True
     mock_settings.is_demo = False
-    mock_settings.dev_users = [{"email": "user@example.com", "password": "password"}]
+    mock_settings.dev_users = [{"email": "user@example.com"}]
+    mock_settings.dev_users_password = "password"
     
     with patch("app.core.startup.setup_test_users") as mock_setup_users, \
          patch("app.core.startup.auto_seed_data") as mock_auto_seed:
         run_startup_tasks(db, mock_settings)
-        mock_setup_users.assert_called_once_with(db, mock_settings.dev_users)
+        mock_setup_users.assert_called_once_with(db, mock_settings.dev_users, mock_settings.dev_users_password)
         mock_auto_seed.assert_called_once_with(db)
