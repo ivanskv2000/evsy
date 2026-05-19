@@ -3,6 +3,7 @@ import { useAuthStore } from '@/modules/auth/stores/useAuthStore'
 import { routes } from './routes'
 
 const publicPages = ['/login', '/signup', '/landing', '/oauth/callback']
+const authPages = ['/login', '/signup']
 
 const router = createRouter({
   history: createWebHistory(),
@@ -19,8 +20,11 @@ const router = createRouter({
 router.beforeEach((to, _from, next) => {
   const auth = useAuthStore()
   const isPublic = publicPages.includes(to.path)
+  const isAuthPage = authPages.includes(to.path)
 
-  if (!isPublic && !auth.token) {
+  if (auth.token && isAuthPage) {
+    next({ path: '/events' })
+  } else if (!isPublic && !auth.token) {
     next({ path: '/login', query: { redirect: to.fullPath } })
   } else {
     next()

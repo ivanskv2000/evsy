@@ -59,5 +59,10 @@ export default {
 </script>
 
 <template>
-  <Input v-model="inputValue" :placeholder="placeholder" @keydown="handleKeydown" />
+  <Input
+    v-model="inputValue"
+    :placeholder="placeholder"
+    @keydown="handleKeydown"
+    autocomplete="off"
+  />
 </template>

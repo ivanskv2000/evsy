@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import MainLayout from '@/shared/components/layout/MainLayout.vue'
 import { Toaster } from '@/shared/ui/sonner'
 import { useAuthStore } from '@/modules/auth/stores/useAuthStore'
@@ -9,6 +9,7 @@ import { useEnhancedToast } from './shared/composables/useEnhancedToast'
 import { queryClient } from './shared/plugins/vue-query'
 
 const auth = useAuthStore()
+const route = useRoute()
 const { showError } = useEnhancedToast()
 
 const globalErrorHandler = (error: unknown) => {
@@ -43,7 +44,7 @@ window.addEventListener('message', async event => {
   <MainLayout>
     <RouterView v-slot="{ Component }">
       <Transition name="page" mode="out-in" appear>
-        <component :is="Component" />
+        <component :is="Component" :key="route.fullPath" />
       </Transition>
     </RouterView>
   </MainLayout>

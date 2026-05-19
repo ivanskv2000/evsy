@@ -59,6 +59,7 @@ function removeLink(index: number) {
       <Input
         type="url"
         placeholder="https://..."
+        autocomplete="off"
         :model-value="link.url"
         @update:model-value="val => update(i, { url: String(val) })"
       />
@@ -66,6 +67,7 @@ function removeLink(index: number) {
       <!-- Label -->
       <Input
         placeholder="Label"
+        autocomplete="off"
         :model-value="link.label"
         @update:model-value="val => update(i, { label: String(val) })"
       />

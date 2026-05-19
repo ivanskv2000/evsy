@@ -55,6 +55,7 @@ const handleSearchKeydown = (event: KeyboardEvent) => {
       <div class="flex-1">
         <Input
           v-model="localSearchValue"
+          autocomplete="off"
           placeholder="Search tags..."
           class="max-w-xs"
           @keydown="handleSearchKeydown"
