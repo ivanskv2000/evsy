@@ -45,7 +45,7 @@ const onSubmit = handleSubmit(values => {
 <template>
   <form @submit="onSubmit" class="mt-2 space-y-6">
     <!-- Tag ID -->
-    <FormField name="tag-id" v-slot="{ componentField }">
+    <FormField name="id" v-slot="{ componentField }">
       <FormItem>
         <FormLabel>Tag ID</FormLabel>
         <FormControl>
@@ -67,7 +67,7 @@ const onSubmit = handleSubmit(values => {
     </FormField>
 
     <!-- Description -->
-    <FormField name="tag-description" v-slot="{ componentField }">
+    <FormField name="description" v-slot="{ componentField }">
       <FormItem>
         <FormLabel>Description</FormLabel>
         <FormControl>
