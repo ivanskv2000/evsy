@@ -57,8 +57,10 @@ class Settings(BaseSettings):
         default=None, alias="GOOGLE_CLIENT_SECRET"
     )
 
-    dev_user_email: str = Field(default="user@example.com", alias="DEV_USER_EMAIL")
-    dev_user_password: str = Field(default="12345678", alias="DEV_USER_PASSWORD")
+    dev_users: list[dict[str, str]] = Field(
+        default=[{"email": "user@example.com", "password": "12345678"}],
+        alias="DEV_USERS",
+    )
 
     demo_user_email: str = Field(default="demo@evsy.dev", alias="DEMO_USER_EMAIL")
     demo_user_password: str = Field(default="bestructured", alias="DEMO_USER_PASSWORD")

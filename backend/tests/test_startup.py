@@ -42,16 +42,17 @@ def test_create_access_token_prod_normal_expiry():
 def test_setup_test_users(db, test_settings):
     """Test that test users are created if they don't exist."""
     # Ensure user doesn't exist in the current transaction
-    user = db.query(User).filter(User.email == test_settings.dev_user_email).first()
+    primary_dev_user = test_settings.dev_users[0]
+    user = db.query(User).filter(User.email == primary_dev_user["email"]).first()
     if user:
         db.delete(user)
         db.flush()
     
-    setup_test_users(db, test_settings)
+    setup_test_users(db, test_settings.dev_users)
     
-    user = db.query(User).filter(User.email == test_settings.dev_user_email).first()
+    user = db.query(User).filter(User.email == primary_dev_user["email"]).first()
     assert user is not None
-    assert user.email == test_settings.dev_user_email
+    assert user.email == primary_dev_user["email"]
 
 @patch("app.core.startup.seed_all")
 def test_auto_seed_data_empty_db(mock_seed_all, db):
@@ -74,9 +75,10 @@ def test_run_startup_tasks_dev_calls_subtasks(db):
     mock_settings = MagicMock()
     mock_settings.is_dev = True
     mock_settings.is_demo = False
+    mock_settings.dev_users = [{"email": "user@example.com", "password": "password"}]
     
     with patch("app.core.startup.setup_test_users") as mock_setup_users, \
          patch("app.core.startup.auto_seed_data") as mock_auto_seed:
         run_startup_tasks(db, mock_settings)
-        mock_setup_users.assert_called_once_with(db, mock_settings)
+        mock_setup_users.assert_called_once_with(db, mock_settings.dev_users)
         mock_auto_seed.assert_called_once_with(db)
