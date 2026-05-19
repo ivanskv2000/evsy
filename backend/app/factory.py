@@ -10,8 +10,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api.v1.routes import admin, auth, events, fields, generic, tags
 from app.core.handlers import http_exception_handler, validation_exception_handler
-from app.modules.auth.schemas import UserCreate
-from app.modules.auth.service import create_user_if_not_exists
+from app.core.startup import run_startup_tasks
 from app.settings import Settings
 
 logger = logging.getLogger(__name__)
@@ -24,11 +23,8 @@ def create_app(
     @asynccontextmanager
     async def lifespan(app: FastAPI):
         logger.info(f"Starting application in {settings.env} mode")
-        if settings.is_demo:
-            with SessionLocal() as db:
-                create_user_if_not_exists(
-                    db, UserCreate(email="demo@evsy.dev", password="bestructured")
-                )
+        with SessionLocal() as db:
+            run_startup_tasks(db, settings)
         yield
         logger.info("Shutting down application")
         engine.dispose()

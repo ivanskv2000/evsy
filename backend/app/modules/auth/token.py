@@ -17,9 +17,15 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/token")
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
     settings = get_settings()
     to_encode = data.copy()
-    expire = datetime.now(UTC) + (
-        expires_delta or timedelta(minutes=settings.access_token_expire_minutes)
-    )
+    if expires_delta:
+        expire = datetime.now(UTC) + expires_delta
+    elif settings.is_dev:
+        # 100 years for dev mode
+        expire = datetime.now(UTC) + timedelta(days=365 * 100)
+    else:
+        expire = datetime.now(UTC) + timedelta(
+            minutes=settings.access_token_expire_minutes
+        )
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, settings.secret_key, algorithm=settings.jwt_algorithm)
 
