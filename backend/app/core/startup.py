@@ -10,18 +10,15 @@ from app.settings import Settings
 
 logger = logging.getLogger(__name__)
 
-TEST_USERS = [
-    {"email": "user@example.com", "password": "12345678"},
-]
 
-
-def setup_test_users(db: Session):
+def setup_test_users(db: Session, settings: Settings):
     """Create initial test users if they don't exist."""
-    for user_data in TEST_USERS:
-        logger.info(f"Ensuring test user exists: {user_data['email']}")
-        create_user_if_not_exists(
-            db, UserCreate(email=user_data["email"], password=user_data["password"])
-        )
+    # Ensure test user exists
+    logger.info(f"Ensuring test user exists: {settings.dev_user_email}")
+    create_user_if_not_exists(
+        db,
+        UserCreate(email=settings.dev_user_email, password=settings.dev_user_password),
+    )
 
 
 def auto_seed_data(db: Session):
@@ -41,9 +38,12 @@ def auto_seed_data(db: Session):
 def run_startup_tasks(db: Session, settings: Settings):
     """Run all necessary startup tasks for development environment."""
     if settings.is_dev:
-        setup_test_users(db)
+        setup_test_users(db, settings)
         auto_seed_data(db)
     elif settings.is_demo:
         create_user_if_not_exists(
-            db, UserCreate(email="demo@evsy.dev", password="bestructured")
+            db,
+            UserCreate(
+                email=settings.demo_user_email, password=settings.demo_user_password
+            ),
         )

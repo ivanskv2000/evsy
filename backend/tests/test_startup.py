@@ -39,19 +39,19 @@ def test_create_access_token_prod_normal_expiry():
         expected_exp = (datetime.now(UTC) + timedelta(minutes=60)).timestamp()
         assert abs(exp - expected_exp) < 10 # Allow 10s difference
 
-def test_setup_test_users(db):
+def test_setup_test_users(db, test_settings):
     """Test that test users are created if they don't exist."""
     # Ensure user doesn't exist in the current transaction
-    user = db.query(User).filter(User.email == "user@example.com").first()
+    user = db.query(User).filter(User.email == test_settings.dev_user_email).first()
     if user:
         db.delete(user)
         db.flush()
     
-    setup_test_users(db)
+    setup_test_users(db, test_settings)
     
-    user = db.query(User).filter(User.email == "user@example.com").first()
+    user = db.query(User).filter(User.email == test_settings.dev_user_email).first()
     assert user is not None
-    assert user.email == "user@example.com"
+    assert user.email == test_settings.dev_user_email
 
 @patch("app.core.startup.seed_all")
 def test_auto_seed_data_empty_db(mock_seed_all, db):
@@ -78,5 +78,5 @@ def test_run_startup_tasks_dev_calls_subtasks(db):
     with patch("app.core.startup.setup_test_users") as mock_setup_users, \
          patch("app.core.startup.auto_seed_data") as mock_auto_seed:
         run_startup_tasks(db, mock_settings)
-        mock_setup_users.assert_called_once_with(db)
+        mock_setup_users.assert_called_once_with(db, mock_settings)
         mock_auto_seed.assert_called_once_with(db)
