@@ -75,9 +75,7 @@ describe('SyncStatusButton', () => {
     // Wait for the minimum duration (600ms)
     await vi.advanceTimersByTimeAsync(600)
 
-    expect(mockShowSuccess).toHaveBeenCalledWith(
-      'Data is updated successfully!'
-    )
+    expect(mockShowSuccess).toHaveBeenCalledWith('Data is updated successfully!')
     vi.useRealTimers()
   })
 
