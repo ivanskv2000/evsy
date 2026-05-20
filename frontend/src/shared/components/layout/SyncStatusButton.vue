@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useIsFetching, useQueryClient } from '@tanstack/vue-query'
+import { useIsFetching, useQueryClient, onlineManager } from '@tanstack/vue-query'
 import { Icon } from '@iconify/vue'
 import { Button } from '@/shared/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui/tooltip'
@@ -21,20 +21,22 @@ const handleRefresh = async () => {
   isSyncing.value = true
 
   try {
-    // We wrap invalidateQueries in a Promise.all with a minimum timeout
-    // to ensure the UI animation feels deliberate and smooth (no "blinks")
     await Promise.all([
       queryClient.invalidateQueries(),
       new Promise(resolve => setTimeout(resolve, 600)),
     ])
 
-    showSuccess('Data synchronized', 'All active data views have been updated.')
-  } catch (error) {
-    // Mark as silent to prevent App.vue's global handler from showing a duplicate toast
-    if (error && typeof error === 'object') {
-      ;(error as { silent?: boolean }).silent = true
+    if (!onlineManager.isOnline()) {
+      showError(
+        new Error('You are currently offline. Please check your internet connection and try again.')
+      )
+      return
     }
-    showError(error, 'Sync Failed')
+
+    showSuccess('Data is updated successfully!')
+  } catch {
+    // We don't call showError here because the globalErrorHandler in App.vue
+    // is already attached to the queryCache and will handle any query-related errors.
   } finally {
     isSyncing.value = false
   }
