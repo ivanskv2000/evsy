@@ -44,7 +44,7 @@ window.addEventListener('message', async event => {
   <MainLayout>
     <RouterView v-slot="{ Component }">
       <Transition name="page" mode="out-in" appear>
-        <component :is="Component" :key="route.fullPath" />
+        <component :is="Component" :key="route.path" />
       </Transition>
     </RouterView>
   </MainLayout>
