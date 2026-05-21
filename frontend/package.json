@@ -14,6 +14,8 @@
     "test:unit": "vitest"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource/pacifico": "^5.2.7",
     "@tailwindcss/vite": "^4.1.4",
     "@tanstack/vue-query": "^5.92.9",
     "@tanstack/vue-table": "^8.21.3",
