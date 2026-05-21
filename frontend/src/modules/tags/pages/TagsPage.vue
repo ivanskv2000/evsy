@@ -47,6 +47,7 @@ const { mutate: deleteTag, isPending: isDeleting } = useMutation({
   onSuccess: () => {
     showDeleted('Tag')
     queryClient.invalidateQueries({ queryKey: ['tags'] })
+    queryClient.invalidateQueries({ queryKey: ['events'] })
   },
 })
 
@@ -55,6 +56,7 @@ const { mutate: updateTag, isPending: isSaving } = useMutation({
   onSuccess: () => {
     showUpdated('Tag')
     queryClient.invalidateQueries({ queryKey: ['tags'] })
+    queryClient.invalidateQueries({ queryKey: ['events'] })
   },
 })
 

@@ -33,6 +33,7 @@ const { mutate: deleteField, isPending: isDeleting } = useMutation({
   onSuccess: () => {
     showDeleted('Field')
     queryClient.invalidateQueries({ queryKey: ['fields'] })
+    queryClient.invalidateQueries({ queryKey: ['events'] })
     router.push('/fields')
   },
 })
@@ -43,6 +44,7 @@ const { mutate: updateField, isPending: isSaving } = useMutation({
     showUpdated('Field')
     queryClient.invalidateQueries({ queryKey: ['fields', fieldId] })
     queryClient.invalidateQueries({ queryKey: ['fields'] })
+    queryClient.invalidateQueries({ queryKey: ['events'] })
     showEditModal.value = false
   },
 })

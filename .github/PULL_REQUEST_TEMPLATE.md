@@ -5,7 +5,9 @@
 ## 🛠️ Scope & Verification
 
 **Workspace:**
-- [ ] frontend  |  - [ ] backend  |  - [ ] common/config
+- [ ] frontend
+- [ ] backend
+- [ ] common/config
 
 **Checklist:**
 - [ ] Manually tested and verified locally
